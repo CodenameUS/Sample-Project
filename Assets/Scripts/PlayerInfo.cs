@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class PlayerInfo : MonoBehaviour
 {
-    public float speed = 1f;
-
+    public float speed;
+    public float rotateSpeed;
 }

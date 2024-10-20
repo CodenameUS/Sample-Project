@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    [HideInInspector]
     public float hAxis;
     public float vAxis;
 
