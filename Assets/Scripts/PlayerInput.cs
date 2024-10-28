@@ -6,6 +6,7 @@ public class PlayerInput : MonoBehaviour
 {
     public float hAxis;
     public float vAxis;
+    public bool attackKeydown;
 
     private void Update()
     {
@@ -17,6 +18,7 @@ public class PlayerInput : MonoBehaviour
     {
         hAxis = Input.GetAxisRaw("Horizontal");
         vAxis = Input.GetAxisRaw("Vertical");
+        attackKeydown = Input.GetButtonDown("Attack");
     }
 
     

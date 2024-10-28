@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
         moveVec = new Vector3(playerInput.hAxis, 0, playerInput.vAxis).normalized;
 
         rigid.position += moveVec * playerInfo.speed * Time.deltaTime;
-        anim.SetBool("Running", moveVec != Vector3.zero);
+        anim.SetFloat("Speed", moveVec == Vector3.zero ? 0 : playerInfo.speed);
     }
 
     // 플레이어 회전로직
