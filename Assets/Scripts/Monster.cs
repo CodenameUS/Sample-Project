@@ -5,7 +5,7 @@ using UnityEngine;
 public class Monster : MonoBehaviour
 {
     BoxCollider boxCol;
-
+    int hits = 0;
     private void Awake()
     {
         boxCol = GetComponent<BoxCollider>();
@@ -14,6 +14,9 @@ public class Monster : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Weapon"))
-            Debug.Log("Hit!!");
+        {
+            hits++;
+            Debug.Log(hits);
+        }
     }
 }
