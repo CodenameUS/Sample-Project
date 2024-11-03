@@ -7,8 +7,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerInput    playerInput;
     [SerializeField] private PlayerInfo     playerInfo;
 
-    private Vector3 moveVec;
+    readonly private int hashSpeed = Animator.StringToHash("Speed");
 
+    private Vector3 moveVec;
     private Rigidbody rigid;
     private Animator anim;
 
@@ -30,7 +31,7 @@ public class PlayerController : MonoBehaviour
         moveVec = new Vector3(playerInput.hAxis, 0, playerInput.vAxis).normalized;
 
         rigid.position += moveVec * playerInfo.speed * Time.deltaTime;
-        anim.SetFloat("Speed", moveVec == Vector3.zero ? 0 : playerInfo.speed);
+        anim.SetFloat(hashSpeed, moveVec == Vector3.zero ? 0 : playerInfo.speed);
     }
 
     // 플레이어 회전로직

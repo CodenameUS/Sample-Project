@@ -35,25 +35,12 @@ AnimatorStateMachine:
   - {fileID: -462857255117949498}
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours:
-  - {fileID: -1364422677249663955}
+  - {fileID: 1685957840324562760}
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 150, z: 0}
-  m_ParentStateMachinePosition: {x: 360, y: -130, z: 0}
+  m_ParentStateMachinePosition: {x: 320, y: -90, z: 0}
   m_DefaultState: {fileID: 4133543239769839820}
---- !u!114 &-1364422677249663955
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b84064e9c384f1046a2857f9b40763e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggerName: Attack
 --- !u!1109 &-462857255117949498
 AnimatorTransition:
   m_ObjectHideFlags: 1
@@ -63,8 +50,11 @@ AnimatorTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 6
-    m_ConditionEvent: AttackCount
+    m_ConditionEvent: AttackType
     m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: ComboCount
+    m_EventTreshold: 1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4133543239769839820}
   m_Solo: 0
@@ -80,12 +70,6 @@ AnimatorController:
   m_Name: Player
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: isMoving
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
   - m_Name: Speed
     m_Type: 1
     m_DefaultFloat: 0
@@ -98,7 +82,13 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: AttackCount
+  - m_Name: AttackType
+    m_Type: 3
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: ComboCount
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -139,6 +129,19 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &1685957840324562760
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b84064e9c384f1046a2857f9b40763e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerName: Attack
 --- !u!1102 &4133543239769839820
 AnimatorState:
   serializedVersion: 6
@@ -243,7 +246,7 @@ AnimatorStateMachine:
     - {fileID: -9094014620507856887}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 0, y: 170, z: 0}
-  m_EntryPosition: {x: 0, y: 90, z: 0}
+  m_EntryPosition: {x: 0, y: 80, z: 0}
   m_ExitPosition: {x: 0, y: 250, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 4908386735431191662}
@@ -308,12 +311,15 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
+  - m_ConditionMode: 6
+    m_ConditionEvent: AttackType
+    m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: Attack
     m_EventTreshold: 0
   - m_ConditionMode: 6
-    m_ConditionEvent: AttackCount
-    m_EventTreshold: 0
+    m_ConditionEvent: ComboCount
+    m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7345656403372658694}
   m_Solo: 0
