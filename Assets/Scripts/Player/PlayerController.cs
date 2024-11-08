@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerInput    playerInput;
-    [SerializeField] private PlayerInfo     playerInfo;
+
+    private PlayerData playerData;
 
     readonly private int hashSpeed = Animator.StringToHash("Speed");
 
@@ -19,6 +20,10 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
+    private void Start()
+    {
+        playerData = DataManager.Instance.GetPlayerData();
+    }
     private void Update()
     {
         Move();
@@ -30,8 +35,8 @@ public class PlayerController : MonoBehaviour
     {
         moveVec = new Vector3(playerInput.hAxis, 0, playerInput.vAxis).normalized;
 
-        rigid.position += moveVec * playerInfo.speed * Time.deltaTime;
-        anim.SetFloat(hashSpeed, moveVec == Vector3.zero ? 0 : playerInfo.speed);
+        rigid.position += moveVec * playerData.Speed * Time.deltaTime;
+        anim.SetFloat(hashSpeed, moveVec == Vector3.zero ? 0 : playerData.Speed);
     }
 
     // 플레이어 회전로직
@@ -42,6 +47,6 @@ public class PlayerController : MonoBehaviour
             return;
 
         Quaternion newRotation = Quaternion.LookRotation(moveVec);
-        rigid.rotation = Quaternion.Slerp(rigid.rotation, newRotation, playerInfo.rotateSpeed * Time.deltaTime);
+        rigid.rotation = Quaternion.Slerp(rigid.rotation, newRotation, playerData.RotateSpeed * Time.deltaTime);
     }
 }

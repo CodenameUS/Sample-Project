@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
+    
+    #region SerializeFields
     [SerializeField] private PlayerInput playerInput;
-
     [SerializeField] private BoxCollider leftHandCollider;               
     [SerializeField] private BoxCollider rightHandCollider;
 
+    #endregion
+
+    #region 멤버변수
     private Animator anim;
 
     readonly private int hashAttackType = Animator.StringToHash("AttackType");
@@ -17,18 +21,19 @@ public class Attack : MonoBehaviour
     
     
     private bool hasEquipedWeapon = false;      // 무기 장착여부(현재는 기본 false)
-    public bool isAttack = false;              // 공격중인지 여부
+    private bool isAttack = false;               // 공격중인지 여부
     private bool isComboAllowed = false;        // 콤보공격 가능여부
-   
     private int comboCount = 0;                 // 콤보공격 카운트
-    private float comboResetTime = 1.0f;
-    // AttackType 설정
+
     public int AttackType
     {
         get => anim.GetInteger(hashAttackType);
         set => anim.SetInteger(hashAttackType, value);
     }
 
+    #endregion
+
+    #region Unity Events
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -38,6 +43,7 @@ public class Attack : MonoBehaviour
     {
         BaseAttack();
     }
+    #endregion
 
     // 기본공격
     private void BaseAttack()

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackReset : StateMachineBehaviour
+public class AnimReset : StateMachineBehaviour
 {
     [SerializeField] private string triggerName;            // reset할 트리거
 
