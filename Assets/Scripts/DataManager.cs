@@ -14,8 +14,9 @@ public class DataManager : MonoBehaviour
     // 싱글톤
     private static DataManager instance;
 
-    // 데이터 경로
-    private string dataPath;
+   
+    private string dataPath;                // 기본 데이터 저장경로
+    private string playerDataPath;          // 플레이어 데이터 저장경로
 
     private PlayerData playerData;
 
@@ -52,10 +53,11 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        dataPath = Path.Combine(Application.persistentDataPath + "/Data", "/data.json");
+        dataPath = Path.Combine(Application.persistentDataPath, "data.json");
+        playerDataPath = Path.Combine(Application.persistentDataPath, "Playerdata.json");
 
-        // 임시
-        if(!File.Exists(dataPath))
+        // 임시(플레이어 데이터만)
+        if (!File.Exists(playerDataPath))
         {
             InitData();
         }
@@ -69,6 +71,7 @@ public class DataManager : MonoBehaviour
     {
         // 임의 플레이어 데이터생성
         playerData = new PlayerData(1000f, 1000f, 1000f, 1000f, 3f, 10f);
+        SaveData(playerData, "PlayerData");
     }
 
     private void LoadCachedData()
@@ -93,6 +96,7 @@ public class DataManager : MonoBehaviour
     public T LoadData<T>(string fileName = "")
     {
         string filePath = string.IsNullOrEmpty(fileName) ? dataPath : Path.Combine(Application.persistentDataPath, fileName + ".json");
+
         // 저장된 파일이 있을 때
         if(File.Exists(filePath))
         {
@@ -102,6 +106,7 @@ public class DataManager : MonoBehaviour
         // 저장된 파일이 없을 때
         else
         {
+            InitData();
             return default(T); 
         }
     }
