@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     {
         playerData = DataManager.Instance.GetPlayerData();
     }
+    
     private void Update()
     {
         Move();
@@ -38,7 +39,7 @@ public class PlayerController : MonoBehaviour
         rigid.position += moveVec * playerData.Speed * Time.deltaTime;
         anim.SetFloat(hashSpeed, moveVec == Vector3.zero ? 0 : playerData.Speed);
     }
-
+    
     // 플레이어 회전로직
     void Turn()
     {

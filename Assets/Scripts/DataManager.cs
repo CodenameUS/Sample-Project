@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 using UnityEngine;
 
 /// <summary>
@@ -17,8 +18,12 @@ public class DataManager : MonoBehaviour
    
     private string dataPath;                // 기본 데이터 저장경로
     private string playerDataPath;          // 플레이어 데이터 저장경로
+    private string weaponItemDataPath;      // 무기 데이터 저장경로
+
+    private Dictionary<int, WeaponItemData> weponDataDictionary;
 
     private PlayerData playerData;
+    private WeaponItemData weaponData;
 
     public static DataManager Instance
     {
@@ -55,6 +60,7 @@ public class DataManager : MonoBehaviour
 
         dataPath = Path.Combine(Application.persistentDataPath, "data.json");
         playerDataPath = Path.Combine(Application.persistentDataPath, "Playerdata.json");
+        weaponItemDataPath = Path.Combine(Application.persistentDataPath, "WeaponData.json");
 
         // 임시(플레이어 데이터만)
         if (!File.Exists(playerDataPath))
@@ -65,6 +71,8 @@ public class DataManager : MonoBehaviour
         {
             LoadCachedData();
         }
+
+        weponDataDictionary = LoadWeaponData();
     }
 
     private void InitData()
@@ -111,10 +119,57 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    // 무기 데이터 불러오기
+    private Dictionary<int, WeaponItemData> LoadWeaponData()
+    {
+        if(File.Exists(weaponItemDataPath))
+        {
+            string jsonData = File.ReadAllText(weaponItemDataPath);
+            var weaponDict = JsonConvert.DeserializeObject<Dictionary<string, List<WeaponItemDTO>>>(jsonData);
+            
+            if(weaponDict.TryGetValue("Sword", out List<WeaponItemDTO> weaponList))
+            {
+                Dictionary<int, WeaponItemData> dataDictionary = new Dictionary<int, WeaponItemData>();
+
+                // DTO를 WeaponItemData로 변환하여 저장
+                foreach(var weaponDTO in weaponList)
+                {
+                    WeaponItemData weaponData = new WeaponItemData(weaponDTO);
+                    dataDictionary[weaponData.ID] = weaponData;
+                }
+                return dataDictionary;
+            }
+            else
+            {
+                Debug.LogWarning("WeaponData.json 파일에 'Sword'키가 없습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("불러올 파일이 없습니다.");
+        }
+        return new Dictionary<int, WeaponItemData>();
+    }
+
+    // ID로 무기 데이터 가져오기
+    public WeaponItemData GetDataById(int id)
+    {
+        if(weponDataDictionary != null && weponDataDictionary.TryGetValue(id, out var resultData))
+        {
+            return resultData;
+        }
+        else
+        {
+            Debug.LogWarning("ID에 해당하는 데이터가 없음.");
+            return null;
+        }
+    }
+
     // 플레이어 데이터에 대한 접근자 메서드
     public PlayerData GetPlayerData()
     {
         return playerData;
     }
 
+   
 }
