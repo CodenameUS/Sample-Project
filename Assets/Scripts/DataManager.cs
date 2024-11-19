@@ -23,7 +23,6 @@ public class DataManager : MonoBehaviour
     private Dictionary<int, WeaponItemData> weponDataDictionary;
 
     private PlayerData playerData;
-    private WeaponItemData weaponData;
 
     public static DataManager Instance
     {
