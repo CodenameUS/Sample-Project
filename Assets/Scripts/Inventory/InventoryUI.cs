@@ -11,7 +11,7 @@ public class InventoryUI : MonoBehaviour
     private int horizontalSlotCount = 6;                // 슬롯 가로갯수
     private int verticalSlotCount = 6;                  // 슬롯 세로갯수
     private float slotMargin = 9f;                      // 슬롯 여백
-    private float contentAreaPadding = 8f;             // 인벤토리 영역 내부 여백
+    private float contentAreaPadding = 8f;              // 인벤토리 영역 내부 여백
     private float slotSize = 81f;                       // 슬롯 사이즈
 
     private List<ItemSlotUI> slotUIList = new List<ItemSlotUI>();

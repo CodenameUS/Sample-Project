@@ -848,6 +848,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 363414002}
+  - component: {fileID: 363414003}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -878,6 +879,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 550, y: 650}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &363414003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 363414001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d521016b8b5966d4f89cfe35a7ad43cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contentAreaRT: {fileID: 712024098}
+  itemSlotPrefab: {fileID: 1936296660}
 --- !u!1 &469300979
 GameObject:
   m_ObjectHideFlags: 0
@@ -2696,6 +2711,7 @@ GameObject:
   - component: {fileID: 1936296661}
   - component: {fileID: 1936296663}
   - component: {fileID: 1936296662}
+  - component: {fileID: 1936296664}
   m_Layer: 5
   m_Name: Item Slot Prefab
   m_TagString: Untagged
@@ -2723,7 +2739,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 28, y: -28}
-  m_SizeDelta: {x: 64, y: 64}
+  m_SizeDelta: {x: 96, y: 96}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1936296662
 MonoBehaviour:
@@ -2763,6 +2779,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1936296660}
   m_CullTransparentMesh: 1
+--- !u!114 &1936296664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936296660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e066cb4c93f933442b46b4e021cbfe1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconImage: {fileID: 1076439723}
+  amountText: {fileID: 1005032374}
+  highlightImage: {fileID: 1105396862}
 --- !u!1 &1989082309
 GameObject:
   m_ObjectHideFlags: 0
