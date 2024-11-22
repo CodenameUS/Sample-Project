@@ -21,8 +21,8 @@ public class ItemSlotUI : MonoBehaviour
     private GameObject highlightGo;
 
 
-    private float padding = 1f;                         // 슬롯 내 아이콘과 슬롯 사이 여백
-    private float maxHighlightAlpha = 0.5f;             // 하이라이트 이미지 알파값
+    private float padding = 4f;                         // 슬롯 내 아이콘과 슬롯 사이 여백
+    private float maxHighlightAlpha = 0.5f;             // 하이라이트 이미지 최대 알파값
     private float currentHighlightAlpha = 0f;           // 현재 하이라이트 이미지 알파값
     private float highlightFadeDuration = 0.2f;         // 하이라이트 소요 시간
 
