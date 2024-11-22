@@ -34,7 +34,16 @@ public class ItemSlotUI : MonoBehaviour
     // 비활성화된 아이콘 색상
     private Color InAccessibleIconColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
 
-    public int Index { get; private set; }              // 슬롯 인덱스(읽기전용)
+    #region ** PROPERTIES **
+    public int Index { get; private set; }              // 슬롯 인덱스
+    public bool HasItem => iconImage.sprite != null;    // 슬롯에 아이템이 있는지 여부(sprite 여부로 확인)
+
+    public bool IsAccessible => isAccessibleItem && isAccessibleSlot;
+
+    public RectTransform SlotRect => slotRect;
+
+    public RectTransform IconRect => iconRect;
+    #endregion
 
     private void Awake()
     {
@@ -146,6 +155,14 @@ public class ItemSlotUI : MonoBehaviour
         isAccessibleItem = value;
     }
 
+    // 하이라이트 이미지를 상/하단으로 표시
+    public void SetHighlightOnTop(bool value)
+    {
+        if (value)
+            highlightRect.SetAsLastSibling();
+        else
+            highlightRect.SetAsFirstSibling();
+    }
 
     // 슬롯 하이라이트 표시 및 해제
     public void Highlight(bool show)
@@ -200,5 +217,7 @@ public class ItemSlotUI : MonoBehaviour
 
             yield return null;
         }
+
+        highlightGo.SetActive(false);
     }
 }

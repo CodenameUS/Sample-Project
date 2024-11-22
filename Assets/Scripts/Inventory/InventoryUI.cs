@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
@@ -8,17 +9,57 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private RectTransform contentAreaRT;   // 아이템 영역
     [SerializeField] private GameObject itemSlotPrefab;     // 복제할 원본 슬롯 프리팹
 
-    private int horizontalSlotCount = 6;                // 슬롯 가로갯수
-    private int verticalSlotCount = 6;                  // 슬롯 세로갯수
-    private float slotMargin = 9f;                      // 슬롯 여백
-    private float contentAreaPadding = 8f;              // 인벤토리 영역 내부 여백
-    private float slotSize = 81f;                       // 슬롯 사이즈
+    #region ** 인벤토리 옵션 **
+    private int horizontalSlotCount = 6;                    // 슬롯 가로갯수
+    private int verticalSlotCount = 6;                      // 슬롯 세로갯수
+    private float slotMargin = 9f;                          // 슬롯 여백
+    private float contentAreaPadding = 8f;                  // 인벤토리 영역 내부 여백
+    private float slotSize = 81f;                           // 슬롯 사이즈
+    private bool showHighlight = true;                      // 하이라이트 보이기
+    #endregion
 
     private List<ItemSlotUI> slotUIList = new List<ItemSlotUI>();
+    
+    private GraphicRaycaster gr;
+    private PointerEventData ped;
+    private List<RaycastResult> rrList;
+
+    private ItemSlotUI pointerOverSlot;                     // 현재 마우스 포인터가 위치한 곳의 슬롯
+    private ItemSlotUI beginDragSlot;                       // 마우스 드래그를 시작한 슬롯
+    private Transform beginDragIconTransform;               // 마우스 드래그를 시작한 슬롯의 아이콘
+
+    private int leftClick = 0;                              // 좌클릭 = 0
+    private int rightClick = 1;                             // 우클릭 = 0;
+
+    private Vector3 beginDragIconPoint;                     // 마우스 드래그를 시작한 아이콘 위치
+    private Vector3 beginDragCursorPoint;                   // 마우스 드래그를 시작한 커서 위치
+    private int beginDragSlotSiblingIndex;
 
     private void Awake()
     {
+        Init();
         InitSlots();
+    }
+
+    private void Update()
+    {
+        ped.position = Input.mousePosition;
+
+        OnPointerEnterAndExit();
+        OnPointerDown();
+        OnPointerDrag();
+        OnPointerUp();
+    }
+
+    // 초기화
+    private void Init()
+    {
+        TryGetComponent(out gr);
+        if (gr == null)
+            gr = gameObject.AddComponent<GraphicRaycaster>();
+
+        ped = new PointerEventData(EventSystem.current);
+        rrList = new List<RaycastResult>(10);
     }
 
     // 슬롯 영역 내에 슬롯 생성
@@ -46,9 +87,9 @@ public class InventoryUI : MonoBehaviour
         slotUIList = new List<ItemSlotUI>(verticalSlotCount * horizontalSlotCount);
 
         // 슬롯 생성하기
-        for(int j = 0; j<verticalSlotCount; j++)
+        for (int j = 0; j < verticalSlotCount; j++)
         {
-            for(int i = 0;i<horizontalSlotCount;i++)
+            for (int i = 0; i < horizontalSlotCount; i++)
             {
                 int slotIndex = (horizontalSlotCount * j) + i;       // 슬롯 인덱스
 
@@ -86,4 +127,153 @@ public class InventoryUI : MonoBehaviour
             return rt;
         }
     }
+
+
+
+    #region ** 마우스 이벤트 함수들 **
+
+    // 레이캐스팅한 첫 UI요소의 컴포넌트를 가져오기
+    private T RaycastAndgetFirstComponent<T>() where T : Component
+    {
+        // 리스트 초기화
+        rrList.Clear();
+
+        // 현재 마우스 위치에서 감지된 UI요소 저장
+        gr.Raycast(ped, rrList);
+
+        // 없으면 null
+        if (rrList.Count == 0)
+            return null;
+
+        return rrList[0].gameObject.GetComponent<T>();
+    }
+
+    // 마우스 올라갈때 나갈때 처리
+    private void OnPointerEnterAndExit()
+    {
+        // 이전 프레임 슬롯
+        var prevSlot = pointerOverSlot;
+
+        // 현재 프레임 슬롯
+        var curSlot = pointerOverSlot = RaycastAndgetFirstComponent<ItemSlotUI>();
+
+        // 마우스 올라갈 때
+        if(prevSlot == null)
+        {
+            if(curSlot != null)
+            {
+                OnCurrentEnter();
+            }
+        }
+        // 마우스 나갈 때
+        else
+        {
+            if(curSlot == null)
+            {
+                OnPrevExit();
+            }
+            // 다른 슬롯으로 커서 옮길때
+            else if(prevSlot != curSlot)
+            {
+                OnPrevExit();
+                OnCurrentEnter();
+            }
+        }
+
+        void OnCurrentEnter()
+        {
+            if (showHighlight)
+                curSlot.Highlight(true);
+        }
+
+        void OnPrevExit()
+        {
+            prevSlot.Highlight(false);
+        }
+    }
+
+    // 마우스 눌렀을 때 처리
+    private void OnPointerDown()
+    {
+       // 마우스 좌클릭(Holding)
+       if(Input.GetMouseButtonDown(leftClick))
+       {
+            // 시작 슬롯
+           beginDragSlot = RaycastAndgetFirstComponent<ItemSlotUI>();
+
+            // 슬롯에 아이템이 있을 때
+            if(beginDragSlot != null && beginDragSlot.HasItem && beginDragSlot.IsAccessible)
+            {
+                // 드래그 위치,참조 
+                beginDragIconTransform = beginDragSlot.IconRect.transform;
+                beginDragIconPoint = beginDragIconTransform.position;
+                beginDragCursorPoint = Input.mousePosition;
+
+                beginDragSlotSiblingIndex = beginDragSlot.transform.GetSiblingIndex();
+                beginDragSlot.transform.SetAsLastSibling();
+
+                beginDragSlot.SetHighlightOnTop(false);
+            }
+            else
+            {
+                beginDragSlot = null;
+            }
+       }
+       // 마우스 우클릭
+       else if(Input.GetMouseButtonDown(rightClick))
+       {
+
+       }
+      
+    }
+
+    // 마우스 드래그중일 때 처리
+    private void OnPointerDrag()
+    {
+        // 드래그중이 아닐때
+        if (beginDragSlot == null) return;
+
+        if(Input.GetMouseButton(leftClick))
+        {
+            // 슬롯 아이콘 위치 업데이트
+            beginDragIconTransform.position = beginDragIconPoint + (Input.mousePosition - beginDragCursorPoint);
+        }
+    }
+
+    // 마우스 뗐을 때 처리
+    private void OnPointerUp()
+    {
+        if(Input.GetMouseButtonUp(leftClick))
+        {
+            // 기존으로 복원
+            if(beginDragSlot != null)
+            {
+                // 위치 복원
+                beginDragIconTransform.position = beginDragIconPoint;
+
+                // UI 순서 복원
+                beginDragSlot.transform.SetSiblingIndex(beginDragSlotSiblingIndex);
+
+                // 드래그 완료
+                EndDrag();
+
+                // 하이라이트 이미지를 아이콘보다 앞에
+                beginDragSlot.SetHighlightOnTop(true);
+
+                // 참조 제거
+                beginDragSlot = null;
+                beginDragIconTransform = null;
+            }
+        }
+    }
+
+    // 마우스 드래그 종료 처리(아이템 수량 나누기, 교환, 이동, 버리기 등)
+    private void EndDrag()
+    {
+        
+    }
+
+    #endregion
+
+  
 }

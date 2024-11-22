@@ -21,7 +21,7 @@ public class Attack : MonoBehaviour
     
     
     private bool hasEquipedWeapon = false;      // 무기 장착여부(현재는 기본 false)
-    private bool isAttack = false;               // 공격중인지 여부
+    private bool isAttack = false;              // 공격중인지 여부
     private bool isComboAllowed = false;        // 콤보공격 가능여부
     private int comboCount = 0;                 // 콤보공격 카운트
 
