@@ -15,8 +15,6 @@ public class DataManager : MonoBehaviour
     // 싱글톤
     private static DataManager instance;
 
-   
-    private string dataPath;                // 기본 데이터 저장경로
     private string playerDataPath;          // 플레이어 데이터 저장경로
     private string weaponItemDataPath;      // 무기 데이터 저장경로
 
@@ -44,7 +42,6 @@ public class DataManager : MonoBehaviour
         }
     }
 
-
     private void Awake()
     {
         if(instance == null)
@@ -57,7 +54,6 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        dataPath = Path.Combine(Application.persistentDataPath, "data.json");
         playerDataPath = Path.Combine(Application.persistentDataPath, "Playerdata.json");
         weaponItemDataPath = Path.Combine(Application.persistentDataPath, "WeaponData.json");
 
@@ -90,7 +86,7 @@ public class DataManager : MonoBehaviour
     public void SaveData<T>(T data, string fileName = "")
     {
         string jsonData = JsonUtility.ToJson(data);
-        string filePath = string.IsNullOrEmpty(fileName) ? dataPath : Path.Combine(Application.persistentDataPath, fileName + ".json");
+        string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
         File.WriteAllText(filePath, jsonData);
 
         if(typeof(T) == typeof(PlayerData))
@@ -102,7 +98,7 @@ public class DataManager : MonoBehaviour
     // 데이터 불러오기
     public T LoadData<T>(string fileName = "")
     {
-        string filePath = string.IsNullOrEmpty(fileName) ? dataPath : Path.Combine(Application.persistentDataPath, fileName + ".json");
+        string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
 
         // 저장된 파일이 있을 때
         if(File.Exists(filePath))
@@ -126,6 +122,7 @@ public class DataManager : MonoBehaviour
             string jsonData = File.ReadAllText(weaponItemDataPath);
             var weaponDict = JsonConvert.DeserializeObject<Dictionary<string, List<WeaponItemDTO>>>(jsonData);
             
+            // Sword 항목 가져와서 저장
             if(weaponDict.TryGetValue("Sword", out List<WeaponItemDTO> weaponList))
             {
                 Dictionary<int, WeaponItemData> dataDictionary = new Dictionary<int, WeaponItemData>();
