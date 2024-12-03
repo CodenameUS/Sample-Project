@@ -304,4 +304,10 @@ public class InventoryUI : MonoBehaviour
             slotUIList[i].SetSlotAccessibleState(i < accessibleSlotCount);
         }
     }
+
+    // 아이콘 등록
+    public void SetItemIcon(int index, string icon)
+    {
+        slotUIList[index].SetItemIcon(icon);
+    }
 }

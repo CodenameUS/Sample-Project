@@ -67,7 +67,7 @@ public class ItemSlotUI : MonoBehaviour
         slotImage = GetComponent<Image>();
     }
 
-    // 초기화
+    // 초기화(아이콘 위치, 하이라이트 이미지 위치)
     private void InitValues()
     {
         // 아이콘 RT 설정(Pivot : 중앙, Anchor : Top Left)
@@ -153,6 +153,41 @@ public class ItemSlotUI : MonoBehaviour
         }
 
         isAccessibleItem = value;
+    }
+
+    // 슬롯에 아이템 아이콘 등록
+    public void SetItemIcon(string itemSprite)
+    {
+        if(itemSprite != null)
+        {
+            // 아이콘 데이터 가져오기
+            ResourceManager.Instance.LoadIcon(itemSprite, sprite =>
+            {
+                // 성공
+                if (sprite != null)
+                {
+                    // 아이콘 설정
+                    iconImage.sprite = sprite;
+                    ShowIcon();
+                }
+                else
+                {
+                    Debug.Log($"Failed to load icon for item : {itemSprite}");
+                }
+            });
+        }
+        else
+        {
+            RemoveItem();
+        }
+    }
+
+    // 슬롯에서 아이템 제거
+    public void RemoveItem()
+    {
+        iconImage.sprite = null;
+        HideIcon();
+        HideText();
     }
 
     // 하이라이트 이미지를 상/하단으로 표시
