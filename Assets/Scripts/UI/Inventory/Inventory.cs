@@ -17,7 +17,8 @@ public class Inventory : MonoBehaviour
     private int initCapacity = 24;              // 초기 인벤토리 수용한도
     private int maxCapacity = 36;               // 최대 인벤토리 수용한도
 
-  
+
+    #region  ** Unity Events **
     private void Awake()
     {
         // 인벤토리에서 관리할 수 있는 아이템은 최대 36개
@@ -42,22 +43,27 @@ public class Inventory : MonoBehaviour
         SetActiveUI();
     }
 
+    #endregion
+
+    #region ** Private Methods **
     // 인벤토리에 아이템 추가해보기(임시)
     private void InitTest()
     {
-        // 기본 검 ID
         int testItem01 = 1001;
 
-        // 기본 검 데이터 가져오기
-        WeaponItemData weaponData = DataManager.Instance.GetDataById(testItem01);
+        for(int i = 0; i<2;i++)
+        {
+            int id = testItem01 + i;
 
-        // 업 캐스팅(WeaponItemData => ItemData)
-        ItemDataArray[0] = weaponData;
+            WeaponItemData weaponData = DataManager.Instance.GetDataById(id);
 
-        // 다운 캐스팅
-        if (ItemDataArray[0] is WeaponItemData)
-            AddItem(ItemDataArray[0]);
+            // 업 캐스팅(WeaponItemData => ItemData)
+            ItemDataArray[i] = weaponData;
 
+            // 다운 캐스팅
+            if (ItemDataArray[i] is WeaponItemData)
+                AddItem(ItemDataArray[i]);
+        }
     }
 
     // 인벤토리 UI 활성/비활성화
@@ -71,12 +77,6 @@ public class Inventory : MonoBehaviour
                 inventoryGo.SetActive(true);
         }
 
-    }
-
-    // 유효한 인덱스 번호인지 확인
-    private bool IsValidIndex(int index)
-    {
-        return index >= 0 && index < Capacity;
     }
 
     // 인벤토리 앞쪽부터 비어있는 슬롯 인덱스 탐색(성공시 빈슬롯 인덱스 반환, 실패시 -1 반환)
@@ -110,6 +110,18 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    // 인덱스 슬롯 갱신(여러 개의 슬롯) Overload
+    private void UpdateSlot(params int[] indices)   // index의 복수형
+    {
+        foreach(var i in indices)
+        {
+            UpdateSlot(i);
+        }
+    }
+
+    #endregion
+
+    #region ** Getter & Check Methods **
     // 해당 인덱스의 슬롯이 아이템을 갖고있는지 확인
     public bool HasItem(int index)
     {
@@ -117,6 +129,14 @@ public class Inventory : MonoBehaviour
         return IsValidIndex(index) && items[index] != null;
     }
 
+    // 유효한 인덱스 번호인지 확인
+    private bool IsValidIndex(int index)
+    {
+        return index >= 0 && index < Capacity;
+    }
+    #endregion
+
+    #region ** Public Methods **
     // 활성화 시킬 슬롯범위 업데이트
     public void UpdateAccessibleSlots()
     {
@@ -151,4 +171,34 @@ public class Inventory : MonoBehaviour
 
         return amount;
     }
+
+    // 해당 인덱스 슬롯의 아이템 제거
+    public void Remove(int index)
+    {
+        if (!IsValidIndex(index)) return;
+
+        // 인덱스의 아이템 제거
+        items[index] = null;
+
+        // 아이콘 및 텍스트 제거
+        inventoryUI.RemoveItem(index);
+    }
+
+    // 두 슬롯 아이템 스왑
+    public void Swap(int beginIndex, int endIndex)
+    {
+        // 접근불가 슬롯 처리
+        if (!IsValidIndex(beginIndex) || !IsValidIndex(endIndex)) return;
+
+        Item itemA = items[beginIndex];
+        Item itemB = items[endIndex];
+
+        // 아이템 위치 변경
+        items[beginIndex] = itemB;
+        items[endIndex] = itemA;
+
+        // 슬롯 갱신
+        UpdateSlot(beginIndex, endIndex);
+    }
+    #endregion
 }

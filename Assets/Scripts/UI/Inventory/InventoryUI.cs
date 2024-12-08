@@ -59,6 +59,8 @@ public class InventoryUI : MonoBehaviour
     }
 
     #endregion
+
+    #region ** Private Methods **
     // 초기화
     private void Init()
     {
@@ -141,6 +143,8 @@ public class InventoryUI : MonoBehaviour
     {
         this.gameObject.SetActive(false);
     }
+
+    #endregion
 
     #region ** 마우스 이벤트 함수들 **
 
@@ -282,12 +286,29 @@ public class InventoryUI : MonoBehaviour
     // 마우스 드래그 종료 처리(아이템 수량 나누기, 교환, 이동, 버리기 등)
     private void EndDrag()
     {
-        
+        ItemSlotUI endDragSlot = RaycastAndgetFirstComponent<ItemSlotUI>();
+
+        // 아이템 이동 및 교환
+        if(endDragSlot != null && endDragSlot.IsAccessible)
+        {
+            TrySwapItems(beginDragSlot, endDragSlot);
+        }
     }
 
     #endregion
 
-  
+    #region ** Public Methods **
+
+    // 두 슬롯 아이템 교환
+    public void TrySwapItems(ItemSlotUI begin, ItemSlotUI end)
+    {
+        // 자기자신 처리
+        if (begin == end) return;
+
+        begin.SwapOrMoveIcon(end);
+        inventory.Swap(begin.Index, end.Index);
+    }
+
     // 인벤토리 참조등록
     public void SetInventoryRef(Inventory inv)
     {
@@ -310,4 +331,25 @@ public class InventoryUI : MonoBehaviour
     {
         slotUIList[index].SetItemIcon(icon);
     }
+
+    // 해당 인덱스 슬롯의 아이템 갯수 텍스트 설정
+    public void SetItemAmountText(int index, int amount)
+    {
+        slotUIList[index].SetItemAmount(amount);
+    }
+
+    // 해당 인덱스 슬롯의 아이템 갯수 텍스트 제거
+    public void HideItemAmountText(int index)
+    {
+        slotUIList[index].SetItemAmount(1);
+    }
+
+    // 해당 인덱스 슬롯의 아이템 제거(아이콘 및 텍스트 제거)
+    public void RemoveItem(int index)
+    {
+        slotUIList[index].RemoveItemIcon();
+    }
+
+    #endregion
+
 }

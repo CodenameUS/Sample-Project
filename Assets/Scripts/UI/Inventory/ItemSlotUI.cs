@@ -25,6 +25,7 @@ public class ItemSlotUI : MonoBehaviour
     private float maxHighlightAlpha = 0.5f;             // 하이라이트 이미지 최대 알파값
     private float currentHighlightAlpha = 0f;           // 현재 하이라이트 이미지 알파값
     private float highlightFadeDuration = 0.2f;         // 하이라이트 소요 시간
+    private string iconName = "";                       // 현재 아이템 아이콘 이름
 
     private bool isAccessibleSlot = true;               // 슬롯 접근가능 여부
     private bool isAccessibleItem = true;               // 아이템 접근가능 여부
@@ -51,6 +52,7 @@ public class ItemSlotUI : MonoBehaviour
         InitValues();
     }
 
+    #region ** Private Methods **
     // 초기화
     private void InitComponents()
     {
@@ -107,7 +109,9 @@ public class ItemSlotUI : MonoBehaviour
     // 수량 텍스트 비활성화
     private void HideText() => textGo.SetActive(false);
 
+    #endregion
 
+    #region ** Public Methods **
     // 슬롯 인덱스 설정
     public void SetSlotIndex(int index) => Index = index;
     
@@ -166,6 +170,8 @@ public class ItemSlotUI : MonoBehaviour
                 // 성공
                 if (sprite != null)
                 {
+                    // 아이콘 이름 저장
+                    iconName = itemSprite;
                     // 아이콘 설정
                     iconImage.sprite = sprite;
                     ShowIcon();
@@ -178,16 +184,20 @@ public class ItemSlotUI : MonoBehaviour
         }
         else
         {
-            RemoveItem();
+            RemoveItemIcon();
         }
     }
 
-    // 슬롯에서 아이템 제거
-    public void RemoveItem()
+    // 슬롯에 아이템 갯수 텍스트 설정
+    public void SetItemAmount(int amount)
     {
-        iconImage.sprite = null;
-        HideIcon();
-        HideText();
+        // 갯수가 2개이상일때만 표시
+        if (HasItem && amount > 1)
+            ShowText();
+        else
+            HideText();
+
+        amountText.text = amount.ToString();
     }
 
     // 하이라이트 이미지를 상/하단으로 표시
@@ -197,6 +207,32 @@ public class ItemSlotUI : MonoBehaviour
             highlightRect.SetAsLastSibling();
         else
             highlightRect.SetAsFirstSibling();
+    }
+
+    // 슬롯에서 아이템 제거(아이콘, Text)
+    public void RemoveItemIcon()
+    {
+        iconImage.sprite = null;
+        HideIcon();
+        HideText();
+    }
+
+    // 다른 슬롯으로 아이템 이동
+    public void SwapOrMoveIcon(ItemSlotUI otherSlot)
+    {
+        // 1. 다른 슬롯이 지정되지 않았을 때
+        if (otherSlot == null) return;
+        // 2. 자기 자신일 때
+        if (otherSlot == this) return;
+        // 3. 비활성화 상태일 때
+        if (!this.IsAccessible || !otherSlot.IsAccessible) return;
+
+        // 1. 다른 슬롯에 아이템이 있을 때 -> 내 아이콘은 다른 슬롯의 아이콘으로 변경
+        if (otherSlot.HasItem) SetItemIcon(otherSlot.iconName);
+        // 2. 다른 슬롯에 아이템이 없을 때 -> 내 아이콘만 지우기
+        else RemoveItemIcon();
+
+        otherSlot.SetItemIcon(iconName);
     }
 
     // 슬롯 하이라이트 표시 및 해제
@@ -211,6 +247,7 @@ public class ItemSlotUI : MonoBehaviour
             StartCoroutine(nameof(HighlightFadeOut));
     }
 
+    #endregion
     // 하이라이트 Fade-in
     private IEnumerator HighlightFadeIn()
     {
