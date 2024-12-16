@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class WeaponItemData : EquipmentItemData
 {
-    public int Damage { get; private set; }             // 무기 데미지
-    public float Rate { get; private set; }             // 공격속도
+    public int Damage => damage;
+    public float Rate => rate;             
 
+    [SerializeField] private int damage;        // 무기 데미지
+    [SerializeField] private float rate;        // 공격속도
 
     public WeaponItemData(WeaponItemDTO dto)
     {
@@ -14,8 +16,8 @@ public class WeaponItemData : EquipmentItemData
         this.itemName = dto.itemName;
         this.itemToolTip = dto.itemToolTip;
         this.itemIcon = dto.itemIcon;
-        this.Damage = dto.damage;
-        this.Rate = dto.rate;
+        this.damage = dto.damage;
+        this.rate = dto.rate;
     }
 
     public override Item CreateItem()

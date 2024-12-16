@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
     public ItemData[] ItemDataArray;
-
     public int Capacity { get; private set; }   // 인벤토리 수용한도
 
     [SerializeField] InventoryUI inventoryUI;
@@ -17,6 +17,7 @@ public class Inventory : MonoBehaviour
     private int initCapacity = 24;              // 초기 인벤토리 수용한도
     private int maxCapacity = 36;               // 최대 인벤토리 수용한도
 
+    Sprite itemSprite;
 
     #region  ** Unity Events **
     private void Awake()
@@ -62,7 +63,26 @@ public class Inventory : MonoBehaviour
 
             // 다운 캐스팅
             if (ItemDataArray[i] is WeaponItemData)
+            {
                 AddItem(ItemDataArray[i]);
+            }
+        }
+
+        int testItem02 = 2001;
+        for (int i = 0; i < 2; i++)
+        {
+            int id = testItem02 + i;
+
+            PortionItemData portionData = DataManager.Instance.GetPortionDataById(id);
+
+            // 업 캐스팅(WeaponItemData => ItemData)
+            ItemDataArray[i+2] = portionData;
+
+            // 다운 캐스팅
+            if (ItemDataArray[i+2] is PortionItemData)
+            {
+                AddItem(ItemDataArray[i+2]);
+            }
         }
     }
 
@@ -136,6 +156,24 @@ public class Inventory : MonoBehaviour
     }
     #endregion
 
+    // 해당 인덱스의 슬롯 아이템 정보 가져오기
+    public ItemData GetItemData(int index)
+    {
+        if (!IsValidIndex(index)) return null;
+        if (items[index] == null) return null;
+
+        return items[index].Data;
+    }
+
+    // 해당 인덱스의 슬롯 아이템 이름 가져오기
+    public string GetItemName(int index)
+    {
+        if (!IsValidIndex(index)) return null;
+        if (items[index] == null) return null;
+
+        return items[index].Data.ItemName;
+    }
+
     #region ** Public Methods **
     // 활성화 시킬 슬롯범위 업데이트
     public void UpdateAccessibleSlots()
@@ -163,7 +201,6 @@ public class Inventory : MonoBehaviour
                 items[index] = itemData.CreateItem();
                 amount = 0;
 
-                Debug.Log(items[index].Data.ItemIcon);
                 // 슬롯 갱신
                 UpdateSlot(index);
             }

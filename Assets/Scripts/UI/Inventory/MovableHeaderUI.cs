@@ -2,7 +2,7 @@ using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary> 인벤토리 드래그 앤 드롭 UI 이동/// </summary>
+/// <summary> 드래그 앤 드롭 UI 이동/// </summary>
 public class MovableHeaderUI : MonoBehaviour, IDragHandler, IPointerDownHandler
 {
     // 이동될 UI

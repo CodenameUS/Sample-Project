@@ -17,12 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: e1dc439c3efa8944d9c184e829c49660
   m_SerializeEntries:
-  - m_GUID: dbaa50961e3cd37468021eb65d631c9f
-    m_Address: Assets/Sprites/Item_Porition_Beer.png
+  - m_GUID: b7d19ec039fa7b141bd165aa95496c75
+    m_Address: Assets/Sprites/Item_PortionItem_Elixir.png
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: b7d19ec039fa7b141bd165aa95496c75
-    m_Address: Assets/Sprites/Item_Portion_Elixir.png
+  - m_GUID: dbaa50961e3cd37468021eb65d631c9f
+    m_Address: Assets/Sprites/Item_PortionItem_ManaElixir.png
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 78b8a79109fe4204f8c91959a2b91642

@@ -46,11 +46,6 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-        void Start()
-    {
-       
-    }
-
  
     public void LoadIcon(string spriteName, System.Action<Sprite> onLoaded)
     {

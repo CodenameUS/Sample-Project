@@ -17,8 +17,10 @@ public class DataManager : MonoBehaviour
 
     private string playerDataPath;          // 플레이어 데이터 저장경로
     private string weaponItemDataPath;      // 무기 데이터 저장경로
+    private string portionItemDataPath;     // 포션 데이터 저장경로
 
     private Dictionary<int, WeaponItemData> weponDataDictionary;
+    private Dictionary<int, PortionItemData> portionDataDictionary;
 
     private PlayerData playerData;
 
@@ -56,6 +58,7 @@ public class DataManager : MonoBehaviour
 
         playerDataPath = Path.Combine(Application.persistentDataPath, "Playerdata.json");
         weaponItemDataPath = Path.Combine(Application.persistentDataPath, "WeaponData.json");
+        portionItemDataPath = Path.Combine(Application.persistentDataPath, "PortionData.json");
 
         // 임시(플레이어 데이터만)
         if (!File.Exists(playerDataPath))
@@ -68,6 +71,7 @@ public class DataManager : MonoBehaviour
         }
 
         weponDataDictionary = LoadWeaponData();
+        portionDataDictionary = LoadPortionData();
     }
 
     private void InitData()
@@ -147,10 +151,57 @@ public class DataManager : MonoBehaviour
         return new Dictionary<int, WeaponItemData>();
     }
 
+    // 포션 데이터 불러오기
+    private Dictionary<int, PortionItemData> LoadPortionData()
+    {
+        if (File.Exists(portionItemDataPath))
+        {
+            string jsonData = File.ReadAllText(portionItemDataPath);
+            var portionDict = JsonConvert.DeserializeObject<Dictionary<string, List<PortionItemDTO>>>(jsonData);
+
+            // Portion 항목 가져와서 저장
+            if (portionDict.TryGetValue("Portion", out List<PortionItemDTO> portionList))
+            {
+                Dictionary<int, PortionItemData> dataDictionary = new Dictionary<int, PortionItemData>();
+
+                // DTO를 WeaponItemData로 변환하여 저장
+                foreach (var portionDTO in portionList)
+                {
+                    PortionItemData portionData = new PortionItemData(portionDTO);
+                    dataDictionary[portionData.ID] = portionData;
+                }
+                return dataDictionary;
+            }
+            else
+            {
+                Debug.LogWarning("PortionData.json 파일에 'Portion'키가 없습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("불러올 파일이 없습니다.");
+        }
+        return new Dictionary<int, PortionItemData>();
+    }
+
     // ID로 무기 데이터 가져오기
     public WeaponItemData GetDataById(int id)
     {
         if(weponDataDictionary != null && weponDataDictionary.TryGetValue(id, out var resultData))
+        {
+            return resultData;
+        }
+        else
+        {
+            Debug.LogWarning("ID에 해당하는 데이터가 없음.");
+            return null;
+        }
+    }
+
+    // ID로 포션 데이터 가져오기
+    public PortionItemData GetPortionDataById(int id)
+    {
+        if (portionDataDictionary != null && portionDataDictionary.TryGetValue(id, out var resultData))
         {
             return resultData;
         }

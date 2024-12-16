@@ -8,6 +8,7 @@ public class InventoryUI : MonoBehaviour
 {
     [SerializeField] private RectTransform contentAreaRT;   // 아이템 영역
     [SerializeField] private GameObject itemSlotPrefab;     // 복제할 원본 슬롯 프리팹
+    [SerializeField] private InventoryPopupUI popup;        // 팝업 UI
 
     #region ** 인벤토리 옵션 **
     private int horizontalSlotCount = 6;                    // 슬롯 가로갯수
@@ -144,9 +145,28 @@ public class InventoryUI : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
+    // 두 슬롯 아이템 교환
+    private void TrySwapItems(ItemSlotUI begin, ItemSlotUI end)
+    {
+        // 자기자신 처리
+        if (begin == end) return;
+
+        begin.SwapOrMoveIcon(end);
+        inventory.Swap(begin.Index, end.Index);
+    }
+
+    // 아이템 버리기 요청
+    private void TryRemoveItem(int index)
+    {
+        inventory.Remove(index);
+    }
+
     #endregion
 
     #region ** 마우스 이벤트 함수들 **
+
+    // 마우스 커서가 UI 위에 있는지 여부
+    private bool IsOverUI() => EventSystem.current.IsPointerOverGameObject();
 
     // 레이캐스팅한 첫 UI요소의 컴포넌트를 가져오기
     private T RaycastAndgetFirstComponent<T>() where T : Component
@@ -292,6 +312,15 @@ public class InventoryUI : MonoBehaviour
         if(endDragSlot != null && endDragSlot.IsAccessible)
         {
             TrySwapItems(beginDragSlot, endDragSlot);
+
+        }
+        // 아이템 버리기
+        if (!IsOverUI())
+        {
+            int index = beginDragSlot.Index;
+            string itemName = inventory.GetItemName(index);
+
+            popup.OpenConfirmationPopupUI(() => TryRemoveItem(index), itemName);
         }
     }
 
@@ -299,16 +328,7 @@ public class InventoryUI : MonoBehaviour
 
     #region ** Public Methods **
 
-    // 두 슬롯 아이템 교환
-    public void TrySwapItems(ItemSlotUI begin, ItemSlotUI end)
-    {
-        // 자기자신 처리
-        if (begin == end) return;
-
-        begin.SwapOrMoveIcon(end);
-        inventory.Swap(begin.Index, end.Index);
-    }
-
+    
     // 인벤토리 참조등록
     public void SetInventoryRef(Inventory inv)
     {

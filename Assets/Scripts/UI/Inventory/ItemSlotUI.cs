@@ -162,7 +162,7 @@ public class ItemSlotUI : MonoBehaviour
     // 슬롯에 아이템 아이콘 등록
     public void SetItemIcon(string itemSprite)
     {
-        if(itemSprite != null)
+        if (itemSprite != null)
         {
             // 아이콘 데이터 가져오기
             ResourceManager.Instance.LoadIcon(itemSprite, sprite =>
