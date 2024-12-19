@@ -21,7 +21,7 @@ public class InventoryUI : MonoBehaviour
 
     private Inventory inventory;                            // 연결된 인벤토리
     private List<ItemSlotUI> slotUIList = new List<ItemSlotUI>();
-    
+
     private GraphicRaycaster gr;
     private PointerEventData ped;
     private List<RaycastResult> rrList;
@@ -161,6 +161,12 @@ public class InventoryUI : MonoBehaviour
         inventory.Remove(index);
     }
 
+    // 아이템 사용
+    private void TryUseItem(int index)
+    {
+        inventory.Use(index);
+    }
+
     #endregion
 
     #region ** 마우스 이벤트 함수들 **
@@ -194,9 +200,9 @@ public class InventoryUI : MonoBehaviour
         var curSlot = pointerOverSlot = RaycastAndgetFirstComponent<ItemSlotUI>();
 
         // 마우스 올라갈 때
-        if(prevSlot == null)
+        if (prevSlot == null)
         {
-            if(curSlot != null)
+            if (curSlot != null)
             {
                 OnCurrentEnter();
             }
@@ -204,12 +210,12 @@ public class InventoryUI : MonoBehaviour
         // 마우스 나갈 때
         else
         {
-            if(curSlot == null)
+            if (curSlot == null)
             {
                 OnPrevExit();
             }
             // 다른 슬롯으로 커서 옮길때
-            else if(prevSlot != curSlot)
+            else if (prevSlot != curSlot)
             {
                 OnPrevExit();
                 OnCurrentEnter();
@@ -231,14 +237,14 @@ public class InventoryUI : MonoBehaviour
     // 마우스 눌렀을 때 처리
     private void OnPointerDown()
     {
-       // 마우스 좌클릭(Holding)
-       if(Input.GetMouseButtonDown(leftClick))
-       {
+        // 마우스 좌클릭(Holding)
+        if (Input.GetMouseButtonDown(leftClick))
+        {
             // 시작 슬롯
-           beginDragSlot = RaycastAndgetFirstComponent<ItemSlotUI>();
+            beginDragSlot = RaycastAndgetFirstComponent<ItemSlotUI>();
 
             // 슬롯에 아이템이 있을 때
-            if(beginDragSlot != null && beginDragSlot.HasItem && beginDragSlot.IsAccessible)
+            if (beginDragSlot != null && beginDragSlot.HasItem && beginDragSlot.IsAccessible)
             {
                 // 드래그 위치,참조 
                 beginDragIconTransform = beginDragSlot.IconRect.transform;
@@ -254,13 +260,16 @@ public class InventoryUI : MonoBehaviour
             {
                 beginDragSlot = null;
             }
-       }
-       // 마우스 우클릭
-       else if(Input.GetMouseButtonDown(rightClick))
-       {
+        }
+        // 마우스 우클릭(아이템 사용)
+        else if (Input.GetMouseButtonDown(rightClick))
+        {
+            ItemSlotUI slotUI = RaycastAndgetFirstComponent<ItemSlotUI>();
+            {
+                TryUseItem(slotUI.Index);
+            }
+        }
 
-       }
-      
     }
 
     // 마우스 드래그중일 때 처리
@@ -269,7 +278,7 @@ public class InventoryUI : MonoBehaviour
         // 드래그중이 아닐때
         if (beginDragSlot == null) return;
 
-        if(Input.GetMouseButton(leftClick))
+        if (Input.GetMouseButton(leftClick))
         {
             // 슬롯 아이콘 위치 업데이트
             beginDragIconTransform.position = beginDragIconPoint + (Input.mousePosition - beginDragCursorPoint);
@@ -279,10 +288,10 @@ public class InventoryUI : MonoBehaviour
     // 마우스 뗐을 때 처리
     private void OnPointerUp()
     {
-        if(Input.GetMouseButtonUp(leftClick))
+        if (Input.GetMouseButtonUp(leftClick))
         {
             // 기존으로 복원
-            if(beginDragSlot != null)
+            if (beginDragSlot != null)
             {
                 // 위치 복원
                 beginDragIconTransform.position = beginDragIconPoint;
@@ -309,7 +318,7 @@ public class InventoryUI : MonoBehaviour
         ItemSlotUI endDragSlot = RaycastAndgetFirstComponent<ItemSlotUI>();
 
         // 아이템 이동 및 교환
-        if(endDragSlot != null && endDragSlot.IsAccessible)
+        if (endDragSlot != null && endDragSlot.IsAccessible)
         {
             TrySwapItems(beginDragSlot, endDragSlot);
 
@@ -323,12 +332,9 @@ public class InventoryUI : MonoBehaviour
             popup.OpenConfirmationPopupUI(() => TryRemoveItem(index), itemName);
         }
     }
-
     #endregion
 
     #region ** Public Methods **
-
-    
     // 인벤토리 참조등록
     public void SetInventoryRef(Inventory inv)
     {
@@ -339,23 +345,17 @@ public class InventoryUI : MonoBehaviour
     public void SetAccessibleSlotRange(int accessibleSlotCount)
     {
         // 총 36칸 중
-        for(int i = 0;i<slotUIList.Count; i++)
+        for (int i = 0; i < slotUIList.Count; i++)
         {
             // accessibleCount 갯수 만큼만 슬롯 활성화
             slotUIList[i].SetSlotAccessibleState(i < accessibleSlotCount);
         }
     }
 
-    // 아이콘 등록
-    public void SetItemIcon(int index, string icon)
+    // 해당 인덱스 슬롯의 아이템 아이콘 등록 및 수량 표시
+    public void SetItemIconAndAmountText(int index, string icon, int amount = 1)
     {
-        slotUIList[index].SetItemIcon(icon);
-    }
-
-    // 해당 인덱스 슬롯의 아이템 갯수 텍스트 설정
-    public void SetItemAmountText(int index, int amount)
-    {
-        slotUIList[index].SetItemAmount(amount);
+        slotUIList[index].SetItemIconAndAmount(icon, amount);
     }
 
     // 해당 인덱스 슬롯의 아이템 갯수 텍스트 제거
@@ -370,6 +370,22 @@ public class InventoryUI : MonoBehaviour
         slotUIList[index].RemoveItemIcon();
     }
 
+    #endregion
+
+    #region ** 임시 주석처리 **
+    /*
+    // 아이콘 등록
+    public void SetItemIcon(int index, string icon)
+    {
+        slotUIList[index].SetItemIcon(icon);
+    }
+
+    // 해당 인덱스 슬롯의 아이템 갯수 텍스트 설정
+    public void SetItemAmountText(int index, int amount)
+    {
+        slotUIList[index].SetItemAmount(amount);
+    }
+    */
     #endregion
 
 }

@@ -46,7 +46,7 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
- 
+
     public void LoadIcon(string spriteName, System.Action<Sprite> onLoaded)
     {
         // 캐시에 이미 있을 때는 캐싱

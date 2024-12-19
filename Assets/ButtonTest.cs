@@ -28,18 +28,5 @@ public class ButtonTest : MonoBehaviour
         itemNameText.text = data.ItemName;
 
         // 아이콘 데이터 가져오기
-        resourceManager.LoadIcon(data.ItemIcon, sprite =>
-        {
-            // 성공
-            if (sprite != null)
-            {
-                // 아이콘 설정
-                itemIconImage.sprite = sprite;
-            }
-            else
-            {
-                Debug.Log($"Failed to load icon for item : {data.ItemIcon}");
-            }
-        });
     }
 }

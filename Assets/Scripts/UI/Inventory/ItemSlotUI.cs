@@ -8,7 +8,8 @@ public class ItemSlotUI : MonoBehaviour
     [SerializeField] private Image iconImage;           // 아이템 아이콘(이미지)
     [SerializeField] private Text amountText;           // 아이템 수량
     [SerializeField] private Image highlightImage;      // 하이라이트 이미지
-    
+
+    #region ** Fields **
     private Image slotImage;
     private InventoryUI inventoryUI;
 
@@ -34,6 +35,7 @@ public class ItemSlotUI : MonoBehaviour
     private Color InAccessibleSlotColor = new Color(0.2f, 0.2f, 0.2f, 0.5f);
     // 비활성화된 아이콘 색상
     private Color InAccessibleIconColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+    #endregion
 
     #region ** PROPERTIES **
     public int Index { get; private set; }              // 슬롯 인덱스
@@ -159,7 +161,7 @@ public class ItemSlotUI : MonoBehaviour
         isAccessibleItem = value;
     }
 
-    // 슬롯에 아이템 아이콘 등록
+    // 아이템 아이콘 등록
     public void SetItemIcon(string itemSprite)
     {
         if (itemSprite != null)
@@ -188,16 +190,44 @@ public class ItemSlotUI : MonoBehaviour
         }
     }
 
-    // 슬롯에 아이템 갯수 텍스트 설정
-    public void SetItemAmount(int amount)
+    // 아이템 아이콘 등록 및 수량 표시
+    public void SetItemIconAndAmount(string itemSprite, int amount)
     {
-        // 갯수가 2개이상일때만 표시
-        if (HasItem && amount > 1)
-            ShowText();
-        else
-            HideText();
+        if (itemSprite != null)
+        {
+            // 아이콘 데이터 가져오기
+            ResourceManager.Instance.LoadIcon(itemSprite, sprite =>
+            {
+                // 성공
+                if (sprite != null)
+                {
+                    // 아이콘 이름 저장
+                    iconName = itemSprite;
+                    // 아이콘 설정
+                    iconImage.sprite = sprite;
 
-        amountText.text = amount.ToString();
+                    if(amount > 1)
+                    {
+                        ShowText();
+                    }
+                    else
+                    {
+                        HideText();
+                    }
+
+                    ShowIcon();
+                    amountText.text = amount.ToString();
+                }
+                else
+                {
+                    Debug.Log($"Failed to load icon for item : {itemSprite}");
+                }
+            });
+        }
+        else
+        {
+            RemoveItemIcon();
+        }
     }
 
     // 하이라이트 이미지를 상/하단으로 표시
@@ -215,6 +245,22 @@ public class ItemSlotUI : MonoBehaviour
         iconImage.sprite = null;
         HideIcon();
         HideText();
+    }
+
+    // 슬롯에 아이템 갯수 텍스트 설정
+    public void SetItemAmount(int amount)
+    {
+        Debug.Log(iconName);
+        // 갯수가 2개이상일때만 표시
+        if (HasItem && amount > 1)
+        {
+            ShowText();
+        }
+        else
+        {
+            HideText();
+        }
+        amountText.text = amount.ToString();
     }
 
     // 다른 슬롯으로 아이템 이동
@@ -248,6 +294,8 @@ public class ItemSlotUI : MonoBehaviour
     }
 
     #endregion
+
+    #region ** Coroutines **
     // 하이라이트 Fade-in
     private IEnumerator HighlightFadeIn()
     {
@@ -295,4 +343,6 @@ public class ItemSlotUI : MonoBehaviour
 
         highlightGo.SetActive(false);
     }
+    #endregion
+
 }

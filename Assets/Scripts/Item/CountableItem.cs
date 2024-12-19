@@ -34,4 +34,14 @@ public abstract class CountableItem : Item
     {
         Amount = Mathf.Clamp(amount, 0, MaxAmount);
     }
+
+    // 갯수 합치기 및 초과량 반환
+    public int AddAmountAndGetExcess(int amount)
+    {
+        int nextAmount = Amount + amount;
+        SetAmount(nextAmount);
+
+        // 최대치를 초과시 초과량 반환, 초과하지않으면 0 반환
+        return (nextAmount > MaxAmount) ? (nextAmount - MaxAmount) : 0;
+    }
 }
