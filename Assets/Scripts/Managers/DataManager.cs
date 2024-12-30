@@ -217,6 +217,4 @@ public class DataManager : MonoBehaviour
     {
         return playerData;
     }
-
-   
 }

@@ -235,7 +235,6 @@ public class Inventory : MonoBehaviour
     }
     #endregion
 
-
     #region ** Public Methods **
     // 활성화 시킬 슬롯범위 업데이트
     public void UpdateAccessibleSlots()

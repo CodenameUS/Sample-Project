@@ -250,7 +250,6 @@ public class ItemSlotUI : MonoBehaviour
     // 슬롯에 아이템 갯수 텍스트 설정
     public void SetItemAmount(int amount)
     {
-        Debug.Log(iconName);
         // 갯수가 2개이상일때만 표시
         if (HasItem && amount > 1)
         {

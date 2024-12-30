@@ -21,7 +21,7 @@ public class MovableHeaderUI : MonoBehaviour, IDragHandler, IPointerDownHandler
     // 드래그하기
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
-        targetUI.position = beginPoint + (eventData.position - moveBegin);    
+        targetUI.position = beginPoint + (eventData.position - moveBegin);
     }
 
     // 드래그 위치
@@ -29,11 +29,5 @@ public class MovableHeaderUI : MonoBehaviour, IDragHandler, IPointerDownHandler
     {
         beginPoint = targetUI.position;
         moveBegin = eventData.position;
-    }
-
-    // 인벤토리 닫기
-    public void HideUI()
-    {
-        targetUI.gameObject.SetActive(false);
     }
 }

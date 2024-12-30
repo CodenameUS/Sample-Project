@@ -19,6 +19,7 @@ public class InventoryUI : MonoBehaviour
     private bool showHighlight = true;                      // 하이라이트 보이기
     #endregion
 
+    #region ** Fields **
     private Inventory inventory;                            // 연결된 인벤토리
     private List<ItemSlotUI> slotUIList = new List<ItemSlotUI>();
 
@@ -36,6 +37,7 @@ public class InventoryUI : MonoBehaviour
     private Vector3 beginDragIconPoint;                     // 마우스 드래그를 시작한 아이콘 위치
     private Vector3 beginDragCursorPoint;                   // 마우스 드래그를 시작한 커서 위치
     private int beginDragSlotSiblingIndex;
+    #endregion
 
     #region ** 유니티 이벤트 함수들 **
     private void Awake()
@@ -312,7 +314,7 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    // 마우스 드래그 종료 처리(아이템 수량 나누기, 교환, 이동, 버리기 등)
+    // 마우스 드래그 종료 처리(아이템 교환, 이동, 버리기 등)
     private void EndDrag()
     {
         ItemSlotUI endDragSlot = RaycastAndgetFirstComponent<ItemSlotUI>();
