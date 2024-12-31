@@ -2,21 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : BaseState
+/*
+                Monster State - Idle (기본상태)
+        
+           - 기본상태 애니메이션 설정
+ */
+public class IdleState<T> : BaseState<T> where T : Monster
 {
-    public IdleState(Monster monster) : base(monster) { }
+    public IdleState(T monster) : base(monster) { }
 
     public override void OnStateEnter()
     {
-        
-    }
-
-    public override void OnStateExit()
-    {
-        
+        if (monster.Anim != null) monster.Anim.SetBool("Walk", false);
     }
 
     public override void OnStateUpdate()
+    {
+
+    }
+
+    public override void OnStateExit()
     {
         
     }

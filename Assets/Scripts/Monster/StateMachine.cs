@@ -6,18 +6,19 @@ using UnityEngine;
             StateMachine은 Monster의 AI 상태를 관리
  */
 
-public class StateMachine 
+public class StateMachine<T> where T : Monster
 {
-    private BaseState curState;
+    private BaseState<T> curState;
 
-    public StateMachine(BaseState init)
+    public StateMachine(BaseState<T> init)
     {
         // 현재상태 초기화
         curState = init;
+        curState.OnStateEnter();
     }
 
     // 상태 변경
-    public void ChangeState(BaseState nextState)
+    public void ChangeState(BaseState<T> nextState)
     {
         // 다른상태로만 변경
         if (nextState == curState)

@@ -17,20 +17,25 @@ public class Monster : MonoBehaviour
     public float speed;
     #endregion
 
-    protected BoxCollider hitBoxCol;          // 몬스터 히트박스
-    protected Animator anim;                  // 몬스터 애니메이터
-    protected PlayerController targetPlayer;        // 타깃 플레이어
 
-    private void Awake()
+    protected PlayerController targetPlayer;        // 타깃 플레이어
+    private BoxCollider hitBoxCol;                  // 몬스터 히트박스
+    private Animator anim;                           // 몬스터 애니메이터
+
+    public Animator Anim => anim;
+
+    protected void Awake()
     {
         Init();
     }
 
     private void Init()
     {
+        targetPlayer = GameManager.Instance.player;
         anim = GetComponent<Animator>();
         hitBoxCol = GetComponent<BoxCollider>();
 
-        targetPlayer = GameManager.Instance.player;
+        if (anim == null)
+            Debug.Log("Null");
     }
 }
