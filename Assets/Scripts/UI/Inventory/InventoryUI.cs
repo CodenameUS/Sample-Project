@@ -9,6 +9,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private RectTransform contentAreaRT;   // 아이템 영역
     [SerializeField] private GameObject itemSlotPrefab;     // 복제할 원본 슬롯 프리팹
     [SerializeField] private InventoryPopupUI popup;        // 팝업 UI
+    [SerializeField] private ItemTooltipUI itemTooltipUI;
 
     #region ** 인벤토리 옵션 **
     private int horizontalSlotCount = 6;                    // 슬롯 가로갯수
@@ -56,6 +57,7 @@ public class InventoryUI : MonoBehaviour
         ped.position = Input.mousePosition;
 
         OnPointerEnterAndExit();
+        ShowOrHideTooltipUI();
         OnPointerDown();
         OnPointerDrag();
         OnPointerUp();
@@ -73,6 +75,11 @@ public class InventoryUI : MonoBehaviour
 
         ped = new PointerEventData(EventSystem.current);
         rrList = new List<RaycastResult>(10);
+
+        if(itemTooltipUI == null)
+        {
+            itemTooltipUI = GetComponentInChildren<ItemTooltipUI>();
+        }
     }
 
     // 슬롯 영역 내에 슬롯 생성
@@ -169,6 +176,18 @@ public class InventoryUI : MonoBehaviour
         inventory.Use(index);
     }
 
+    // 툴팁 UI 슬롯 데이터 갱신
+    private void UpdateTooltipUI(ItemSlotUI slot)
+    {
+        if (!slot.IsAccessible || !slot.HasItem)
+            return;
+
+        // 툴팁 정보 갱신
+        itemTooltipUI.SetItemInfo(inventory.GetItemData(slot.Index));
+
+        // 툴팁 위치 설정
+        itemTooltipUI.SetRectPosition(slot.SlotRect);
+    }
     #endregion
 
     #region ** 마우스 이벤트 함수들 **
@@ -190,6 +209,24 @@ public class InventoryUI : MonoBehaviour
             return null;
 
         return rrList[0].gameObject.GetComponent<T>();
+    }
+
+    // 아이템 툴팁 UI 활성/비활성화
+    private void ShowOrHideTooltipUI()
+    {
+        // 마우스가 아이템 아이콘 위에 올라가있을 때 툴팁표시
+        bool isValid =
+            pointerOverSlot != null && pointerOverSlot.HasItem && pointerOverSlot.IsAccessible
+            && (pointerOverSlot != beginDragSlot);
+
+        if (isValid)
+        {
+            UpdateTooltipUI(pointerOverSlot);
+            itemTooltipUI.ShowTooltipUI();
+        }
+        else
+            itemTooltipUI.HideTooltipUI();
+
     }
 
     // 마우스 올라갈때 나갈때 처리

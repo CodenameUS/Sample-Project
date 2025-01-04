@@ -20,7 +20,6 @@ public class TurtleShell : Monster
     private States curState;                             // 현재 상태
     private StateMachine<TurtleShell> stateMachine;
 
-
     private void Awake()
     {
         // 부모(Monster)의 초기화
