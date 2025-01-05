@@ -34,19 +34,33 @@ public class TurtleShell : Monster
         maxMp = 100;
         curHp = maxHp;
         curMp = maxMp;
-        speed = 5f;
+        speed = 1f;
+        maxDistance = 5f;
 
         // 초기상태는 Idle
         curState = States.Idle;
         // StateMachine 객체 생성(Idle상태)
         stateMachine = new StateMachine<TurtleShell>(new IdleState<TurtleShell>(this));
+
+        Nav.speed = speed;
     }
 
     private void Update()
     {
-        
+        stateMachine.curState.OnStateUpdate();
+        if (isReset)
+            ChangeState(States.Idle);
     }
-    
+
+    // Scan Range에 플레이어가 들어왔을경우
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Player"))
+            return;
+
+        ChangeState(States.Chase);
+    }
+
     // 상태 변경
     private void ChangeState(States nextState)
     {

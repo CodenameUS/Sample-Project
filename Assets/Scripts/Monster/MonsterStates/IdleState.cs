@@ -13,7 +13,7 @@ public class IdleState<T> : BaseState<T> where T : Monster
 
     public override void OnStateEnter()
     {
-        if (monster.Anim != null) monster.Anim.SetBool("Walk", true);
+        monster.Anim.SetBool("Walk", false);
     }
 
     public override void OnStateUpdate()
@@ -23,6 +23,6 @@ public class IdleState<T> : BaseState<T> where T : Monster
 
     public override void OnStateExit()
     {
-        
+        monster.Anim.SetBool("Walk", false);
     }
 }

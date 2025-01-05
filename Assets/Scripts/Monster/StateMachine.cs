@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class StateMachine<T> where T : Monster
 {
-    private BaseState<T> curState;
+    public BaseState<T> curState { get; set; }
 
     public StateMachine(BaseState<T> init)
     {
