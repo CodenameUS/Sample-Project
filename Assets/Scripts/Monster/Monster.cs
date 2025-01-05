@@ -13,13 +13,12 @@ public class Monster : MonoBehaviour
     [Header("#Monster Stats")]
     public int maxHp;
     public int curHp;
-    public int maxMp;
-    public int curMp;
     public float speed;
     public float maxDistance;
+    public float idleThreshold;
     #endregion
 
-    public GameObject startPosition;
+    public Vector3 startPosition;
     public bool isReset = false;
 
     protected PlayerController targetPlayer;        // 타깃 플레이어
@@ -44,7 +43,8 @@ public class Monster : MonoBehaviour
     private void Init()
     {
         targetPlayer = GameManager.Instance.player;
-        
+        startPosition = transform.position;
+
         anim = GetComponent<Animator>();
         nav = GetComponent<NavMeshAgent>();
         hitBoxCol = GetComponent<BoxCollider>();

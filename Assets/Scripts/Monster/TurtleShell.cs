@@ -31,11 +31,10 @@ public class TurtleShell : Monster
     {
         // TurtleShell 능력치 초기화
         maxHp = 100;
-        maxMp = 100;
         curHp = maxHp;
-        curMp = maxMp;
         speed = 1f;
         maxDistance = 5f;
+        idleThreshold = 0.3f;
 
         // 초기상태는 Idle
         curState = States.Idle;
@@ -48,8 +47,12 @@ public class TurtleShell : Monster
     private void Update()
     {
         stateMachine.curState.OnStateUpdate();
+
         if (isReset)
+        {
             ChangeState(States.Idle);
+            isReset = false;
+        }
     }
 
     // Scan Range에 플레이어가 들어왔을경우
