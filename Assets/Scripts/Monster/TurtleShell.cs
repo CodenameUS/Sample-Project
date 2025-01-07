@@ -35,6 +35,7 @@ public class TurtleShell : Monster
         speed = 1f;
         maxDistance = 5f;
         idleThreshold = 0.3f;
+        attackDelay = 2f;
 
         // 초기상태는 Idle
         curState = States.Idle;
@@ -47,11 +48,25 @@ public class TurtleShell : Monster
     private void Update()
     {
         stateMachine.curState.OnStateUpdate();
-
+        // 공격 사거리
+        float attackRange = Vector3.Distance(transform.position, Target.transform.position);
+        
+        // 복귀완료 -> Idle상태 톨입
         if (isReset)
         {
             ChangeState(States.Idle);
             isReset = false;
+        }
+
+        // 공격범위에 들어서면 Attack 상태 돌입
+        if(attackRange <= Nav.stoppingDistance)
+        {
+            ChangeState(States.Attack);
+        }
+        // 공격상태에서 플레이어가 멀어지면 Chase 상태 돌입
+        else if(curState == States.Attack && attackRange > Nav.stoppingDistance)
+        {
+            ChangeState(States.Chase);
         }
     }
 

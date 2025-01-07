@@ -121,7 +121,7 @@ public class InventoryUI : MonoBehaviour
                 slotRT.gameObject.SetActive(true);
                 slotRT.gameObject.name = $"Item Slot [{slotIndex}]"; // 하이어라키상 슬롯이름("Item Slot 0~35")
 
-                var slotUI = slotRT.GetComponent<ItemSlotUI>();
+                ItemSlotUI slotUI = slotRT.GetComponent<ItemSlotUI>();
                 slotUI.SetSlotIndex(slotIndex);                      // 슬롯에 인덱스붙이기
                 slotUIList.Add(slotUI);                              // 리스트에 생성된 슬롯정보 추가
 
@@ -186,7 +186,7 @@ public class InventoryUI : MonoBehaviour
         itemTooltipUI.SetItemInfo(inventory.GetItemData(slot.Index));
 
         // 툴팁 위치 설정
-        itemTooltipUI.SetRectPosition(slot.SlotRect);
+        itemTooltipUI.SetUIPosition(slot.SlotRect);
     }
     #endregion
 

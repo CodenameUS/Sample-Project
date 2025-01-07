@@ -24,6 +24,7 @@ public class StateMachine<T> where T : Monster
         if (nextState == curState)
             return;
 
+        // 현재상태 탈출
         if (curState != null)
             curState.OnStateExit();
 

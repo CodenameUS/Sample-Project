@@ -6,12 +6,13 @@ using UnityEngine.UI;
 /*  
                         ItemTooltipUI 
 
-           - : 아이템 툴팁 UI 표시
+            - SetUIPosition: 아이템 툴팁 UI 위치 선정
+            - SetItemInfo : ItemData를 받아와 Text 설정
  */
 public class ItemTooltipUI : MonoBehaviour
 {
-    [SerializeField] private Text itemNameText;
-    [SerializeField] private Text itemTooltipText;
+    [SerializeField] private Text itemNameText;         // 아이템 이름 텍스트
+    [SerializeField] private Text itemTooltipText;      // 아이템 툴팁 텍스트
 
     private RectTransform myRect;
 
@@ -25,19 +26,22 @@ public class ItemTooltipUI : MonoBehaviour
     private void Init()
     {
         TryGetComponent(out myRect);
+        // 피벗 : LeftTop
         myRect.pivot = new Vector2(0f, 1f); ;   
     }
 
     public void ShowTooltipUI() => gameObject.SetActive(true);
     public void HideTooltipUI() => gameObject.SetActive(false);
 
+    // 해당 슬롯 아이템의 정보로 Text 설정
     public void SetItemInfo(ItemData data)
     {
         itemNameText.text = data.ItemName;
         itemTooltipText.text = data.ItemToolTip;
     }
 
-    public void SetRectPosition(RectTransform slotRect)
+    // 툴팁 UI 위치 설정(슬롯 우측하단)
+    public void SetUIPosition(RectTransform slotRect)
     {
         float slotWidth = slotRect.rect.width;
         float slotHeight = slotRect.rect.height;
@@ -54,21 +58,18 @@ public class ItemTooltipUI : MonoBehaviour
         bool rightTruncated = pos.x + width > Screen.width;
         bool bottomTruncated = pos.y - height < 0f;
 
-        ref bool R = ref rightTruncated;
-        ref bool B = ref bottomTruncated;
-
-        // 오른쪽 잘림
-        if(R && !B)
+        // 오른쪽만 잘림
+        if(rightTruncated && !bottomTruncated)
         {
             myRect.position = new Vector2(pos.x - width - slotWidth, pos.y);
         }
-        // 아래쪽 잘림
-        else if(!R && B)
+        // 아래쪽만 잘림
+        else if(!rightTruncated && bottomTruncated)
         {
             myRect.position = new Vector2(pos.x, pos.y + height + slotHeight);
         }
         // 둘 다 잘림
-        else if(R && B)
+        else if(rightTruncated && bottomTruncated)
         {
             myRect.position = new Vector2(pos.x - width - slotWidth, pos.y + height + slotHeight);
         }
