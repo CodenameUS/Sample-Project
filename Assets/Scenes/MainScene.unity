@@ -3502,8 +3502,8 @@ MonoBehaviour:
   idleThreshold: 0
   attackDelay: 0
   isReset: 0
-  isChasing: 0
   isAttackReady: 1
+  isDead: 0
 --- !u!195 &1552516464
 NavMeshAgent:
   m_ObjectHideFlags: 0

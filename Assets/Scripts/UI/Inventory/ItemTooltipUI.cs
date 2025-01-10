@@ -16,7 +16,6 @@ public class ItemTooltipUI : MonoBehaviour
 
     private RectTransform myRect;
 
-
     private void Awake()
     {
         HideTooltipUI();
@@ -30,6 +29,7 @@ public class ItemTooltipUI : MonoBehaviour
         myRect.pivot = new Vector2(0f, 1f); ;   
     }
 
+    #region ** Public Methods **
     public void ShowTooltipUI() => gameObject.SetActive(true);
     public void HideTooltipUI() => gameObject.SetActive(false);
 
@@ -74,4 +74,6 @@ public class ItemTooltipUI : MonoBehaviour
             myRect.position = new Vector2(pos.x - width - slotWidth, pos.y + height + slotHeight);
         }
     }
+
+    #endregion
 }

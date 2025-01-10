@@ -5,7 +5,11 @@ using UnityEngine;
 /*
                 Monster State - Die (죽음상태)
 
-        - 죽음 애니메이션 설정
+        - Die 애니메이션 실행
+
+        - 히트박스 제거 => 플레이어가 몬스터 통과가능
+
+        - 일정시간뒤 몬스터 비활성화
  */
 
 public class DieState<T> : BaseState<T> where T : Monster
@@ -14,12 +18,20 @@ public class DieState<T> : BaseState<T> where T : Monster
 
     public override void OnStateEnter()
     {
+        // 몬스터 Die 애니메이션
+        monster.Anim.SetTrigger("Die");
         monster.Anim.SetBool("Walk", false);
+
+        // 몬스터 히트박스 제거
+        monster.HitBox.enabled = false;
+
+        // 몬스터 비활성화
+        monster.Invoke(nameof(monster.DeactiveGameObject), 3);
     }
 
     public override void OnStateUpdate()
     {
-        
+       
     }
 
     public override void OnStateExit()

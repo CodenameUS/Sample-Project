@@ -6,10 +6,12 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
+    #region ** SerializeFields **
     [SerializeField] private RectTransform contentAreaRT;   // 아이템 영역
     [SerializeField] private GameObject itemSlotPrefab;     // 복제할 원본 슬롯 프리팹
     [SerializeField] private InventoryPopupUI popup;        // 팝업 UI
     [SerializeField] private ItemTooltipUI itemTooltipUI;
+    #endregion
 
     #region ** 인벤토리 옵션 **
     private int horizontalSlotCount = 6;                    // 슬롯 가로갯수

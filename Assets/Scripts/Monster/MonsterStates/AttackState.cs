@@ -5,7 +5,7 @@ using UnityEngine;
 /*
                 Monster State - Attack (공격상태)
 
-        - 
+        - 공격전 위치고정후 플레이어를 바라보고 공격시작
  */
 
 public class AttackState<T> : BaseState<T> where T : Monster
@@ -37,6 +37,8 @@ public class AttackState<T> : BaseState<T> where T : Monster
             monster.isAttackReady = false;
             monster.Invoke(nameof(monster.ReadyToAttack), monster.attackDelay);
         }
+
+      
     }
 
     public override void OnStateExit()

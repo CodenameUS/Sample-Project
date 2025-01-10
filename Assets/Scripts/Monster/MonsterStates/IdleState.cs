@@ -5,7 +5,7 @@ using UnityEngine;
 /*
                 Monster State - Idle (기본상태)
         
-           - 기본상태 애니메이션 설정
+           - 기본상태 애니메이션 실행
  */
 public class IdleState<T> : BaseState<T> where T : Monster
 {
@@ -23,6 +23,6 @@ public class IdleState<T> : BaseState<T> where T : Monster
 
     public override void OnStateExit()
     {
-        monster.Anim.SetBool("Walk", false);
+
     }
 }
