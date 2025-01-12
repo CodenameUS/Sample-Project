@@ -2,31 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
 public class PlayerData
 {
-    [SerializeField] private float maxHp;                      // 최대체력
-    [SerializeField] private float curHp;                      // 현재체력
-    [SerializeField] private float maxMp;                      // 최대마나
-    [SerializeField] private float curMp;                      // 현재마나
-    [SerializeField] private float speed;                      // 이동속도
-    [SerializeField] private float rotateSpeed;                // 회전속도
-
+    [SerializeField] private float maxHp;
+    [SerializeField] private float curHp;
+    [SerializeField] private float maxMp;
+    [SerializeField] private float curMp;
+    [SerializeField] private float speed;
+    [SerializeField] private float rotateSpeed;
     public float MaxHp => maxHp;
     public float CurHp => curHp;
     public float MaxMp => maxMp;
     public float CurMp => curMp;
     public float Speed => speed;
     public float RotateSpeed => rotateSpeed;
-
-    public PlayerData(float maxHp, float curHp, float maxMp, float curMp, float speed, float rotateSpeed)
+        
+    // 생성자 - Status 초기화
+    public PlayerData(PlayerDataDTO.StatusDTO dto)
     {
-        this.maxHp = maxHp;
-        this.curHp = curHp;
-        this.maxMp = maxMp;
-        this.curMp = curMp;
-        this.speed = speed;
-        this.rotateSpeed = rotateSpeed;
+        this.maxHp = dto.maxHp;
+        this.curHp = dto.curHp;
+        this.maxMp = dto.maxMp;
+        this.curMp = dto.curMp;
+        this.speed = dto.speed;
+        this.rotateSpeed = dto.rotateSpeed;
     }
 
     // 임시(플레이어 Hp 수정)
