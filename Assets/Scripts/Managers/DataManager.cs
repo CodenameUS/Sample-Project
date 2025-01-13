@@ -78,7 +78,7 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    // 데이터 불러오기(제너릭)
+    /* 데이터 불러오기(제너릭)
     public T LoadData<T>(string fileName = "")
     {
         string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
@@ -96,6 +96,7 @@ public class DataManager : MonoBehaviour
             return default(T); 
         }
     }
+    */
 
     // 플레이어 데이터 불러오기
     private PlayerData LoadPlayerData()

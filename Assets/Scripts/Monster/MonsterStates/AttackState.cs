@@ -5,6 +5,8 @@ using UnityEngine;
 /*
                 Monster State - Attack (공격상태)
 
+        - Attack 상태에서 실행될 공통적인 로직 작성
+
         - 공격전 위치고정후 플레이어를 바라보고 공격시작
  */
 
@@ -30,21 +32,14 @@ public class AttackState<T> : BaseState<T> where T : Monster
         {
             monster.Anim.SetTrigger("Attack");
 
-            // 공격성공시 처리
-
-
             // 공격속도에 따른 공격가능여부 설정
             monster.isAttackReady = false;
             monster.Invoke(nameof(monster.ReadyToAttack), monster.attackDelay);
         }
-
-      
     }
 
     public override void OnStateExit()
     {
 
     }
-
-
 }

@@ -31,7 +31,7 @@ public class DieState<T> : BaseState<T> where T : Monster
 
     public override void OnStateUpdate()
     {
-       
+        monster.Nav.SetDestination(monster.transform.position);
     }
 
     public override void OnStateExit()

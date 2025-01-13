@@ -34,4 +34,10 @@ public class PlayerData
         // 임시
         curHp -= 100f;
     }
+
+    public void GetDamaged(float damage)
+    {
+        Debug.Log(damage + "만큼 데미지 입음");
+        curHp -= damage;
+    }
 }

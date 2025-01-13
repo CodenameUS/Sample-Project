@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] public PlayerController player;
+    public PlayerData playerData;
 
     private void Awake()
     {
@@ -36,5 +37,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        playerData = DataManager.Instance.GetPlayerData();
     }
 }

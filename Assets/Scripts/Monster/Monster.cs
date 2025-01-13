@@ -25,6 +25,7 @@ public class Monster : MonoBehaviour
     public float maxDistance;                       // 플레이어와의 거리(복귀하기위한 최대거리)
     public float idleThreshold;                     // 복귀후 처음 위치와의 차이
     public float attackDelay;                       // 공격속도
+    public float damage;                            // 공격력
     #endregion
 
     #region ** Flags **
@@ -82,4 +83,11 @@ public class Monster : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    // 공격받음
+    public void GetDamaged(int damage)
+    {
+        curHp -= damage;
+    }
+
 }

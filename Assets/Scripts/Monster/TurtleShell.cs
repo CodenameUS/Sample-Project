@@ -46,7 +46,7 @@ public class TurtleShell : Monster
         maxDistance = 5f;
         idleThreshold = 0.3f;
         attackDelay = 2f;
-
+        damage = 5f;
         // 초기상태는 Idle
         curState = States.Idle;
         // StateMachine 객체 생성(Idle상태)
@@ -60,6 +60,9 @@ public class TurtleShell : Monster
         stateMachine.curState.OnStateUpdate();
 
         DecideState();
+
+        if (Input.GetKeyDown(KeyCode.E))
+            curHp -= 110;
     }
 
     // Scan Range에 플레이어가 들어왔을경우 Chase 상태 돌입
@@ -99,7 +102,7 @@ public class TurtleShell : Monster
         float distanceToPlayer = Vector3.Distance(transform.position, Target.transform.position);
         
         // Chase상태에서 원점으로 복귀완료 -> Idle상태 톨입
-        if (isReset)
+        if (isReset && !isDead)
         {
             ChangeState(States.Idle);
             isReset = false;
@@ -110,7 +113,6 @@ public class TurtleShell : Monster
         {
             ChangeState(States.Attack);
         }
-
         // 공격상태에서 플레이어가 멀어지면 Chase 상태 돌입
         else if (curState == States.Attack && distanceToPlayer > Nav.stoppingDistance && !isDead)
         {
@@ -125,5 +127,26 @@ public class TurtleShell : Monster
         }
     }
 
-   
+    // 근접공격
+    public void MeleeAttack()
+    {
+        // Raycast할 위치, 방향
+        Vector3 origin = transform.position + new Vector3(0, 0.5f, 0);
+        Vector3 direction = transform.forward;
+
+        // Raycast 결과
+        RaycastHit hit;
+
+        // SphereRayCast로 플레이어에 닿았는지 확인
+        if(Physics.SphereCast(origin, 0.5f,direction,out hit,1f, LayerMask.GetMask("Player")))
+        {
+            if(hit.collider.CompareTag("Player"))
+            {
+                // 플레이어에게 데미지입힘
+                PlayerData playerData = DataManager.Instance.GetPlayerData();
+                playerData.GetDamaged(damage);
+            }
+        }
+    }
+
 }

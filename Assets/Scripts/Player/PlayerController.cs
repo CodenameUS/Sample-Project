@@ -46,7 +46,6 @@ public class PlayerController : MonoBehaviour
         // 캐릭터가 정지했을 때
         if (moveVec == Vector3.zero)
             return;
-
         Quaternion newRotation = Quaternion.LookRotation(moveVec);
         rigid.rotation = Quaternion.Slerp(rigid.rotation, newRotation, playerData.RotateSpeed * Time.deltaTime);
     }
