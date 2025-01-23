@@ -30,4 +30,9 @@ public class MovableHeaderUI : MonoBehaviour, IDragHandler, IPointerDownHandler
         beginPoint = targetUI.position;
         moveBegin = eventData.position;
     }
+
+    public void HideUI()
+    {
+        targetUI.gameObject.SetActive(false);
+    }
 }

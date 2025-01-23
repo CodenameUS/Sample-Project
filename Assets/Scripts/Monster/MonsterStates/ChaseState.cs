@@ -17,6 +17,7 @@ public class ChaseState<T> : BaseState<T> where T : Monster
 
     public override void OnStateEnter()
     {
+        monster.isReset = false;
         monster.Anim.SetBool("Walk", true);
     }
 

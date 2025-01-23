@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Skills : MonoBehaviour
 {
-    [SerializeField] private PlayerInput playerInput;
-
+    private bool skill1Keydown;
     readonly private int hashSkillType = Animator.StringToHash("SkillType");
     readonly private int hashSkillTrigger = Animator.StringToHash("Skill");
 
@@ -19,16 +18,20 @@ public class Skills : MonoBehaviour
 
     private void Awake()
     {
-        anim = GetComponent<Animator>();
+        Init();
     }
 
     private void Update()
     {
-        
+        GetInput();
     }
 
-    private void Buff()
+    private void Init()
     {
-       
+        anim = GetComponent<Animator>();
+    }
+    private void GetInput()
+    {
+        skill1Keydown = Input.GetButtonDown("Skill1");
     }
 }

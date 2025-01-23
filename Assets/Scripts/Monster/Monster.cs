@@ -26,6 +26,7 @@ public class Monster : MonoBehaviour
     public float idleThreshold;                     // 복귀후 처음 위치와의 차이
     public float attackDelay;                       // 공격속도
     public float damage;                            // 공격력
+    public float attackRange;                       // 공격가능한 범위
     #endregion
 
     #region ** Flags **
@@ -58,12 +59,15 @@ public class Monster : MonoBehaviour
     {
         Init();
     }
-    
+
     private void Init()
     {
         targetPlayer = GameManager.Instance.player;
         startPosition = transform.position;
+        Debug.Log(startPosition);
+
         isAttackReady = true;
+        isReset = true;
 
         anim = GetComponent<Animator>();
         nav = GetComponent<NavMeshAgent>();

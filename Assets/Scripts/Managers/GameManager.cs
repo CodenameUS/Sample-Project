@@ -9,11 +9,11 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if(instance == null)
+            if (instance == null)
             {
                 instance = FindObjectOfType<GameManager>();
 
-                if(instance == null)
+                if (instance == null)
                 {
                     GameObject obj = new GameObject("GameManager");
                     instance = obj.AddComponent<GameManager>();
@@ -24,11 +24,10 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] public PlayerController player;
-    public PlayerData playerData;
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -37,7 +36,5 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        playerData = DataManager.Instance.GetPlayerData();
     }
 }

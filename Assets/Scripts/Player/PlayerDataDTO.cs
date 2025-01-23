@@ -17,5 +17,7 @@ public class PlayerDataDTO
         public float curMp;             // 현재마나
         public float speed;             // 이동속도
         public float rotateSpeed;       // 회전속도
+        public float damage;            // 기본 공격력
+        public float armor;             // 기본 방어력
     }
 }

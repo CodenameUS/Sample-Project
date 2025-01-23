@@ -29,15 +29,15 @@ public class TurtleShell : Monster
 
     private States curState;                             // 현재 상태
     private StateMachine<TurtleShell> stateMachine;
-
+    
     private void Awake()
     {
         // 부모(Monster)의 초기화
         base.Awake();
-        InitValues();
+        Init();
     }
 
-    private void InitValues()
+    private void Init()
     {
         // TurtleShell 능력치 초기화
         maxHp = 100;
@@ -47,6 +47,8 @@ public class TurtleShell : Monster
         idleThreshold = 0.3f;
         attackDelay = 2f;
         damage = 5f;
+        attackRange = 1.3f;
+
         // 초기상태는 Idle
         curState = States.Idle;
         // StateMachine 객체 생성(Idle상태)
@@ -102,19 +104,18 @@ public class TurtleShell : Monster
         float distanceToPlayer = Vector3.Distance(transform.position, Target.transform.position);
         
         // Chase상태에서 원점으로 복귀완료 -> Idle상태 톨입
-        if (isReset && !isDead)
+        if (curState == States.Chase && isReset && !isDead)
         {
             ChangeState(States.Idle);
-            isReset = false;
         }
 
         // 공격범위에 들어서면 Attack 상태 돌입
-        if (distanceToPlayer <= Nav.stoppingDistance && !isDead)
+        if (distanceToPlayer <= attackRange && !isDead)
         {
             ChangeState(States.Attack);
         }
         // 공격상태에서 플레이어가 멀어지면 Chase 상태 돌입
-        else if (curState == States.Attack && distanceToPlayer > Nav.stoppingDistance && !isDead)
+        else if (curState == States.Attack && distanceToPlayer > attackRange && !isDead)
         {
             ChangeState(States.Chase);
         }

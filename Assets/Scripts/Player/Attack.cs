@@ -6,7 +6,6 @@ public class Attack : MonoBehaviour
 {
     
     #region SerializeFields
-    [SerializeField] private PlayerInput playerInput;
     [SerializeField] private BoxCollider leftHandCollider;               
     [SerializeField] private BoxCollider rightHandCollider;
 
@@ -18,8 +17,8 @@ public class Attack : MonoBehaviour
     readonly private int hashAttackType = Animator.StringToHash("AttackType");
     readonly private int hashComboCount = Animator.StringToHash("ComboCount");
     readonly private int hashAttackTrigger = Animator.StringToHash("Attack");
-    
-    
+
+    private bool attackKeydown;
     private bool hasEquipedWeapon = false;      // 무기 장착여부(현재는 기본 false)
     private bool isAttack = false;              // 공격중인지 여부
     private bool isComboAllowed = false;        // 콤보공격 가능여부
@@ -36,14 +35,25 @@ public class Attack : MonoBehaviour
     #region Unity Events
     private void Awake()
     {
-        anim = GetComponent<Animator>();
+        Init();
     }
 
     private void Update()
     {
+        GetInput();
         BaseAttack();
     }
     #endregion
+
+    private void Init()
+    {
+        anim = GetComponent<Animator>();
+    }
+
+    private void GetInput()
+    {
+        attackKeydown = Input.GetButtonDown("Attack");
+    }
 
     // 기본공격
     private void BaseAttack()
@@ -54,7 +64,7 @@ public class Attack : MonoBehaviour
             AttackType = 0;
         }
      
-        if(playerInput.attackKeydown && !isAttack)
+        if(attackKeydown && !isAttack)
         {
             StartCoroutine(BaseAttackPunch());
         }
@@ -80,7 +90,7 @@ public class Attack : MonoBehaviour
             float timer = 0;
             while (timer < 0.5f)
             {
-                if (playerInput.attackKeydown)
+                if (attackKeydown)
                 {
                     comboCount++;
                     isComboAllowed = true;
