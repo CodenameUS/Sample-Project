@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ItemSlotUI : MonoBehaviour
 {
-    [SerializeField] private Image iconImage;           // 아이템 아이콘(이미지)
+    [SerializeField] private Image iconImage;           // 아이템 아이콘 이미지
     [SerializeField] private Text amountText;           // 아이템 수량
     [SerializeField] private Image highlightImage;      // 하이라이트 이미지
 

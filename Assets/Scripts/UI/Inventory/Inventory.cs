@@ -399,5 +399,25 @@ public class Inventory : MonoBehaviour
             }
         }
     }
+
+    // 해당 슬롯 인덱스의 아이템 장착
+    public void Equip(int index)
+    {
+        if (!IsValidIndex(index)) return;
+        if (items[index] == null) return;
+
+        // 장착 가능한 아이템일 때
+        if(items[index] is IEquipableItem equipable)
+        {
+            // 장착
+            bool success = equipable.Equip();
+
+            // 성공
+            if(success)
+            {
+                UpdateSlot(index);
+            }
+        }
+    }
     #endregion
 }

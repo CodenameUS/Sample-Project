@@ -32,7 +32,7 @@ public class InventoryUI : MonoBehaviour
 
     private ItemSlotUI pointerOverSlot;                     // 현재 마우스 포인터가 위치한 곳의 슬롯
     private ItemSlotUI beginDragSlot;                       // 마우스 드래그를 시작한 슬롯
-    private Transform beginDragIconTransform;               // 마우스 드래그를 시작한 슬롯의 아이콘
+    private Transform beginDragIconTransform;               // 마우스 드래그를 시작한 슬롯의 위치
 
     private int leftClick = 0;                              // 좌클릭 = 0
     private int rightClick = 1;                             // 우클릭 = 0;
@@ -42,7 +42,7 @@ public class InventoryUI : MonoBehaviour
     private int beginDragSlotSiblingIndex;
     #endregion
 
-    #region ** 유니티 이벤트 함수들 **
+    #region ** 유니티 이벤트 함수 **
     private void Awake()
     {
         Init();
@@ -210,6 +210,7 @@ public class InventoryUI : MonoBehaviour
         if (rrList.Count == 0)
             return null;
 
+        // 첫번째 UI의 컴포넌트 반환
         return rrList[0].gameObject.GetComponent<T>();
     }
 
