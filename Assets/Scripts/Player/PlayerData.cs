@@ -43,6 +43,25 @@ public class PlayerData
         curHp -= 100f;
     }
 
+    // 포션 회복
+    public void UsePortion(float value, string type)
+    {
+        switch(type)
+        {
+            case "Health":
+                curHp += value;
+                break;
+            case "Mana":
+                curMp += value;
+                break;
+        }
+    }
+
+    // 장비 장착
+    public void EquipItem()
+    {
+
+    }
     public void GetDamaged(float damage)
     {
         Debug.Log(damage + "만큼 데미지 입음");

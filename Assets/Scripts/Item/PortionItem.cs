@@ -11,11 +11,18 @@ using UnityEngine;
 
 public class PortionItem : CountableItem, IUsableItem
 {
-    public PortionItem(PortionItemData data, int amount = 1) : base(data, amount) { }
+    public PortionItemData PortionData { get; private set; }
+    public PortionItem(PortionItemData data, int amount = 1) : base(data, amount) 
+    {
+        PortionData = data;
+    }
 
+    // 아이템 사용
     public bool Use()
     {
         Amount--;
+
+        DataManager.Instance.GetPlayerData().UsePortion(PortionData.Value, PortionData.PortionType);
 
         return true;
     }

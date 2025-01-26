@@ -15,5 +15,6 @@ public class PortionItemDTO
     public string itemToolTip;          // 아이템 툴팁
     public string itemIcon;             // 아이템 아이콘 이름
     public int maxAmount;               // 최대 소지량
+    public string portionType;          // 포션 종류
     public float value;                 // 회복량
 }

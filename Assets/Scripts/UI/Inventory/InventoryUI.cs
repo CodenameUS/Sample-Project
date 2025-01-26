@@ -172,11 +172,13 @@ public class InventoryUI : MonoBehaviour
         inventory.Remove(index);
     }
 
-    // 아이템 사용
+    // 아이템 사용 및 장착
     private void TryUseItem(int index)
     {
         inventory.Use(index);
     }
+
+    
 
     // 툴팁 UI 슬롯 데이터 갱신
     private void UpdateTooltipUI(ItemSlotUI slot)
@@ -303,10 +305,12 @@ public class InventoryUI : MonoBehaviour
                 beginDragSlot = null;
             }
         }
-        // 마우스 우클릭(아이템 사용)
+        // 마우스 우클릭(아이템 사용 및 장착)
         else if (Input.GetMouseButtonDown(rightClick))
         {
             ItemSlotUI slotUI = RaycastAndgetFirstComponent<ItemSlotUI>();
+            
+            if(slotUI != null && slotUI.HasItem && slotUI.IsAccessible)
             {
                 TryUseItem(slotUI.Index);
             }

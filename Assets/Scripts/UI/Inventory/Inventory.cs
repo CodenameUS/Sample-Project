@@ -164,7 +164,12 @@ public class Inventory : MonoBehaviour
                     inventoryUI.SetItemIconAndAmountText(index, item.Data.ItemIcon, ci.Amount);
                 }
             }
-            // 2. 수량이 없는 아이템인 경우
+            // 2. 장비 아이템
+            else if(item is EquipmentItem ei)
+            {
+                inventoryUI.SetItemIconAndAmountText(index, item.Data.ItemIcon);
+            }
+            // 3. 그 외
             else
             {
                 // 아이콘 표시
@@ -386,7 +391,7 @@ public class Inventory : MonoBehaviour
         if (!IsValidIndex(index)) return;
         if (items[index] == null) return;
 
-        // 사용 가능한 아이템일 때
+        // 1. 소모 아이템일 때
         if(items[index] is IUsableItem usable)
         {
             // 사용
@@ -398,18 +403,10 @@ public class Inventory : MonoBehaviour
                 UpdateSlot(index);
             }
         }
-    }
-
-    // 해당 슬롯 인덱스의 아이템 장착
-    public void Equip(int index)
-    {
-        if (!IsValidIndex(index)) return;
-        if (items[index] == null) return;
-
-        // 장착 가능한 아이템일 때
-        if(items[index] is IEquipableItem equipable)
+        // 2. 장비 아이템일 때
+        else if(items[index] is IEquipableItem equipable)
         {
-            // 장착
+            // 착용 성공 여부
             bool success = equipable.Equip();
 
             // 성공
