@@ -2,13 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+                WeaponItemData : 무기 아이템 데이터
+                
+                생성자 : 데이터를 받아 초기화
+                CreateItem() : 초기화된 데이터로 아이템 객체 생성
+ */
+
 public class WeaponItemData : EquipmentItemData
 {
-    public int Damage => damage;
-    public float Rate => rate;             
-
     [SerializeField] private int damage;        // 무기 데미지
     [SerializeField] private float rate;        // 공격속도
+    [SerializeField] private string type;       // 장비 타입
+
+    public int Damage => damage;
+    public float Rate => rate;
+    public string Type => type;
 
     public WeaponItemData(WeaponItemDTO dto)
     {
@@ -18,6 +27,7 @@ public class WeaponItemData : EquipmentItemData
         this.itemIcon = dto.itemIcon;
         this.damage = dto.damage;
         this.rate = dto.rate;
+        this.type = dto.type;
     }
 
     public override Item CreateItem()

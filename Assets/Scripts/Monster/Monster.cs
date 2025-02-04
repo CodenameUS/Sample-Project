@@ -64,7 +64,6 @@ public class Monster : MonoBehaviour
     {
         targetPlayer = GameManager.Instance.player;
         startPosition = transform.position;
-        Debug.Log(startPosition);
 
         isAttackReady = true;
         isReset = true;

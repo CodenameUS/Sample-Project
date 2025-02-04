@@ -5,8 +5,9 @@ using UnityEngine;
 /*
                 PortionItem : 포션 아이템
                 
-                Use() : IUsableItem 인터페이스 상속
-                    - (임시) 갯수 하나 차감, 성공여부 반환
+                Use() : 포션 사용
+                    - 갯수 하나 차감
+                    - 플레이어 체력 및 마나 회복
  */
 
 public class PortionItem : CountableItem, IUsableItem
@@ -17,7 +18,7 @@ public class PortionItem : CountableItem, IUsableItem
         PortionData = data;
     }
 
-    // 아이템 사용
+    // 포션 사용
     public bool Use()
     {
         Amount--;

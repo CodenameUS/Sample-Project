@@ -33,6 +33,14 @@ MonoBehaviour:
     m_Address: Assets/Sprites/Item_WeaponItem_Sword_01.png
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 28b103e16acf21b45afc90eb7afb7e42
+    m_Address: Assets/Sprites/Item_ArmorItem_Top_02.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5105fe1d825990746b9a92407ea447ca
+    m_Address: Assets/Sprites/Item_ArmorItem_Top_01.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 24fbd3b980f40fd4384dc1641c029845, type: 2}
   m_SchemaSet:

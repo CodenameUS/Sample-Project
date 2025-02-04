@@ -1,13 +1,21 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+                        ItemSlotUI
+
+            - 인벤토리 각 개별 슬롯을 관리
+            - 아이템 아이콘과 아이템 갯수 텍스트 등록 및 제거
+            - 슬롯 강조효과
+*/
 public class ItemSlotUI : MonoBehaviour
 {
+    #region ** Serialized Fields **
     [SerializeField] private Image iconImage;           // 아이템 아이콘 이미지
     [SerializeField] private Text amountText;           // 아이템 수량
     [SerializeField] private Image highlightImage;      // 하이라이트 이미지
+    #endregion
 
     #region ** Fields **
     private Image slotImage;
@@ -37,7 +45,7 @@ public class ItemSlotUI : MonoBehaviour
     private Color InAccessibleIconColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
     #endregion
 
-    #region ** PROPERTIES **
+    #region ** Properties **
     public int Index { get; private set; }              // 슬롯 인덱스
     public bool HasItem => iconImage.sprite != null;    // 슬롯에 아이템이 있는지 여부(sprite 여부로 확인)
 
@@ -48,11 +56,13 @@ public class ItemSlotUI : MonoBehaviour
     public RectTransform IconRect => iconRect;
     #endregion
 
+    #region ** Unity Events **
     private void Awake()
     {
         InitComponents();
         InitValues();
     }
+    #endregion
 
     #region ** Private Methods **
     // 초기화

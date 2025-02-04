@@ -1,9 +1,14 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+
+/*
+                     ResourceManager
+
+                - 싱글톤      
+                - LoadIcon() : 아이콘 이름으로 어드레서블에서 아이콘 로드 및 캐싱
+ */
 
 public class ResourceManager : MonoBehaviour
 {
@@ -33,6 +38,7 @@ public class ResourceManager : MonoBehaviour
             return instance;
         }
     }
+
     private void Awake()
     {
         if (instance == null)
@@ -46,7 +52,7 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-
+    // 아이콘 데이터 불러오기
     public void LoadIcon(string spriteName, System.Action<Sprite> onLoaded)
     {
         // 캐시에 이미 있을 때는 캐싱

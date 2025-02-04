@@ -29,7 +29,6 @@ public class ItemTooltipUI : MonoBehaviour
         myRect.pivot = new Vector2(0f, 1f); ;   
     }
 
-    #region ** Public Methods **
     public void ShowTooltipUI() => gameObject.SetActive(true);
     public void HideTooltipUI() => gameObject.SetActive(false);
 
@@ -75,5 +74,4 @@ public class ItemTooltipUI : MonoBehaviour
         }
     }
 
-    #endregion
 }

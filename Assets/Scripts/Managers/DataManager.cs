@@ -18,9 +18,12 @@ public class DataManager : MonoBehaviour
     private string playerDataPath;          // 플레이어 데이터 저장경로
     private string weaponItemDataPath;      // 무기 데이터 저장경로
     private string portionItemDataPath;     // 포션 데이터 저장경로
+    private string armorItemDataPath;       // 방어구 데이터 저장경로
 
     private Dictionary<int, WeaponItemData> weponDataDictionary;
     private Dictionary<int, PortionItemData> portionDataDictionary;
+    private Dictionary<int, ArmorItemData> armorDataDictionary;
+
     private PlayerData playerData;
 
     // 싱글톤
@@ -56,47 +59,21 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        InitAndLoadData();
+    }
+
+    private void InitAndLoadData()
+    {
         playerDataPath = Path.Combine(Application.persistentDataPath, "Playerdata.json");
         weaponItemDataPath = Path.Combine(Application.persistentDataPath, "WeaponData.json");
         portionItemDataPath = Path.Combine(Application.persistentDataPath, "PortionData.json");
+        armorItemDataPath = Path.Combine(Application.persistentDataPath, "ArmorData.json");
 
         playerData = LoadPlayerData();
         weponDataDictionary = LoadWeaponData();
         portionDataDictionary = LoadPortionData();
+        armorDataDictionary = LoadArmorData();
     }
-
-    //  데이터 저장(제너릭)
-    public void SaveData<T>(T data, string fileName = "")
-    {
-        string jsonData = JsonUtility.ToJson(data);
-        string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
-        File.WriteAllText(filePath, jsonData);
-
-        if(typeof(T) == typeof(PlayerData))
-        {
-            playerData = data as PlayerData;
-        }
-    }
-
-    /* 데이터 불러오기(제너릭)
-    public T LoadData<T>(string fileName = "")
-    {
-        string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
-
-        // 저장된 파일이 있을 때
-        if(File.Exists(filePath))
-        {
-            string jsonData = File.ReadAllText(filePath);
-            return JsonUtility.FromJson<T>(jsonData);
-        }
-        // 저장된 파일이 없을 때
-        else
-        {
-            InitData();
-            return default(T); 
-        }
-    }
-    */
 
     // 플레이어 데이터 불러오기
     private PlayerData LoadPlayerData()
@@ -131,23 +108,24 @@ public class DataManager : MonoBehaviour
         {
             string jsonData = File.ReadAllText(weaponItemDataPath);
             var weaponDict = JsonConvert.DeserializeObject<Dictionary<string, List<WeaponItemDTO>>>(jsonData);
-            
-            // Sword 키 가져와서 저장
-            if(weaponDict.TryGetValue("Sword", out List<WeaponItemDTO> weaponList))
-            {
-                Dictionary<int, WeaponItemData> dataDictionary = new Dictionary<int, WeaponItemData>();
 
-                // DTO를 WeaponItemData로 변환하여 저장
-                foreach(var weaponDTO in weaponList)
+            if(weaponDict != null)
+            {
+                foreach(var category in weaponDict)
                 {
-                    WeaponItemData weaponData = new WeaponItemData(weaponDTO);
-                    dataDictionary[weaponData.ID] = weaponData;
+                    Dictionary<int, WeaponItemData> dataDictionary = new Dictionary<int, WeaponItemData>();
+                    // DTO를 WeaponItemData로 변환하여 저장
+                    foreach (var weaponDTO in category.Value)
+                    {
+                        WeaponItemData weaponData = new WeaponItemData(weaponDTO);
+                        dataDictionary[weaponData.ID] = weaponData;
+                    }
+                    return dataDictionary;
                 }
-                return dataDictionary;
             }
             else
             {
-                Debug.LogWarning("WeaponData.json 파일에 'Sword'키가 없습니다.");
+                Debug.LogWarning("Json 데이터를 파싱할 수 없습니다.");
             }
         }
         else
@@ -165,22 +143,23 @@ public class DataManager : MonoBehaviour
             string jsonData = File.ReadAllText(portionItemDataPath);
             var portionDict = JsonConvert.DeserializeObject<Dictionary<string, List<PortionItemDTO>>>(jsonData);
 
-            // Portion 키 가져와서 저장
-            if (portionDict.TryGetValue("Portion", out List<PortionItemDTO> portionList))
+            if (portionDict !=  null)
             {
-                Dictionary<int, PortionItemData> dataDictionary = new Dictionary<int, PortionItemData>();
-
-                // DTO를 WeaponItemData로 변환하여 저장
-                foreach (var portionDTO in portionList)
+                foreach (var category in portionDict)
                 {
-                    PortionItemData portionData = new PortionItemData(portionDTO);
-                    dataDictionary[portionData.ID] = portionData;
+                    Dictionary<int, PortionItemData> dataDictionary = new Dictionary<int, PortionItemData>();
+                    // DTO를 WeaponItemData로 변환하여 저장
+                    foreach (var portionDTO in category.Value)
+                    {
+                        PortionItemData portionData = new PortionItemData(portionDTO);
+                        dataDictionary[portionData.ID] = portionData;
+                    }
+                    return dataDictionary;
                 }
-                return dataDictionary;
             }
             else
             {
-                Debug.LogWarning("PortionData.json 파일에 'Portion'키가 없습니다.");
+                Debug.LogWarning("Json 데이터를 파싱할 수 없습니다.");
             }
         }
         else
@@ -188,6 +167,39 @@ public class DataManager : MonoBehaviour
             Debug.LogWarning("불러올 파일이 없습니다.");
         }
         return new Dictionary<int, PortionItemData>();
+    }
+
+    // 방어구 데이터 불러오기
+    private Dictionary<int, ArmorItemData> LoadArmorData()
+    {
+        if(File.Exists(armorItemDataPath))
+        {
+            string jsonData = File.ReadAllText(armorItemDataPath);
+            var armorDict = JsonConvert.DeserializeObject<Dictionary<string, List<ArmorItemDTO>>>(jsonData);
+
+            if(armorDict != null)
+            {
+                foreach(var category in armorDict)  // "Top", "Shoes", "Gloves"
+                {
+                    Dictionary<int, ArmorItemData> dataDictionary = new Dictionary<int, ArmorItemData>();
+                    foreach (var armorDTO in category.Value)
+                    {
+                        ArmorItemData armorData = new ArmorItemData(armorDTO);
+                        dataDictionary[armorData.ID] = armorData;
+                    }
+                    return dataDictionary;
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Json 데이터를 파싱할 수 없습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("불러올 파일이 없습니다.");
+        }
+        return new Dictionary<int, ArmorItemData>();
     }
 
     // ID로 무기 데이터 가져오기
@@ -199,7 +211,7 @@ public class DataManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("ID에 해당하는 데이터가 없음.");
+            Debug.LogWarning("ID에 해당하는 무기데이터가 없음.");
             return null;
         }
     }
@@ -213,14 +225,40 @@ public class DataManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("ID에 해당하는 데이터가 없음.");
+            Debug.LogWarning("ID에 해당하는 포션데이터가 없음.");
             return null;
         }
     }
 
+    // ID로 방어구 데이터 가져오기
+    public ArmorItemData GetArmorDataById(int id)
+    {
+        if(armorDataDictionary != null && armorDataDictionary.TryGetValue(id, out var resultData))
+        {
+            return resultData;
+        }
+        else
+        {
+            Debug.LogWarning("ID에 해당하는 방어구데이터가 없음.")
+                return null;
+        }
+    }
     // 플레이어 데이터에 대한 접근자 메서드
     public PlayerData GetPlayerData()
     {
         return playerData;
+    }
+
+    //  데이터 저장(제너릭)
+    public void SaveData<T>(T data, string fileName = "")
+    {
+        string jsonData = JsonUtility.ToJson(data);
+        string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
+        File.WriteAllText(filePath, jsonData);
+
+        if (typeof(T) == typeof(PlayerData))
+        {
+            playerData = data as PlayerData;
+        }
     }
 }

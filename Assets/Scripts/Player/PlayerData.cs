@@ -11,7 +11,7 @@ public class PlayerData
     [SerializeField] private float speed;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private float damage;
-    [SerializeField] private float armor;
+    [SerializeField] private float defense;
 
 
     public float MaxHp => maxHp;
@@ -21,7 +21,7 @@ public class PlayerData
     public float Speed => speed;
     public float RotateSpeed => rotateSpeed;
     public float Damage => damage;
-    public float Armor => armor;
+    public float Defense => defense;
 
     // 생성자 - Status 초기화
     public PlayerData(PlayerDataDTO.StatusDTO dto)
@@ -33,7 +33,7 @@ public class PlayerData
         this.speed = dto.speed;
         this.rotateSpeed = dto.rotateSpeed;
         this.damage = dto.damage;
-        this.armor = dto.armor;
+        this.defense = dto.defense;
     }
 
     // 임시(플레이어 Hp 수정)
@@ -58,10 +58,33 @@ public class PlayerData
     }
 
     // 장비 장착
-    public void EquipItem()
+    public void EquipItem(float value, string type)
     {
-
+        switch(type)
+        {
+            case "Weapon":
+                damage += value;
+                break;
+            case "Armor":
+                defense += value;
+                break;
+        }
     }
+
+    // 장비 해제
+    public void UnequipItem(float value, string type)
+    {
+        switch(type)
+        {
+            case "Weapon":
+                damage -= value;
+                break;
+            case "Top":
+                defense -= value;
+                break;
+        }
+    }
+
     public void GetDamaged(float damage)
     {
         Debug.Log(damage + "만큼 데미지 입음");

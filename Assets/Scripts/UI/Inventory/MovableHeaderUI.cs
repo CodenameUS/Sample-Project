@@ -5,11 +5,11 @@ using UnityEngine.UI;
 /// <summary> 드래그 앤 드롭 UI 이동/// </summary>
 public class MovableHeaderUI : MonoBehaviour, IDragHandler, IPointerDownHandler
 {
-    // 이동될 UI
-    [SerializeField] private Transform targetUI;
+    [SerializeField] private Transform targetUI;    // 이동될 UI
 
     private Vector2 beginPoint;
     private Vector2 moveBegin;
+
 
     private void Awake()
     {
@@ -18,18 +18,18 @@ public class MovableHeaderUI : MonoBehaviour, IDragHandler, IPointerDownHandler
             targetUI = transform.parent;
     }
 
-    // 드래그하기
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
         targetUI.position = beginPoint + (eventData.position - moveBegin);
     }
 
-    // 드래그 위치
+
     void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
     {
         beginPoint = targetUI.position;
         moveBegin = eventData.position;
     }
+
 
     public void HideUI()
     {

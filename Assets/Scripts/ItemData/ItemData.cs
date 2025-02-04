@@ -6,6 +6,8 @@ using UnityEngine;
                 ItemData
                     - EquipmentItemData
                         - WeaponItemData
+                        - ArmorItemData
+                            - 방어구 종류 : "Top", "Gloves", "Shoes" 
  */
 
 public abstract class ItemData 

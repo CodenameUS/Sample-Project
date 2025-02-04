@@ -4,9 +4,17 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/*
+                        InventoryUI
+
+            - 인벤토리 각 슬롯들을 모두 관리
+            - 인벤토리 영역에 슬롯 생성
+            - 마우스 이벤트 처리
+            - Inventory <-> ItemSlotUI 중간다리역할
+*/
 public class InventoryUI : MonoBehaviour
 {
-    #region ** SerializeFields **
+    #region ** Serialized Fields **
     [SerializeField] private RectTransform contentAreaRT;   // 아이템 영역
     [SerializeField] private GameObject itemSlotPrefab;     // 복제할 원본 슬롯 프리팹
     [SerializeField] private InventoryPopupUI popup;        // 팝업 UI
@@ -39,7 +47,7 @@ public class InventoryUI : MonoBehaviour
 
     private Vector3 beginDragIconPoint;                     // 마우스 드래그를 시작한 아이콘 위치
     private Vector3 beginDragCursorPoint;                   // 마우스 드래그를 시작한 커서 위치
-    private int beginDragSlotSiblingIndex;
+    private int beginDragSlotSiblingIndex;                  // 마우스 드래그를 시작한 슬롯의 SiblingIdx
     #endregion
 
     #region ** 유니티 이벤트 함수 **
@@ -178,8 +186,6 @@ public class InventoryUI : MonoBehaviour
         inventory.Use(index);
     }
 
-    
-
     // 툴팁 UI 슬롯 데이터 갱신
     private void UpdateTooltipUI(ItemSlotUI slot)
     {
@@ -192,6 +198,7 @@ public class InventoryUI : MonoBehaviour
         // 툴팁 위치 설정
         itemTooltipUI.SetUIPosition(slot.SlotRect);
     }
+
     #endregion
 
     #region ** 마우스 이벤트 함수들 **
@@ -296,7 +303,7 @@ public class InventoryUI : MonoBehaviour
                 beginDragCursorPoint = Input.mousePosition;
 
                 beginDragSlotSiblingIndex = beginDragSlot.transform.GetSiblingIndex();
-                beginDragSlot.transform.SetAsLastSibling();
+                beginDragSlot.transform.SetAsLastSibling();     // 가장 위에 표시
 
                 beginDragSlot.SetHighlightOnTop(false);
             }

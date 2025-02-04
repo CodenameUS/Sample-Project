@@ -4,18 +4,35 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
+/*
+                        Inventory
+
+            - 인벤토리의 실질적인 내부 로직
+                - 아이템 추가, 아이템 사용, 아이템 삭제, 아이템 이동
+            - 인벤토리내의 빈슬롯 찾기
+                - FindEmptySlotIndex => 빈 슬롯의 Index 반환
+                - FindCountableItemSlotIndex => 수량이 있는 아이템을 위한 빈 슬롯의 Index 반환
+
+*/
+
 public class Inventory : MonoBehaviour
 {
-    public ItemData[] ItemDataArray;
-    public int Capacity { get; private set; }   // 인벤토리 수용한도
-
+    #region ** Serialized Fields **
     [SerializeField] InventoryUI inventoryUI;
     [SerializeField] GameObject inventoryGo;
     [SerializeField] Item[] items;
+    [SerializeField] EquipmentUI equipmentUI;
+    #endregion
+
+    #region ** Fields **
+    public ItemData[] ItemDataArray;
+    public int Capacity { get; private set; }   // 인벤토리 수용한도
 
     private bool inventoryKeydown;              // 인벤토리 키(I)
     private int initCapacity = 24;              // 초기 인벤토리 수용한도
     private int maxCapacity = 36;               // 최대 인벤토리 수용한도
+
+    #endregion
 
     #region  ** Unity Events **
     private void Awake()
@@ -406,6 +423,27 @@ public class Inventory : MonoBehaviour
         // 2. 장비 아이템일 때
         else if(items[index] is IEquipableItem equipable)
         {
+            // 2.1. 무기 아이템일때 
+            if(equipable is WeaponItem)
+            {
+                // 장착중인 아이템이 있으면 해제
+                if (equipmentUI.slotUIList[0].HasItem)
+                {
+                    // 장착중인 아이템
+                    WeaponItem prevItem = (WeaponItem)equipmentUI.items[0];
+                    // 인벤토리에 아이템 추가
+                    AddItem(prevItem.Data);
+                    // 캐릭터 정보창 슬롯의 아이콘 제거
+                    equipmentUI.slotUIList[0].RemoveItemIcon();
+                    // 장착 해제
+                    prevItem.Unequip();
+                }
+                WeaponItem curItem = (WeaponItem)items[index];
+                equipmentUI.SetItemIcon(curItem,curItem.WeaponData.Type, curItem.Data.ItemIcon);
+            }
+            // 2.2 방어구 아이템일때
+            
+            Remove(index);
             // 착용 성공 여부
             bool success = equipable.Equip();
 

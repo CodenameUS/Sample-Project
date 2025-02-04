@@ -6,16 +6,16 @@ using UnityEngine.UI;
 public class StatTextUI : MonoBehaviour
 {
     [Header("Connected Texts")]
-    [SerializeField] private Text DamageText;
-    [SerializeField] private Text HpText;
-    [SerializeField] private Text SpeedText;
-    [SerializeField] private Text ArmorText;
+    [SerializeField] private Text damageText;
+    [SerializeField] private Text hpText;
+    [SerializeField] private Text speedText;
+    [SerializeField] private Text defenseText;
 
     private void Update()
     {
-        DamageText.text = string.Format("{0}", Mathf.FloorToInt(DataManager.Instance.GetPlayerData().Damage));
-        HpText.text = string.Format("{0}", Mathf.FloorToInt(DataManager.Instance.GetPlayerData().CurHp));
-        SpeedText.text = string.Format("{0}%", Mathf.RoundToInt(DataManager.Instance.GetPlayerData().Speed + 100));
-        ArmorText.text = string.Format("{0}", Mathf.FloorToInt(DataManager.Instance.GetPlayerData().Armor));
+        damageText.text = string.Format("{0}", Mathf.FloorToInt(DataManager.Instance.GetPlayerData().Damage));
+        hpText.text = string.Format("{0}", Mathf.FloorToInt(DataManager.Instance.GetPlayerData().CurHp));
+        speedText.text = string.Format("{0}%", Mathf.RoundToInt(DataManager.Instance.GetPlayerData().Speed + 100));
+        defenseText.text = string.Format("{0}", Mathf.FloorToInt(DataManager.Instance.GetPlayerData().Defense));
     }
 }

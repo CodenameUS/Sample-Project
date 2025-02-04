@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                WeaponItemData 직렬화 전용 클래스
+                ArmorItemData 직렬화 전용 클래스
  */
-
 [System.Serializable]
-public class WeaponItemDTO
+public class ArmorItemDTO
 {
     public int id;                      // 아이템 id
     public string itemName;             // 아이템 이름
     public string itemToolTip;          // 아이템 툴팁
     public string itemIcon;             // 아이템 아이콘 이름
-    public int damage;                  // 무기 데미지
-    public float rate;                  // 공격속도
+    public int defense;                 // 방어력
+    public string type;                 // 장비타입
 }
