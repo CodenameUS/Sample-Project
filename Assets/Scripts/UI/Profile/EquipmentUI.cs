@@ -7,21 +7,25 @@ using UnityEngine.EventSystems;
 
 public class EquipmentUI : MonoBehaviour
 {
+    [SerializeField] private ItemTooltipUI itemTooltipUI;
+    [SerializeField] private Inventory inventory;
+    [SerializeField] private GameObject targetUI;
+
     // 장비 타입별 idx(0: Weapon, 1: Shoes, 2: Gloves, 3: Top)
     private enum Type { Weapon, Shoes, Gloves, Top}
 
+    #region ** Fields **
     [Tooltip("캐릭터 장비 슬롯")]
     public List<EquipmentSlotUI> slotUIList = new List<EquipmentSlotUI>();
     public Item[] items;
 
-    #region ** Fields **
     private GraphicRaycaster gr;
     private PointerEventData ped;
     private List<RaycastResult> rrList;
 
     private int leftClick = 0;                              // 좌클릭 = 0
     private int rightClick = 1;                             // 우클릭 = 0;
-    private int slotCounts = 4;
+    private int slotCounts = 4;                             // 장비슬롯 수
 
     private EquipmentSlotUI pointerOverSlot;                // 현재 마우스 포인터가 위치한 곳의 슬롯
     private EquipmentSlotUI beginDragSlot;                  // 마우스 드래그를 시작한 슬롯
@@ -38,11 +42,16 @@ public class EquipmentUI : MonoBehaviour
         Init();
     }
 
+    private void Start()
+    {
+        HideUI();
+    }
     private void Update()
     {
         ped.position = Input.mousePosition;
 
         OnPointerEnterAndExit();
+        ShowOrHideTooltipUI();
         OnPointerDown();
         OnPointerDrag();
         OnPointerUp();
@@ -62,6 +71,18 @@ public class EquipmentUI : MonoBehaviour
 
         ped = new PointerEventData(EventSystem.current);
         rrList = new List<RaycastResult>(10);
+    }
+
+    private void HideUI() => targetUI.SetActive(false);
+
+    // 툴팁 UI 갱신
+    private void UpdateTooltipUI(EquipmentSlotUI slot)
+    {
+        if (!slot.HasItem)
+            return;
+
+        itemTooltipUI.SetItemInfo(items[slot.index].Data);
+        itemTooltipUI.SetUIPosition(slot.SlotRect);
     }
     #endregion
 
@@ -156,12 +177,20 @@ public class EquipmentUI : MonoBehaviour
                 beginDragSlot = null;
             }
         }
-        // 마우스 우클릭(장착 해제)
+        // 마우스 우클릭
         else if (Input.GetMouseButtonDown(rightClick))
         {
-            // 슬롯에서 아이템 제거
-            beginDragSlot = null;
+            // 우클릭 위치의 슬롯
+            EquipmentSlotUI slotUI = RaycastAndgetFirstComponent<EquipmentSlotUI>();
             
+            // 장비 장착 해제
+            if(slotUI != null && slotUI.HasItem)
+            {
+                EquipmentItem item = (EquipmentItem)items[slotUI.index];
+                inventory.AddItem(item.Data);
+                item.Unequip();
+                slotUIList[slotUI.index].RemoveItemIcon();
+            }
         }
     }
 
@@ -209,6 +238,21 @@ public class EquipmentUI : MonoBehaviour
     private void EndDrag()
     {
         
+    }
+
+    // 아이템 툴팁 UI 활성/비활성화
+    private void ShowOrHideTooltipUI()
+    {
+        // 마우스가 아이템 아이콘 위에 올라가있을 때 툴팁표시
+        bool isValid = pointerOverSlot != null && pointerOverSlot.HasItem && (pointerOverSlot != beginDragSlot);
+
+        if (isValid)
+        {
+            UpdateTooltipUI(pointerOverSlot);
+            itemTooltipUI.ShowTooltipUI();
+        }
+        else
+            itemTooltipUI.HideTooltipUI();
     }
     #endregion
 

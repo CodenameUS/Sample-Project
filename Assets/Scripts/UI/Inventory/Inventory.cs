@@ -55,8 +55,10 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
-        inventoryKeydown = Input.GetButtonDown("Inventory");
-        SetActiveUI();
+        if (Input.GetButtonDown("Inventory"))
+        {
+            inventoryGo.SetActive(!inventoryGo.activeSelf);
+        }
     }
 
     #endregion
@@ -99,19 +101,21 @@ public class Inventory : MonoBehaviour
                 AddItem(ItemDataArray[i + 2], 110);
             }
         }
-    }
 
-    // 인벤토리 UI 활성/비활성화
-    private void SetActiveUI()
-    {
-        if(inventoryKeydown)
+        int testItem03 = 3001;
+        // 방어구 아이템 임시추가
+        for (int i = 0; i < 2; i++)
         {
-            if (inventoryGo.activeSelf)
-                inventoryGo.SetActive(false);
-            else
-                inventoryGo.SetActive(true);
-        }
+            int id = testItem03 + i;
 
+            ArmorItemData armorData = DataManager.Instance.GetArmorDataById(id);
+            ItemDataArray[i + 6] = armorData;
+
+            if (ItemDataArray[i + 6] is ArmorItemData)
+            {
+                AddItem(ItemDataArray[i + 6]);
+            }
+        }
     }
 
     // 인벤토리 앞쪽부터 비어있는 슬롯 인덱스 탐색(성공시 빈슬롯 인덱스 반환, 실패시 -1 반환)
@@ -439,20 +443,51 @@ public class Inventory : MonoBehaviour
                     prevItem.Unequip();
                 }
                 WeaponItem curItem = (WeaponItem)items[index];
+                equipable.Equip();
                 equipmentUI.SetItemIcon(curItem,curItem.WeaponData.Type, curItem.Data.ItemIcon);
             }
             // 2.2 방어구 아이템일때
-            
-            Remove(index);
-            // 착용 성공 여부
-            bool success = equipable.Equip();
-
-            // 성공
-            if(success)
+            else if(equipable is ArmorItem)
             {
-                UpdateSlot(index);
+                // 장착중인 아이템이 있으면 해제
+                if(equipmentUI.slotUIList[TypeToIndex()].HasItem)
+                {
+                    // 장착중인 아이템
+                    ArmorItem prevItem = (ArmorItem)equipmentUI.items[TypeToIndex()];
+                    // 인벤토리에 아이템 추가
+                    AddItem(prevItem.Data);
+                    // 캐릭터 정보창 슬롯의 아이콘 제거
+                    equipmentUI.slotUIList[TypeToIndex()].RemoveItemIcon();
+                    // 장착 해제
+                    prevItem.Unequip();
+                }
+                ArmorItem curItem = (ArmorItem)items[index];
+                equipable.Equip();
+                equipmentUI.SetItemIcon(curItem, curItem.ArmorData.SubType, curItem.Data.ItemIcon);
+            }
+            // 방어구 타입별 인덱스
+            int TypeToIndex()
+            {
+                ArmorItem curItem = (ArmorItem)items[index];
+                int typeIndex;
+                switch (curItem.ArmorData.SubType)
+                {
+                    case "Shoes":
+                        typeIndex = 1;
+                        return typeIndex;
+                    case "Gloves":
+                        typeIndex = 2;
+                        return typeIndex;
+                    case "Top":
+                        typeIndex = 3;
+                        return typeIndex;
+                    default:
+                        return 0;
+                }
             }
         }
+            Remove(index);
+            UpdateSlot(index); 
     }
     #endregion
 }

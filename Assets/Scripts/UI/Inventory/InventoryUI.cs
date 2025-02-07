@@ -84,7 +84,7 @@ public class InventoryUI : MonoBehaviour
             gr = gameObject.AddComponent<GraphicRaycaster>();
 
         ped = new PointerEventData(EventSystem.current);
-        rrList = new List<RaycastResult>(10);
+        rrList = new List<RaycastResult>();
 
         if(itemTooltipUI == null)
         {
@@ -424,21 +424,4 @@ public class InventoryUI : MonoBehaviour
     }
 
     #endregion
-
-    #region ** 임시 주석처리 **
-    /*
-    // 아이콘 등록
-    public void SetItemIcon(int index, string icon)
-    {
-        slotUIList[index].SetItemIcon(icon);
-    }
-
-    // 해당 인덱스 슬롯의 아이템 갯수 텍스트 설정
-    public void SetItemAmountText(int index, int amount)
-    {
-        slotUIList[index].SetItemAmount(amount);
-    }
-    */
-    #endregion
-
 }

@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] public PlayerController player;
+    [SerializeField] public GameObject profileUI;
 
     private void Awake()
     {
@@ -35,6 +36,14 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            profileUI.SetActive(!profileUI.activeSelf);
         }
     }
 }

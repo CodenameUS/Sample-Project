@@ -55,7 +55,7 @@ public class Monster : MonoBehaviour
     public BoxCollider HitBox => hitBoxCol;
     #endregion
     
-    protected void Awake()
+    protected virtual void Awake()
     {
         Init();
     }

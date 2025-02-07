@@ -42,13 +42,17 @@ public class EquipmentSlotUI : MonoBehaviour
         Init();
     }
 
+    #region ** Private Methods **
     private void Init()
     {
         equipmentUI = GetComponentInParent<EquipmentUI>();
 
-        iconGo = iconImage.gameObject;
+        slotRect = (RectTransform)transform;
+        iconRect = iconImage.rectTransform;
 
+        iconGo = iconImage.gameObject;
         highlightGo = highlightImage.gameObject;
+
         highlightImage.raycastTarget = false;
         highlightRect = highlightImage.rectTransform;
 
@@ -58,7 +62,9 @@ public class EquipmentSlotUI : MonoBehaviour
     private void ShowIcon() => iconGo.SetActive(true);
     private void HideIcon() => iconGo.SetActive(false);
 
+    #endregion
 
+    #region ** Public Methods **
     // 하이라이트 이미지를 상/하단으로 표시
     public void SetHighlightOnTop(bool value)
     {
@@ -110,6 +116,8 @@ public class EquipmentSlotUI : MonoBehaviour
         iconImage.sprite = null;
         HideIcon();
     }
+    #endregion
+
     #region ** Coroutines **
     // 하이라이트 Fade-in
     private IEnumerator HighlightFadeIn()

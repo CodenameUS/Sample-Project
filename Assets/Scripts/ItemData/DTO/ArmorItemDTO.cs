@@ -14,4 +14,5 @@ public class ArmorItemDTO
     public string itemIcon;             // 아이템 아이콘 이름
     public int defense;                 // 방어력
     public string type;                 // 장비타입
+    public string subType;              // 장비세부타입
 }

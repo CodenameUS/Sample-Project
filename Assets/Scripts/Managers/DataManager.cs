@@ -239,8 +239,8 @@ public class DataManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("ID에 해당하는 방어구데이터가 없음.")
-                return null;
+            Debug.LogWarning("ID에 해당하는 방어구데이터가 없음.");
+            return null;
         }
     }
     // 플레이어 데이터에 대한 접근자 메서드

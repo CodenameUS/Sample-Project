@@ -29,7 +29,11 @@ public class ItemTooltipUI : MonoBehaviour
         myRect.pivot = new Vector2(0f, 1f); ;   
     }
 
-    public void ShowTooltipUI() => gameObject.SetActive(true);
+    public void ShowTooltipUI()
+    {
+        myRect.SetAsLastSibling();
+        gameObject.SetActive(true);
+    }
     public void HideTooltipUI() => gameObject.SetActive(false);
 
     // 해당 슬롯 아이템의 정보로 Text 설정

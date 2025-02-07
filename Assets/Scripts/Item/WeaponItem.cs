@@ -11,7 +11,7 @@ using UnityEngine;
                     - 무기 데이터의 수치만큼 플레이어 능력치 하락
  */
 
-public class WeaponItem : EquipmentItem, IEquipableItem
+public class WeaponItem : EquipmentItem
 {
     public WeaponItemData WeaponData { get; private set; }
     public WeaponItem(WeaponItemData data) : base(data) 
@@ -20,15 +20,13 @@ public class WeaponItem : EquipmentItem, IEquipableItem
     }
 
     // 장착
-    public bool Equip()
+    public override void Equip()
     {
         DataManager.Instance.GetPlayerData().EquipItem(WeaponData.Damage, WeaponData.Type);
-
-        return true;
     }
 
     // 장착 해제
-    public void Unequip()
+    public override void Unequip()
     {
         DataManager.Instance.GetPlayerData().UnequipItem(WeaponData.Damage, WeaponData.Type);
     }

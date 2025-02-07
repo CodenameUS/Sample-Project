@@ -13,9 +13,10 @@ public class ArmorItemData : EquipmentItemData
 {
     [SerializeField] private int defense;       // 방어력
     [SerializeField] private string type;       // 장비타입
-
+    [SerializeField] private string subType;    // 장비 세부타입
     public int Defense => defense;
     public string Type => type;
+    public string SubType => subType;
 
     public ArmorItemData(ArmorItemDTO dto)
     {
@@ -25,6 +26,7 @@ public class ArmorItemData : EquipmentItemData
         this.itemIcon = dto.itemIcon;
         this.defense = dto.defense;
         this.type = dto.type;
+        this.subType = dto.subType;
     }
 
     public override Item CreateItem()

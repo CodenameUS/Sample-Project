@@ -15,7 +15,7 @@ public class StatTextUI : MonoBehaviour
     {
         damageText.text = string.Format("{0}", Mathf.FloorToInt(DataManager.Instance.GetPlayerData().Damage));
         hpText.text = string.Format("{0}", Mathf.FloorToInt(DataManager.Instance.GetPlayerData().CurHp));
-        speedText.text = string.Format("{0}%", Mathf.RoundToInt(DataManager.Instance.GetPlayerData().Speed + 100));
+        speedText.text = string.Format("{0}%", Mathf.RoundToInt(DataManager.Instance.GetPlayerData().Speed));
         defenseText.text = string.Format("{0}", Mathf.FloorToInt(DataManager.Instance.GetPlayerData().Defense));
     }
 }

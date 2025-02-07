@@ -79,7 +79,7 @@ public class PlayerData
             case "Weapon":
                 damage -= value;
                 break;
-            case "Top":
+            case "Armor":
                 defense -= value;
                 break;
         }

@@ -11,7 +11,7 @@ using UnityEngine;
                     - 방어구 데이터의 수치만큼 플레이어 능력치 하락
  */
 
-public class ArmorItem : EquipmentItem, IEquipableItem
+public class ArmorItem : EquipmentItem
 {
     public ArmorItemData ArmorData { get; private set; }
     public ArmorItem(ArmorItemData data) : base(data)
@@ -19,14 +19,12 @@ public class ArmorItem : EquipmentItem, IEquipableItem
         ArmorData = data;
     }
     
-    public bool Equip()
+    public override void Equip()
     {
         DataManager.Instance.GetPlayerData().EquipItem(ArmorData.Defense, ArmorData.Type);
-
-        return true;
     }
 
-    public void Unequip()
+    public override void Unequip()
     {
         DataManager.Instance.GetPlayerData().UnequipItem(ArmorData.Defense, ArmorData.Type);
     }
