@@ -14,11 +14,12 @@ public class WeaponItemData : EquipmentItemData
     [SerializeField] private int damage;        // 무기 데미지
     [SerializeField] private float rate;        // 공격속도
     [SerializeField] private string type;       // 장비 타입
+    [SerializeField] private string subType;    // 장비 세부 타입
 
     public int Damage => damage;
     public float Rate => rate;
     public string Type => type;
-
+    public string SubType => subType;
     public WeaponItemData(WeaponItemDTO dto)
     {
         this.id = dto.id;
@@ -28,6 +29,7 @@ public class WeaponItemData : EquipmentItemData
         this.damage = dto.damage;
         this.rate = dto.rate;
         this.type = dto.type;
+        this.subType = dto.subType;
     }
 
     public override Item CreateItem()

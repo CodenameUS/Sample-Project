@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 /*
-                    Monster 클래스는 몬스터의 공통 데이터를 관리
+                    Monster - 몬스터의 공통 데이터를 관리
 
         - Monster Status & Flags
 

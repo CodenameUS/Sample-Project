@@ -276,4 +276,5 @@ public class EquipmentUI : MonoBehaviour
         }
     }
 
+
 }

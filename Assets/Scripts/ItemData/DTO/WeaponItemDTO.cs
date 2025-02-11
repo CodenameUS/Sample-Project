@@ -16,4 +16,6 @@ public class WeaponItemDTO
     public int damage;                  // 무기 데미지
     public float rate;                  // 공격속도
     public string type;                 // 장비 타입
+    public string subType;              // 장비 세부 타입
+
 }
