@@ -10,11 +10,8 @@ using UnityEngine;
 ///                     2. 각 데이터에 대한 접근자 메서드 제공 
 ///                     
 /// </summary>
-public class DataManager : MonoBehaviour
+public class DataManager : Singleton<DataManager>
 {
-    // 싱글톤
-    private static DataManager instance;
-
     private string playerDataPath;          // 플레이어 데이터 저장경로
     private string weaponItemDataPath;      // 무기 데이터 저장경로
     private string portionItemDataPath;     // 포션 데이터 저장경로
@@ -26,39 +23,9 @@ public class DataManager : MonoBehaviour
 
     private PlayerData playerData;
 
-    // 싱글톤
-    public static DataManager Instance
+    protected override void Awake()
     {
-        get
-        {
-            if (instance == null)
-            {
-                // 인스턴스가 존재하는지 한번 더 체크
-                instance = FindObjectOfType<DataManager>();
-
-                // 없다면
-                if (instance == null)
-                {
-                    GameObject obj = new GameObject("DataManager");
-                    instance = obj.AddComponent<DataManager>();
-                }
-            }
-            return instance;
-        }
-    }
-
-    private void Awake()
-    {
-        if(instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
+        base.Awake();
         InitAndLoadData();
     }
 

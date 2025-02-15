@@ -16,11 +16,13 @@ public abstract class ItemData
     [SerializeField] protected string itemName;               // 아이템 이름
     [SerializeField] protected string itemToolTip;            // 아이템 툴팁
     [SerializeField] protected string itemIcon;               // 아이템 아이콘 이름
+    [SerializeField] protected string itemPrefab;             // 아이템 프리팹 이름
 
     public int ID => id;
     public string ItemName => itemName;
     public string ItemToolTip => itemToolTip;
     public string ItemIcon => itemIcon;
+    public string ItemPrefab => itemPrefab;
 
     // 아이템 생성
     public abstract Item CreateItem();  

@@ -10,46 +10,19 @@ using UnityEngine.ResourceManagement.AsyncOperations;
                 - LoadIcon() : 아이콘 이름으로 어드레서블에서 아이콘 로드 및 캐싱
  */
 
-public class ResourceManager : MonoBehaviour
-{
-    private static ResourceManager instance;
-
+public class ResourceManager : Singleton<ResourceManager>
+{ 
     private Dictionary<string, Sprite> cashedSpriteDictionary = new Dictionary<string, Sprite>();
 
     // 어드레서블 Sprite 경로
-    private const string assetRef = "Assets/Sprites/";
+    private const string spriteRef = "Assets/Sprites/";
 
-    public static ResourceManager Instance
+    // 어드레서블 무기 Prefab 경로
+    private const string wPrefabRef = "Assets/Prefabs/WeaponPrefabs/";
+
+    protected override void Awake()
     {
-        get
-        {
-            if (instance == null)
-            {
-                // 인스턴스가 존재하는지 한번 더 체크
-                instance = FindObjectOfType<ResourceManager>();
-
-                // 없다면
-                if (instance == null)
-                {
-                    GameObject obj = new GameObject("ResourceManager");
-                    instance = obj.AddComponent<ResourceManager>();
-                }
-            }
-            return instance;
-        }
-    }
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        base.Awake();
     }
 
     // 아이콘 데이터 불러오기
@@ -63,7 +36,7 @@ public class ResourceManager : MonoBehaviour
         }
 
         // 어드레서블에서 Sprite 로드(이름으로)
-        Addressables.LoadAssetAsync<Sprite>(assetRef + spriteName).Completed += handle =>
+        Addressables.LoadAssetAsync<Sprite>(spriteRef + spriteName).Completed += handle =>
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
@@ -74,6 +47,24 @@ public class ResourceManager : MonoBehaviour
             else
             {
                 Debug.LogError($"다음 Sprite를 가져오는데 실패함. { spriteName }");
+                onLoaded?.Invoke(null);
+            }
+        };
+    }
+
+    // 무기 프리팹 불러오기
+    public void LoadWeaponPrefab(string prefabName, System.Action<GameObject> onLoaded)
+    {
+        Addressables.LoadAssetAsync<GameObject>(wPrefabRef + prefabName).Completed += handle =>
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                GameObject loadedPrefab = handle.Result;
+                onLoaded?.Invoke(loadedPrefab);
+            }
+            else
+            {
+                Debug.Log($"다음 Prefab을 가져오는데 실패함.{ prefabName }");
                 onLoaded?.Invoke(null);
             }
         };

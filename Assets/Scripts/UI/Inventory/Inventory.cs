@@ -425,10 +425,10 @@ public class Inventory : MonoBehaviour
             }
         }
         // 2. 장비 아이템일 때
-        else if(items[index] is IEquipableItem equipable)
+        else if(items[index] is IEquipableItem)
         {
             // 2.1. 무기 아이템일때 
-            if(equipable is WeaponItem)
+            if(items[index] is WeaponItem curWeapon)
             {
                 // 장착중인 아이템이 있으면 해제
                 if (equipmentUI.slotUIList[0].HasItem)
@@ -442,33 +442,30 @@ public class Inventory : MonoBehaviour
                     // 장착 해제
                     prevItem.Unequip();
                 }
-                WeaponItem curItem = (WeaponItem)items[index];
-                equipable.Equip();
-                equipmentUI.SetItemIcon(curItem,curItem.WeaponData.Type, curItem.Data.ItemIcon);
+                curWeapon.Equip();
+                equipmentUI.SetItemIcon(curWeapon, curWeapon.WeaponData.Type, curWeapon.Data.ItemIcon);
             }
             // 2.2 방어구 아이템일때
-            else if(equipable is ArmorItem)
+            else if(items[index] is ArmorItem curArmor)
             {
                 // 장착중인 아이템이 있으면 해제
-                if(equipmentUI.slotUIList[TypeToIndex()].HasItem)
+                if(equipmentUI.slotUIList[TypeToIndex(curArmor)].HasItem)
                 {
                     // 장착중인 아이템
-                    ArmorItem prevItem = (ArmorItem)equipmentUI.items[TypeToIndex()];
+                    ArmorItem prevItem = (ArmorItem)equipmentUI.items[TypeToIndex(curArmor)];
                     // 인벤토리에 아이템 추가
                     AddItem(prevItem.Data);
                     // 캐릭터 정보창 슬롯의 아이콘 제거
-                    equipmentUI.slotUIList[TypeToIndex()].RemoveItemIcon();
+                    equipmentUI.slotUIList[TypeToIndex(curArmor)].RemoveItemIcon();
                     // 장착 해제
                     prevItem.Unequip();
                 }
-                ArmorItem curItem = (ArmorItem)items[index];
-                equipable.Equip();
-                equipmentUI.SetItemIcon(curItem, curItem.ArmorData.SubType, curItem.Data.ItemIcon);
+                curArmor.Equip();
+                equipmentUI.SetItemIcon(curArmor, curArmor.ArmorData.SubType, curArmor.Data.ItemIcon);
             }
             // 방어구 타입별 인덱스
-            int TypeToIndex()
+            int TypeToIndex(ArmorItem curItem)
             {
-                ArmorItem curItem = (ArmorItem)items[index];
                 int typeIndex;
                 switch (curItem.ArmorData.SubType)
                 {

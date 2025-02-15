@@ -11,8 +11,6 @@ using System;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] WeaponController weaponController;
-
     private PlayerData playerData;
 
     readonly private int hashSpeed = Animator.StringToHash("Speed");
@@ -81,7 +79,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isAttackKeyDown)
         {
-            weaponController.Attack();
+            WeaponManager.Instance.Attack();
             anim.SetTrigger(hashAttackTrigger);
         }
     }

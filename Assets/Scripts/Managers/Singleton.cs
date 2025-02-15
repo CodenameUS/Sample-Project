@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+                        Singleton 제너릭 클래스
+ */
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance;
@@ -26,16 +29,15 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        // 씬 전환 시 유지되도록
-        if(transform.parent != null && transform.root != null)
+        if(instance != null && instance != this)
         {
-            DontDestroyOnLoad(this.transform.root.gameObject);
+            Destroy(gameObject);
+            return;
         }
-        else
-        {
-            DontDestroyOnLoad(this.gameObject);
-        }
+
+        instance = this as T;
+        DontDestroyOnLoad(gameObject);
     }
 }

@@ -26,6 +26,7 @@ public class WeaponItemData : EquipmentItemData
         this.itemName = dto.itemName;
         this.itemToolTip = dto.itemToolTip;
         this.itemIcon = dto.itemIcon;
+        this.itemPrefab = dto.itemPrefab;
         this.damage = dto.damage;
         this.rate = dto.rate;
         this.type = dto.type;
