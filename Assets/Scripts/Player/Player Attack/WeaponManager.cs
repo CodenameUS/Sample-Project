@@ -13,14 +13,19 @@ using System;
 
 public class WeaponManager : Singleton<WeaponManager>
 {
+    #region ** Serialized Fields **
     [SerializeField] PlayerController player;
     [SerializeField] Transform weaponTransform;
+    #endregion
 
-    public GameObject myWeapon;
-    private WeaponType myWeaponType;
-    public Weapon currentWeapon;
+    #region ** Fields **
+    private GameObject myWeaponGo;                      // 장착중인 무기 오브젝트
+    private WeaponType myWeaponType;                    // 장착중인 무기의 타입
+    private Weapon currentWeapon;
 
     readonly private int hashWeaponType = Animator.StringToHash("WeaponType");
+    #endregion 
+
 
     // 무기 타입별 WeaponType 파라미터값 
     public int CurWeaponType
@@ -53,8 +58,8 @@ public class WeaponManager : Singleton<WeaponManager>
                     newWeapon.transform.localRotation = prefab.transform.localRotation;
 
                     // 무기 설정
-                    myWeapon = newWeapon;
-                    currentWeapon = myWeapon.GetComponent<Weapon>();
+                    myWeaponGo = newWeapon;
+                    currentWeapon = myWeaponGo.GetComponent<Weapon>();
                     myWeaponType = WeaponType.None;
                 }
                 else
@@ -72,7 +77,6 @@ public class WeaponManager : Singleton<WeaponManager>
         CurWeaponType = (int)myWeaponType;
     }
 
-
     // 현재 무기 세팅(기본값 Punch)
     public void SetWeapon(string type = "None", string weapon = "Punch")
     {
@@ -84,20 +88,19 @@ public class WeaponManager : Singleton<WeaponManager>
                 {
                     currentWeapon = null;
                     // 기존 무기 삭제
-                    Destroy(myWeapon);
+                    Destroy(myWeaponGo);
                     // 프리팹 생성
                     GameObject newWeapon = Instantiate(prefab, prefab.transform.position, prefab.transform.rotation, weaponTransform);
                     newWeapon.transform.localPosition = prefab.transform.localPosition;
                     newWeapon.transform.localRotation = prefab.transform.localRotation;
 
-                    myWeapon = newWeapon;
-                    currentWeapon = myWeapon.GetComponent<Weapon>();
+                    myWeaponGo = newWeapon;
+                    currentWeapon = myWeaponGo.GetComponent<Weapon>();
 
                     // 새로운 무기로 설정
-                    myWeapon = newWeapon;
+                    myWeaponGo = newWeapon;
                     myWeaponType = result;
                     CurWeaponType = (int)myWeaponType;
-                    
                 }
                 else
                 {
@@ -109,8 +112,6 @@ public class WeaponManager : Singleton<WeaponManager>
         {
             Debug.Log($"{type} 은(는) 유효한 타입이 아닙니다.");
         }
-
-       
     }
 
     // 공격 전략 변경

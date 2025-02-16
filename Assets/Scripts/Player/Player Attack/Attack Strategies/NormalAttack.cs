@@ -12,6 +12,6 @@ public class NormalAttack : IAttackStrategy
     // 공격
     public void Attack()
     {
-        Debug.Log("공격 수행!");
+        Debug.Log("기본 공격 수행!");
     }
 }
