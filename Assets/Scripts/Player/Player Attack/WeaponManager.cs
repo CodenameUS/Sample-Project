@@ -21,7 +21,7 @@ public class WeaponManager : Singleton<WeaponManager>
     #region ** Fields **
     private GameObject myWeaponGo;                      // 장착중인 무기 오브젝트
     private WeaponType myWeaponType;                    // 장착중인 무기의 타입
-    private Weapon currentWeapon;
+    public Weapon currentWeapon;
 
     readonly private int hashWeaponType = Animator.StringToHash("WeaponType");
     #endregion 
@@ -111,34 +111,6 @@ public class WeaponManager : Singleton<WeaponManager>
         else
         {
             Debug.Log($"{type} 은(는) 유효한 타입이 아닙니다.");
-        }
-    }
-
-    // 공격 전략 변경
-    public void ChangeAttackStrategy(IAttackStrategy newStrategy)
-    {
-        if(currentWeapon != null)
-        {
-            currentWeapon.SetAttackStrategy(newStrategy);
-        }
-        // 무기가 없을 때(임시)
-        else
-        {
-            Debug.Log("무기가 장착되지 않았음");
-        }
-    }
-
-    // 현재 무기 공격 실행
-    public void Attack()
-    {
-        if(currentWeapon != null)
-        {
-            currentWeapon.PerformAttack();
-        }
-        // 무기가 없을 때(임시)
-        else
-        {
-            Debug.Log("무기가 장착되지 않았음");
         }
     }
 }

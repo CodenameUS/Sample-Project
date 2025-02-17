@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
 
     public Animator Anim => anim;
-
+    
     private void Awake()
     {
         Init();
@@ -79,8 +79,17 @@ public class PlayerController : MonoBehaviour
     {
         if (isAttackKeyDown)
         {
-            WeaponManager.Instance.Attack();
             anim.SetTrigger(hashAttackTrigger);
         }
+    }
+
+    private void EnableHitbox()
+    {
+        WeaponManager.Instance.currentWeapon.SetHitBox(true);
+    }
+
+    private void DisableHitbox()
+    {
+        WeaponManager.Instance.currentWeapon.SetHitBox(false);
     }
 }

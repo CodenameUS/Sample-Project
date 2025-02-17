@@ -4,30 +4,17 @@ using UnityEngine;
 
 /*                  
                     Weapon : 무기 베이스 클래스
-            - SetAttackStrategy() : 공격 전략을 동적으로 변경
-            - PerformAttack() : 현재 설정된 전략으로 공격
+            - Attack() : 현재 무기로 공격
  */
 public abstract class Weapon : MonoBehaviour
 {
-    protected IAttackStrategy attackStrategy;
     public WeaponType type;
 
-    // 전략 설정
-    public void SetAttackStrategy(IAttackStrategy nextStrategy)
-    {
-        attackStrategy = nextStrategy;
-    }
+    // 데미지 등
+    public abstract void Attack();
 
-    // 공격 수행
-    public void PerformAttack()
-    {
-        if(attackStrategy != null)
-        {
-            attackStrategy.Attack();
-        }
-        else
-        {
-            Debug.Log("공격 전략이 설정되지 않았음.");
-        }
-    }
+    protected abstract void OnTriggerEnter(Collider other);
+  
+    // 공격판정
+    public abstract void SetHitBox(bool isEnabled);
 }

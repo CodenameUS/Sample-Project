@@ -8141,24 +8141,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1095868998}
   m_CullTransparentMesh: 1
---- !u!1 &1099420808 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4957605393033350534, guid: 4f46098734d87e24490aef9267915ad2, type: 3}
-  m_PrefabInstance: {fileID: 31423225}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1099420810
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1099420808}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.3, z: 0.3}
-  m_Center: {x: -0.36, y: 0, z: 0}
 --- !u!4 &1099420811 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4957605393033350537, guid: 4f46098734d87e24490aef9267915ad2, type: 3}
@@ -9173,24 +9155,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1180113644 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4957605394390930186, guid: 4f46098734d87e24490aef9267915ad2, type: 3}
-  m_PrefabInstance: {fileID: 31423225}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1180113646
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1180113644}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.3, z: 0.3}
-  m_Center: {x: 0.36, y: 0, z: 0}
 --- !u!1001 &1181967407
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9999,18 +9963,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4957605393579145646, guid: 4f46098734d87e24490aef9267915ad2, type: 3}
   m_PrefabInstance: {fileID: 31423225}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1284003979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1284003967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00cbd762d14595f4893756b49904a672, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1304747775
 GameObject:
   m_ObjectHideFlags: 0
@@ -13992,6 +13944,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1284003973}
   weaponTransform: {fileID: 639211265}
+  currentWeapon: {fileID: 0}
 --- !u!4 &1838109177
 Transform:
   m_ObjectHideFlags: 0
@@ -15375,9 +15328,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2720783671114485012, guid: 6d799e7b2b46475419109cb9179b14ac, type: 3}
+      propertyPath: m_Mass
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2720783671114485012, guid: 6d799e7b2b46475419109cb9179b14ac, type: 3}
+      propertyPath: m_Constraints
+      value: 94
+      objectReference: {fileID: 0}
     - target: {fileID: 2722215027056581446, guid: 6d799e7b2b46475419109cb9179b14ac, type: 3}
       propertyPath: m_Name
       value: TurtleShell
+      objectReference: {fileID: 0}
+    - target: {fileID: 2722215027056581446, guid: 6d799e7b2b46475419109cb9179b14ac, type: 3}
+      propertyPath: m_TagString
+      value: Monster
       objectReference: {fileID: 0}
     - target: {fileID: 2725256822072847488, guid: 6d799e7b2b46475419109cb9179b14ac, type: 3}
       propertyPath: m_RootOrder
