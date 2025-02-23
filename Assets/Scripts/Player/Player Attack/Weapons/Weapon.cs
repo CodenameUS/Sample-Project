@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*                  
@@ -12,9 +10,7 @@ public abstract class Weapon : MonoBehaviour
 
     // 데미지 등
     public abstract void Attack();
-
-    protected abstract void OnTriggerEnter(Collider other);
   
-    // 공격판정
+    // 공격 판정 On/Off
     public abstract void SetHitBox(bool isEnabled);
 }

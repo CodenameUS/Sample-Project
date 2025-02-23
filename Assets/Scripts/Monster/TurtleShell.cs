@@ -19,7 +19,7 @@ using UnityEngine;
 public class TurtleShell : Monster
 {
     // TurtleShell이 가지는 상태
-    private enum States
+    public enum States
     {
         Idle,
         Chase,
@@ -27,7 +27,7 @@ public class TurtleShell : Monster
         Die
     }
 
-    private States curState;                             // 현재 상태
+    public States curState;                             // 현재 상태
     private StateMachine<TurtleShell> stateMachine;
     
     protected override void Awake()
@@ -40,11 +40,11 @@ public class TurtleShell : Monster
     private void Init()
     {
         // TurtleShell 능력치 초기화
-        maxHp = 100;
+        maxHp = 50;
         curHp = maxHp;
         speed = 1f;
         maxDistance = 5f;
-        idleThreshold = 0.3f;
+        idleThreshold = 0.1f;
         attackDelay = 2f;
         damage = 5f;
         attackRange = 1.3f;
@@ -62,22 +62,10 @@ public class TurtleShell : Monster
         stateMachine.curState.OnStateUpdate();
 
         DecideState();
-
-        if (Input.GetKeyDown(KeyCode.E))
-            curHp -= 110;
-    }
-
-    // Scan Range에 플레이어가 들어왔을경우 Chase 상태 돌입
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!other.CompareTag("Player"))
-            return;
-
-        ChangeState(States.Chase);
     }
 
     // 상태 변경
-    private void ChangeState(States nextState)
+    public void ChangeState(States nextState)
     {
         curState = nextState;
         switch(curState)
@@ -97,12 +85,13 @@ public class TurtleShell : Monster
         }
     }
 
+
     // 조건에따른 상태전환 결정
     private void DecideState()
     {
         // 플레이어 <-> 몬스터 거리
         float distanceToPlayer = Vector3.Distance(transform.position, Target.transform.position);
-        
+
         // Chase상태에서 원점으로 복귀완료 -> Idle상태 톨입
         if (curState == States.Chase && isReset && !isDead)
         {

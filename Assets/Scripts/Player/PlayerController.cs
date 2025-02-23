@@ -19,8 +19,9 @@ public class PlayerController : MonoBehaviour
     private float hAxis;
     private float vAxis;
     private bool isAttackKeyDown;
+    public bool isAttacking = false;
     private float baseSpeed = 3f;
-
+    
     private Vector3 moveVec;
     private Rigidbody rigid;
     private Animator anim;
@@ -58,6 +59,9 @@ public class PlayerController : MonoBehaviour
     // 플레이어 이동로직
     private void Move()
     {
+        if (isAttacking)
+            return;
+
         moveVec = new Vector3(hAxis, 0, vAxis).normalized;
 
         rigid.position += moveVec * (baseSpeed + playerData.Speed) * Time.deltaTime;
@@ -67,9 +71,9 @@ public class PlayerController : MonoBehaviour
     // 플레이어 회전로직
     private void Turn()
     {
-        // 캐릭터가 정지했을 때
-        if (moveVec == Vector3.zero)
+        if (isAttacking || moveVec == Vector3.zero)
             return;
+
         Quaternion newRotation = Quaternion.LookRotation(moveVec);
         rigid.rotation = Quaternion.Slerp(rigid.rotation, newRotation, playerData.RotateSpeed * Time.deltaTime);
     }
@@ -77,19 +81,19 @@ public class PlayerController : MonoBehaviour
     // 플레이어 공격
     private void Attack()
     {
-        if (isAttackKeyDown)
+        if (isAttackKeyDown && !isAttacking)
         {
             anim.SetTrigger(hashAttackTrigger);
         }
     }
 
-    private void EnableHitbox()
-    {
-        WeaponManager.Instance.currentWeapon.SetHitBox(true);
-    }
+    #region ** Animation Events **
+    private void IsAttacking() => isAttacking = !isAttacking;
 
-    private void DisableHitbox()
-    {
-        WeaponManager.Instance.currentWeapon.SetHitBox(false);
-    }
+    private void EnableAttackHitbox() => WeaponManager.Instance.currentWeapon.SetHitBox(true);
+    
+    private void DisableAttackHitbox() => WeaponManager.Instance.currentWeapon.SetHitBox(false);
+
+    private void TriggerAttack() => WeaponManager.Instance.currentWeapon.Attack();
+    #endregion
 }

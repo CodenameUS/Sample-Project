@@ -5,8 +5,8 @@ using UnityEngine;
 /*
                     Sword : 무기(검) 클래스
 
-            - BoxCollider를 사용해서 공격판정 구현
-            
+            - Collider를 사용해서 공격판정 구현
+            - SetHitBox() : Collider On/Off - 애니메이션 이벤트에 사용
  */
 public class Sword : Weapon
 {
@@ -23,16 +23,19 @@ public class Sword : Weapon
     // 공격 데미지 등
     public override void Attack()
     {
-        Debug.Log("몬스터 공격성공");
+       
     }
 
-    protected override void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Monster"))
         {
-            Attack();
+            Debug.Log("몬스터를 맞추었음");
+            Monster monster = other.GetComponent<Monster>();
+            monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage);
         }
     }
+
     public override void SetHitBox(bool isEnabled)
     {
         hitBox.enabled = isEnabled;

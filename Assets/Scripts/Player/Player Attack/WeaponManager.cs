@@ -4,11 +4,9 @@ using UnityEngine;
 using System;
 
 /*
-                    WeaponManager : 무기 및 전략 관리
+                    WeaponManager : 무기전략 및 무기별 애니메이션 설정
 
             - SetWeapon() : 현재 무기 설정
-            - ChangeAttackStrategy() : 공격 전략 변경
-            - Attack() : 현재 무기의 공격 실행
  */
 
 public class WeaponManager : Singleton<WeaponManager>

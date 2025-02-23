@@ -14,15 +14,18 @@ public class AttackState<T> : BaseState<T> where T : Monster
 {
     public AttackState(T monster) : base(monster) { }
 
+    private Vector3 startPos;
+
     public override void OnStateEnter()
     {
         monster.Anim.SetBool("Walk", false);
+        startPos = monster.transform.position;
     }
 
     public override void OnStateUpdate()
     {
         // 위치 고정
-        monster.Nav.SetDestination(monster.transform.position);
+        monster.Nav.SetDestination(startPos);
 
         // 플레이어 바라보기
         monster.transform.LookAt(monster.Target.transform);

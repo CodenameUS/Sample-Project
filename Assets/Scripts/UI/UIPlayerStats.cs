@@ -24,13 +24,6 @@ public class UIPlayerStats : MonoBehaviour
     {
         SetHMpText();
         SetHMpAmount();
-        Test();
-    }
-
-    void Test()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-            playerData.ModifyPlayerCurHp();
     }
 
     // Hp, Mp 텍스트 표기 형식

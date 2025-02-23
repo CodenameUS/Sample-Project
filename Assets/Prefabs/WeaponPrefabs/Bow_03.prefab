@@ -1449,7 +1449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8724250302845029698}
-  - component: {fileID: 7326448094564113918}
+  - component: {fileID: 7068123116993828345}
   m_Layer: 0
   m_Name: Bow_03
   m_TagString: Untagged
@@ -1474,7 +1474,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 81, z: 0}
---- !u!114 &7326448094564113918
+--- !u!114 &7068123116993828345
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1483,7 +1483,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8239638716962592760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec7fa5b682c33d643b850c8302b76c50, type: 3}
+  m_Script: {fileID: 11500000, guid: c3b0912a6316dd643b9ae75696198066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0

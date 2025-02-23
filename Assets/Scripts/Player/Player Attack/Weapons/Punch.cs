@@ -20,7 +20,7 @@ public class Punch : Weapon
        
     }
 
-    protected override void OnTriggerEnter(Collider other)
+    private  void OnTriggerEnter(Collider other)
     {
         
     }

@@ -13,14 +13,15 @@ using UnityEngine.AI;
         - 공통 함수
             - ReadyToAttack : 공격가능여부를 나타내는 isAttackReady 플래그를 True로
             - DeactiveGameObject : 몬스터 오브젝트를 비활성화
+            - GetDamaged : 받은 데미지만큼 Hp 감소
  */
 
 public class Monster : MonoBehaviour
 {
     #region ** Monster Status **
     [Header("#Monster Stats")]
-    public int maxHp;
-    public int curHp;
+    public float maxHp;
+    public float curHp;
     public float speed;
     public float maxDistance;                       // 플레이어와의 거리(복귀하기위한 최대거리)
     public float idleThreshold;                     // 복귀후 처음 위치와의 차이
@@ -30,7 +31,7 @@ public class Monster : MonoBehaviour
     #endregion
 
     #region ** Flags **
-    [HideInInspector]
+    //[HideInInspector]
     public bool isReset;                            // 원점으로 복귀했는지 여부
     [HideInInspector]
     public bool isAttackReady;                      // 공격 가능 여부
@@ -41,7 +42,6 @@ public class Monster : MonoBehaviour
     #region ** Private Fields **
     private Vector3 startPosition;                  // 몬스터의 첫 위치
     private PlayerController targetPlayer;          // 타깃 플레이어
-    private BoxCollider scanRangeCol;               // 플레이어 탐지범위
     private BoxCollider hitBoxCol;                  // 몬스터 히트박스
     private Animator anim;                          // 몬스터 애니메이터
     private NavMeshAgent nav;                       // 몬스터 네비게이션
@@ -71,7 +71,6 @@ public class Monster : MonoBehaviour
         anim = GetComponent<Animator>();
         nav = GetComponent<NavMeshAgent>();
         hitBoxCol = GetComponent<BoxCollider>();
-        scanRangeCol = GetComponent<BoxCollider>();
     }
 
 
@@ -88,9 +87,13 @@ public class Monster : MonoBehaviour
     }
 
     // 공격받음
-    public void GetDamaged(int damage)
+    public void GetDamaged(float damage)
     {
-        curHp -= damage;
+        float minDamage = damage * 0.8f;
+        float maxDamage = damage * 1.2f;
+        float randomDamage = Random.Range(minDamage, maxDamage);
+        Debug.Log((int)randomDamage + "만큼의 데미지");
+        curHp -= randomDamage;
     }
 
 }
