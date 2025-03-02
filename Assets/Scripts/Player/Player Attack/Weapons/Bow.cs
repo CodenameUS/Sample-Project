@@ -24,4 +24,9 @@ public class Bow : Weapon
     {
         
     }
+
+    public override void SetEffect(bool isEnabled)
+    {
+        
+    }
 }

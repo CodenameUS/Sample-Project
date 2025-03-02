@@ -89,5 +89,7 @@ public class PlayerData
     {
         Debug.Log(damage + "만큼 데미지 입음");
         curHp -= damage;
+        if (curHp <= 0)
+            curHp = 0;
     }
 }

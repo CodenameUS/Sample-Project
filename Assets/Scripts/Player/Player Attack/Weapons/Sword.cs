@@ -11,6 +11,7 @@ using UnityEngine;
 public class Sword : Weapon
 {
     private BoxCollider hitBox;                 // 공격 판정
+    private TrailRenderer effect;               // 공격 이펙트
 
     private void Awake()
     {
@@ -18,9 +19,9 @@ public class Sword : Weapon
         type = WeaponType.Sword;
 
         hitBox = GetComponent<BoxCollider>();
+        effect = GetComponentInChildren<TrailRenderer>();
     }
 
-    // 공격 데미지 등
     public override void Attack()
     {
        
@@ -30,7 +31,6 @@ public class Sword : Weapon
     {
         if(other.CompareTag("Monster"))
         {
-            Debug.Log("몬스터를 맞추었음");
             Monster monster = other.GetComponent<Monster>();
             monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage);
         }
@@ -39,5 +39,10 @@ public class Sword : Weapon
     public override void SetHitBox(bool isEnabled)
     {
         hitBox.enabled = isEnabled;
+    }
+
+    public override void SetEffect(bool isEnabled)
+    {
+        effect.enabled = isEnabled;
     }
 }

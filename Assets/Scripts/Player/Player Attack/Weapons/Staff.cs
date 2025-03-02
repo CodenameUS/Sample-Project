@@ -14,10 +14,10 @@ public class Staff : Weapon
     private float attackRange = 3f;             // 공격 범위
     private float attackRadius = 3f;            // 공격 반경 
 
-    private Vector3 attackOrigin;
-    private Vector3 attackDir;
+    private Vector3 attackOrigin;               // 공격 시작위치
+    private Vector3 attackDir;                  // 공격 방향
 
-    private List<RaycastResult> rrList;
+   
 
     private void Awake()
     {
@@ -27,10 +27,11 @@ public class Staff : Weapon
     // 공격 구현
     public override void Attack()
     {
+        // 공격시작 위치 : 플레이어약간앞, 공격방향 : 플레이어 정면
         attackOrigin = GameManager.Instance.player.transform.position + GameManager.Instance.player.transform.forward * 2f;
         attackDir = GameManager.Instance.player.transform.forward;
         
-        // 공격범위
+        // 공격
         RaycastHit[] hits = Physics.SphereCastAll(
             attackOrigin,
             attackRadius,
@@ -57,6 +58,10 @@ public class Staff : Weapon
         
     }
 
+    public override void SetEffect(bool isEnabled)
+    {
+        
+    }
     // 공격범위 시각화
     void OnDrawGizmos()
     {

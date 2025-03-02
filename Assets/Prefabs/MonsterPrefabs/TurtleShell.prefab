@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7e1e196bdd944440be03a80315caad1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scanRange: {fileID: 0}
+  parent: {fileID: 0}
 --- !u!135 &5548202918152077531
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1010,6 +1012,7 @@ MonoBehaviour:
   isReset: 1
   isAttackReady: 1
   isDead: 0
+  curState: 0
 --- !u!1 &2722230080612236278
 GameObject:
   m_ObjectHideFlags: 0
@@ -1387,7 +1390,6 @@ GameObject:
   - component: {fileID: 5696444023267332205}
   - component: {fileID: 2760179180562433668}
   - component: {fileID: 1466894757604504476}
-  - component: {fileID: 4791255988213937474}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1478,19 +1480,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4791255988213937474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4053402053316651116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29482a079fe1d404cb140700893f2b1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slider: {fileID: 5253719330106821966}
 --- !u!1 &5826431376013203308
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,8 @@ using UnityEngine.AI;
 
 public class Monster : MonoBehaviour
 {
+    [SerializeField] private Transform damageTextPos; // 데미지 텍스트 표시 위치
+
     #region ** Monster Status **
     [Header("#Monster Stats")]
     public float maxHp;
@@ -91,8 +93,8 @@ public class Monster : MonoBehaviour
     {
         float minDamage = damage * 0.8f;
         float maxDamage = damage * 1.2f;
-        float randomDamage = Random.Range(minDamage, maxDamage);
-        Debug.Log((int)randomDamage + "만큼의 데미지");
+        int randomDamage = (int)Random.Range(minDamage, maxDamage);
+        DamageTextManager.Instance.ShowDamage(damageTextPos.position, randomDamage);
         curHp -= randomDamage;
     }
 

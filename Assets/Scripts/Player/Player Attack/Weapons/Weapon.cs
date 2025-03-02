@@ -13,4 +13,7 @@ public abstract class Weapon : MonoBehaviour
   
     // 공격 판정 On/Off
     public abstract void SetHitBox(bool isEnabled);
+
+    // 이펙트 On/Off
+    public abstract void SetEffect(bool isEnabled);
 }

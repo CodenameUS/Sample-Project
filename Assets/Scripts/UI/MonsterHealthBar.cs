@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class MonsterHealthBar : MonoBehaviour
 {
-    [SerializeField] private Slider slider;
+    [SerializeField] private Slider slider;                 // 체력바 슬라이더
 
     private Monster monster;
-    private Transform cam;
+    private Transform cam;                                  // 메인 카메라 Transform
 
     private void Start()
     {
@@ -17,7 +17,6 @@ public class MonsterHealthBar : MonoBehaviour
 
         SetHpAmount();
     }
-
     private void Update()
     {
         // UI가 카메라를 정면으로 바라보도록

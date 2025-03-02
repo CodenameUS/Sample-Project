@@ -4,10 +4,11 @@ using UnityEngine;
 using System;
 
 /// <summary>
-/// 플레이어 제어와 관련된 동작수행
+/// 플레이어 제어와 관련된 동작수행 및 애니메이션
 /// 1. Move(움직임)
 /// 2. Turn(회전)
-/// 3. Attack(공격 애니메이션)
+/// 3. Attack(공격)
+/// 4. Dead(죽음)
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
@@ -15,11 +16,13 @@ public class PlayerController : MonoBehaviour
 
     readonly private int hashSpeed = Animator.StringToHash("Speed");
     readonly private int hashAttackTrigger = Animator.StringToHash("Attack");
+    readonly private int hashDeadTrigger = Animator.StringToHash("Dead");
 
     private float hAxis;
     private float vAxis;
     private bool isAttackKeyDown;
-    public bool isAttacking = false;
+    private bool isAttacking = false;
+    private bool isDead = false;
     private float baseSpeed = 3f;
     
     private Vector3 moveVec;
@@ -30,6 +33,7 @@ public class PlayerController : MonoBehaviour
     
     private void Awake()
     {
+        DontDestroyOnLoad(this.gameObject);
         Init();
     }
     
@@ -41,6 +45,10 @@ public class PlayerController : MonoBehaviour
         Move();
         Turn();
         Attack();
+        Dead();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            playerData.GetDamaged(10000f);
     }
 
     private void Init()
@@ -51,6 +59,9 @@ public class PlayerController : MonoBehaviour
 
     private void GetInput()
     {
+        if (isDead)
+            return;
+
         hAxis = Input.GetAxisRaw("Horizontal");
         vAxis = Input.GetAxisRaw("Vertical");
         isAttackKeyDown = Input.GetButtonDown("Attack");
@@ -59,7 +70,7 @@ public class PlayerController : MonoBehaviour
     // 플레이어 이동로직
     private void Move()
     {
-        if (isAttacking)
+        if (isAttacking || isDead)
             return;
 
         moveVec = new Vector3(hAxis, 0, vAxis).normalized;
@@ -71,7 +82,7 @@ public class PlayerController : MonoBehaviour
     // 플레이어 회전로직
     private void Turn()
     {
-        if (isAttacking || moveVec == Vector3.zero)
+        if (isAttacking || moveVec == Vector3.zero || isDead)
             return;
 
         Quaternion newRotation = Quaternion.LookRotation(moveVec);
@@ -81,9 +92,19 @@ public class PlayerController : MonoBehaviour
     // 플레이어 공격
     private void Attack()
     {
-        if (isAttackKeyDown && !isAttacking)
+        if (isAttackKeyDown && !isAttacking && !isDead)
         {
             anim.SetTrigger(hashAttackTrigger);
+        }
+    }
+
+    // 플레이어 죽음
+    private void Dead()
+    {
+        if(playerData.CurHp <= 0 && !isDead)
+        {
+            isDead = true;
+            anim.SetTrigger(hashDeadTrigger);
         }
     }
 
@@ -95,5 +116,10 @@ public class PlayerController : MonoBehaviour
     private void DisableAttackHitbox() => WeaponManager.Instance.currentWeapon.SetHitBox(false);
 
     private void TriggerAttack() => WeaponManager.Instance.currentWeapon.Attack();
+
+    private void EnableEffect() => WeaponManager.Instance.currentWeapon.SetEffect(true);
+
+    private void DisableEffect() => WeaponManager.Instance.currentWeapon.SetEffect(false);
+
     #endregion
 }

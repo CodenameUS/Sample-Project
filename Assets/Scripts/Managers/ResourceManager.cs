@@ -6,7 +6,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 /*
                      ResourceManager
 
-                - 싱글톤      
+                - 에셋관리 - 반복적으로 사용된 에셋을 캐싱해서 사용      
                 - LoadIcon() : 아이콘 이름으로 어드레서블에서 아이콘 로드 및 캐싱
  */
 
