@@ -10,7 +10,7 @@ public class DamageTextManager : Singleton<DamageTextManager>
     private int poolSize = 10;
 
     private Queue<TextMeshPro> pool = new Queue<TextMeshPro>();
-    
+
     protected override void Awake()
     {
         base.Awake();

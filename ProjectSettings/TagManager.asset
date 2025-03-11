@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Weapon
   - Monster
+  - Portal
+  - CutScene
   layers:
   - Default
   - TransparentFX

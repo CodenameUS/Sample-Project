@@ -8,10 +8,6 @@ public class CameraFollow : MonoBehaviour
 
     private Vector3 offset;                             // Å¸°Ù°úÀÇ Offset
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(this.gameObject);
-    }
     private void Start()
     {
         offset = new Vector3(0, transform.position.y, transform.position.z);
