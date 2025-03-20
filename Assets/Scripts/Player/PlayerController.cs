@@ -20,10 +20,14 @@ public class PlayerController : MonoBehaviour
 
     private float hAxis;
     private float vAxis;
+    private float baseSpeed = 3f;
+
     private bool isAttackKeyDown;
     private bool isAttacking = false;
     private bool isDead = false;
-    private float baseSpeed = 3f;
+
+    public bool isCutscenePlaying = false;
+
     
     private Vector3 moveVec;
     private Rigidbody rigid;
@@ -33,7 +37,6 @@ public class PlayerController : MonoBehaviour
     
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
         Init();
     }
     
@@ -47,8 +50,9 @@ public class PlayerController : MonoBehaviour
         Attack();
         Dead();
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            playerData.GetDamaged(10000f);
+        // 컷씬동안에는 Idle 애니메이션
+        if (isCutscenePlaying)
+            anim.SetFloat(hashSpeed, 0);
     }
 
     private void Init()
@@ -59,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
     private void GetInput()
     {
-        if (isDead)
+        if (isDead || isCutscenePlaying)
             return;
 
         hAxis = Input.GetAxisRaw("Horizontal");
@@ -70,7 +74,7 @@ public class PlayerController : MonoBehaviour
     // 플레이어 이동로직
     private void Move()
     {
-        if (isAttacking || isDead)
+        if (isAttacking || isDead || isCutscenePlaying)
             return;
 
         moveVec = new Vector3(hAxis, 0, vAxis).normalized;
@@ -82,7 +86,7 @@ public class PlayerController : MonoBehaviour
     // 플레이어 회전로직
     private void Turn()
     {
-        if (isAttacking || moveVec == Vector3.zero || isDead)
+        if (isAttacking || moveVec == Vector3.zero || isDead || isCutscenePlaying)
             return;
 
         Quaternion newRotation = Quaternion.LookRotation(moveVec);
@@ -92,7 +96,7 @@ public class PlayerController : MonoBehaviour
     // 플레이어 공격
     private void Attack()
     {
-        if (isAttackKeyDown && !isAttacking && !isDead)
+        if (isAttackKeyDown && !isAttacking && !isDead && !isCutscenePlaying)
         {
             anim.SetTrigger(hashAttackTrigger);
         }

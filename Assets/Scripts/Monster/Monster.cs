@@ -85,7 +85,7 @@ public class Monster : MonoBehaviour
     // 죽음
     public void DeactiveGameObject()
     {
-        gameObject.SetActive(false);
+        Destroy(this.gameObject);
     }
 
     // 공격받음

@@ -41,4 +41,7 @@ public class UIPlayerStats : MonoBehaviour
         float mpFillAmount = (float)playerData.CurMp / playerData.MaxMp;
         mpBar.value = mpFillAmount;
     }
+
+    // UI 활성/비활성화
+   
 }
