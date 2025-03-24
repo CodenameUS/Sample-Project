@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d021a39b585bb444e8613ed7222b3ede, type: 3}
   m_Name: NewDialogue
   m_EditorClassIdentifier: 
-  npcName: Store
+  npcName: "\uC0C1\uC810\uC8FC\uC778"
   sentences:
   - "\uC5B4\uC11C\uC624\uC138\uC694.\n\uC6D0\uD558\uC2DC\uB294 \uBB3C\uAC74\uC774
-    \uC788\uC73C\uC2E0\uAC00\uC694?\n\uC788\uB098\uC694 \uC5C6\uB098\uC694\n\uB9D0\uC500\uD558\uC138\uC694\n\uC81C\uBC1C\uC694"
+    \uC788\uC73C\uC2E0\uAC00\uC694?\n\uC800\uD76C \uC0C1\uC810\uC5D0\uB294 \uC5C6\uB294
+    \uBB3C\uAC74\uC774 \uC5C6\uB2F5\uB2C8\uB2E4. \uCC9C\uCC9C\uD788 \uB458\uB7EC\uBCF4\uC138\uC694."
