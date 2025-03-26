@@ -2,26 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+                    NPC
+
+        - 플레이어와 상호작용(G키)
+            ㄴ BoxCollider
+
+        - DialogueManager 에서 이 NPC의 대화를 시작할 수 있도록 데이터를 넘김
+
+ */
 public class NPC : MonoBehaviour
 {
-    [SerializeField] private DialogueDataSO dialogueData;
-    [SerializeField] private GameObject dialogueUI;
+    [SerializeField] protected GameObject dialogueUI;
+    
+    [HideInInspector]
+    public GameObject npcUI;                                     // 개별 NPC의 UI
 
-    private bool isPlayerInRange = false;                   // 플레이어가 범위안에 있는지 여부
-    private BoxCollider rangeCol;                           // 상호작용 범위
-
-    private void Awake()
-    {
-        rangeCol = GetComponent<BoxCollider>();
-    }
-
-    private void Update()
-    {
-        if(isPlayerInRange && Input.GetKeyDown(KeyCode.G) && !dialogueUI.activeSelf)
-        {
-            DialogueManager.Instance.StartDialogue(dialogueData);
-        }
-    }
+    protected bool isPlayerInRange = false;                      // 플레이어가 범위안에 있는지 여부
 
     private void OnTriggerEnter(Collider other)
     {
@@ -37,5 +34,13 @@ public class NPC : MonoBehaviour
         {
             isPlayerInRange = false;
         }
+    }
+
+    // NPC UI 활성/비활성화
+    public void SetActiveNpcUI()
+    {
+        npcUI.SetActive(!npcUI.activeSelf);
+        DialogueManager.Instance.isReadyToTalk = !npcUI.activeSelf;
+        DialogueManager.Instance.npc = null;
     }
 }
