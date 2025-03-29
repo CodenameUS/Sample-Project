@@ -12,7 +12,7 @@ public class PlayerData
     [SerializeField] private float rotateSpeed;
     [SerializeField] private float damage;
     [SerializeField] private float defense;
-
+    [SerializeField] private int gold;
 
     public float MaxHp => maxHp;
     public float CurHp => curHp;
@@ -22,20 +22,23 @@ public class PlayerData
     public float RotateSpeed => rotateSpeed;
     public float Damage => damage;
     public float Defense => defense;
+    public int Gold => gold;
 
-    // 생성자 - Status 초기화
-    public PlayerData(PlayerDataDTO.StatusDTO dto)
+    // 플레이어 데이터 초기화
+    public PlayerData(PlayerDataDTO.StatusDTO status)
     {
-        this.maxHp = dto.maxHp;
-        this.curHp = dto.curHp;
-        this.maxMp = dto.maxMp;
-        this.curMp = dto.curMp;
-        this.speed = dto.speed;
-        this.rotateSpeed = dto.rotateSpeed;
-        this.damage = dto.damage;
-        this.defense = dto.defense;
+        this.maxHp = status.maxHp;
+        this.curHp = status.curHp;
+        this.maxMp = status.maxMp;
+        this.curMp = status.curMp;
+        this.speed = status.speed;
+        this.rotateSpeed = status.rotateSpeed;
+        this.damage = status.damage;
+        this.defense = status.defense;
+        this.gold = status.gold;
     }
 
+    
     // 임시(플레이어 Hp 수정)
     public void ModifyPlayerCurHp()
     {
@@ -85,11 +88,18 @@ public class PlayerData
         }
     }
 
+    // 데미지 입음
     public void GetDamaged(float damage)
     {
         Debug.Log(damage + "만큼 데미지 입음");
         curHp -= damage;
         if (curHp <= 0)
             curHp = 0;
+    }
+
+    // 골드 사용
+    public void UseGold(int amount)
+    {
+        gold = (gold - amount) < 0 ? 0 : gold - amount;
     }
 }

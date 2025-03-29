@@ -4,6 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/*
+                    DialogueManager
+        
+        - 넘겨받은 대화 데이터를 가지고 대화를 시작
+
+        - NPC의 대화를 "--"를 기준으로 나누어 여러페이지에 걸쳐 출력되도록함
+        
+        - 대화시 타이핑 효과   
+ */
+
 public class DialogueManager : Singleton<DialogueManager>
 {
     [SerializeField] private GameObject dialogueUI;             // 대화창 오브젝트

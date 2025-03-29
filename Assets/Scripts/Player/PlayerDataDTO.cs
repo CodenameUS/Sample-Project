@@ -19,5 +19,7 @@ public class PlayerDataDTO
         public float rotateSpeed;       // 회전속도
         public float damage;            // 기본 공격력
         public float defense;           // 기본 방어력
+        public int gold;              // 보유 골드
     }
+
 }

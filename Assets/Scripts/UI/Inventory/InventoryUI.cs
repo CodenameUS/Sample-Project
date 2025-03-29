@@ -19,6 +19,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private GameObject itemSlotPrefab;     // 복제할 원본 슬롯 프리팹
     [SerializeField] private InventoryPopupUI popup;        // 팝업 UI
     [SerializeField] private ItemTooltipUI itemTooltipUI;
+    [SerializeField] private Text goldText;                 // 보유 골드 텍스트
     #endregion
 
     #region ** 인벤토리 옵션 **
@@ -71,6 +72,7 @@ public class InventoryUI : MonoBehaviour
         OnPointerDown();
         OnPointerDrag();
         OnPointerUp();
+        ShowPlayerGold();
     }
 
     #endregion
@@ -158,6 +160,8 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    // 보유 골드 표시
+    private void ShowPlayerGold() => goldText.text = DataManager.Instance.GetPlayerData().Gold.ToString();
     // 인벤토리 UI 비활성화
     private void HideUI()
     {
