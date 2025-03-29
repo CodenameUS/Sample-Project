@@ -50,7 +50,7 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         UpdateAccessibleSlots();
-        InitTest();
+        //InitTest();
     }
 
     private void Update()
@@ -64,7 +64,7 @@ public class Inventory : MonoBehaviour
     #endregion
 
     #region ** Private Methods **
-    // 인벤토리에 아이템 추가해보기(임시)
+    /* 인벤토리에 아이템 추가해보기(임시)
     private void InitTest()
     {
         int testItem01 = 1001;
@@ -74,7 +74,7 @@ public class Inventory : MonoBehaviour
         {
             int id = testItem01 + i;
 
-            WeaponItemData weaponData = DataManager.Instance.GetDataById(id);
+            WeaponItemData weaponData = DataManager.Instance.GetWeaponDataById(id);
 
             // 업 캐스팅(WeaponItemData => ItemData)
             ItemDataArray[i] = weaponData;
@@ -117,6 +117,7 @@ public class Inventory : MonoBehaviour
             }
         }
     }
+    */
 
     // 인벤토리 앞쪽부터 비어있는 슬롯 인덱스 탐색(성공시 빈슬롯 인덱스 반환, 실패시 -1 반환)
     private int FindEmptySlotIndex(int startIndex = 0)

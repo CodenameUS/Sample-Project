@@ -71,24 +71,26 @@ public class DataManager : Singleton<DataManager>
     // 무기 데이터 불러오기
     private Dictionary<int, WeaponItemData> LoadWeaponData()
     {
-        if(File.Exists(weaponItemDataPath))
+        Dictionary<int, WeaponItemData> dataDictionary = new Dictionary<int, WeaponItemData>();
+
+        if (File.Exists(weaponItemDataPath))
         {
             string jsonData = File.ReadAllText(weaponItemDataPath);
             var weaponDict = JsonConvert.DeserializeObject<Dictionary<string, List<WeaponItemDTO>>>(jsonData);
 
+            // 카테고리별 모든 데이터 저장
             if(weaponDict != null)
             {
                 foreach(var category in weaponDict)
                 {
-                    Dictionary<int, WeaponItemData> dataDictionary = new Dictionary<int, WeaponItemData>();
                     // DTO를 WeaponItemData로 변환하여 저장
                     foreach (var weaponDTO in category.Value)
                     {
                         WeaponItemData weaponData = new WeaponItemData(weaponDTO);
                         dataDictionary[weaponData.ID] = weaponData;
                     }
-                    return dataDictionary;
                 }
+                return dataDictionary;
             }
             else
             {
@@ -105,24 +107,26 @@ public class DataManager : Singleton<DataManager>
     // 포션 데이터 불러오기
     private Dictionary<int, PortionItemData> LoadPortionData()
     {
+        Dictionary<int, PortionItemData> dataDictionary = new Dictionary<int, PortionItemData>();
+
         if (File.Exists(portionItemDataPath))
         {
             string jsonData = File.ReadAllText(portionItemDataPath);
             var portionDict = JsonConvert.DeserializeObject<Dictionary<string, List<PortionItemDTO>>>(jsonData);
 
+            // 카테고리별 모든 데이터 저장
             if (portionDict !=  null)
             {
                 foreach (var category in portionDict)
                 {
-                    Dictionary<int, PortionItemData> dataDictionary = new Dictionary<int, PortionItemData>();
                     // DTO를 WeaponItemData로 변환하여 저장
                     foreach (var portionDTO in category.Value)
                     {
                         PortionItemData portionData = new PortionItemData(portionDTO);
                         dataDictionary[portionData.ID] = portionData;
                     }
-                    return dataDictionary;
                 }
+                return dataDictionary;
             }
             else
             {
@@ -139,23 +143,25 @@ public class DataManager : Singleton<DataManager>
     // 방어구 데이터 불러오기
     private Dictionary<int, ArmorItemData> LoadArmorData()
     {
-        if(File.Exists(armorItemDataPath))
+        Dictionary<int, ArmorItemData> dataDictionary = new Dictionary<int, ArmorItemData>();
+
+        if (File.Exists(armorItemDataPath))
         {
             string jsonData = File.ReadAllText(armorItemDataPath);
             var armorDict = JsonConvert.DeserializeObject<Dictionary<string, List<ArmorItemDTO>>>(jsonData);
 
-            if(armorDict != null)
+            // 카테고리별 모든 데이터 저장
+            if (armorDict != null)
             {
                 foreach(var category in armorDict)  // "Top", "Shoes", "Gloves"
                 {
-                    Dictionary<int, ArmorItemData> dataDictionary = new Dictionary<int, ArmorItemData>();
                     foreach (var armorDTO in category.Value)
                     {
                         ArmorItemData armorData = new ArmorItemData(armorDTO);
                         dataDictionary[armorData.ID] = armorData;
-                    }
-                    return dataDictionary;
+                    }  
                 }
+                return dataDictionary;
             }
             else
             {
@@ -170,7 +176,7 @@ public class DataManager : Singleton<DataManager>
     }
 
     // ID로 무기 데이터 가져오기
-    public WeaponItemData GetDataById(int id)
+    public WeaponItemData GetWeaponDataById(int id)
     {
         if(weponDataDictionary != null && weponDataDictionary.TryGetValue(id, out var resultData))
         {
@@ -206,7 +212,7 @@ public class DataManager : Singleton<DataManager>
         }
         else
         {
-            Debug.LogWarning("ID에 해당하는 방어구데이터가 없음.");
+            Debug.LogWarning(id + "에 해당하는 방어구데이터가 없음.");
             return null;
         }
     }
