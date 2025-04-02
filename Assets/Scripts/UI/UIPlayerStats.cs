@@ -29,16 +29,16 @@ public class UIPlayerStats : MonoBehaviour
     // Hp, Mp 텍스트 표기 형식
     private void SetHMpText()
     {
-        hpText.text = playerData.CurHp + " / " + playerData.MaxHp;
-        mpText.text = playerData.CurMp + " / " + playerData.MaxMp;
+        hpText.text = (int)playerData.CurHp + " / " + (int)playerData.MaxHp;
+        mpText.text = (int)playerData.CurMp + " / " + (int)playerData.MaxMp;
     }
 
     // 슬라이더 Value 조절
     private void SetHMpAmount()
     {
-        float hpFillAmount = (float)playerData.CurHp / playerData.MaxHp;
+        float hpFillAmount = (float)(playerData.CurHp / playerData.MaxHp);
         hpBar.value = hpFillAmount;
-        float mpFillAmount = (float)playerData.CurMp / playerData.MaxMp;
+        float mpFillAmount = (float)(playerData.CurMp / playerData.MaxMp);
         mpBar.value = mpFillAmount;
     }
 

@@ -20,10 +20,12 @@ public class DungeonManager : Singleton<DungeonManager>
     [SerializeField] private Transform cutScenePlayerPos;           // 컷씬 출력시 플레이어 위치
     [SerializeField] private TimelineAsset[] timelineAsset;         // 타임라인 에셋
     [SerializeField] private GameObject cutSceneObj;                // 컷씬 카메라 오브젝트
+    [SerializeField] private GameObject bossMonsterPrefab;          // 보스몬스터 프리팹
 
     private bool bossSpawned = false;                               // 보스 등장여부
     private PlayableDirector pd;
-    
+    private BossMonster boss;
+
     private void Start()
     {
         pd = GetComponent<PlayableDirector>();
@@ -66,6 +68,11 @@ public class DungeonManager : Singleton<DungeonManager>
     {
         bossSpawned = true;
 
+        Instantiate(bossMonsterPrefab, bossSpawnPoint);
+
+        // 보스몬스터 정보 가져오기
+        boss = GetComponentInChildren<BossMonster>();
+        
         // 컷씬 출력
         cutSceneObj.gameObject.SetActive(false);
         pd.Play(timelineAsset[0]);

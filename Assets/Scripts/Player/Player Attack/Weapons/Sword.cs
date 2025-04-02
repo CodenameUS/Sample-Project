@@ -34,6 +34,11 @@ public class Sword : Weapon
             Monster monster = other.GetComponent<Monster>();
             monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage);
         }
+        else if(other.CompareTag("BossMonster"))
+        {
+            BossMonster boss = other.GetComponent<BossMonster>();
+            boss.GetDamaged(DataManager.Instance.GetPlayerData().Damage);
+        }
     }
 
     public override void SetHitBox(bool isEnabled)
