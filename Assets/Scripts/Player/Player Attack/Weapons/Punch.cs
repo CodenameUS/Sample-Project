@@ -9,19 +9,26 @@ using UnityEngine.EventSystems;
 */
 public class Punch : Weapon
 {
-    private float attackRange = 1f;
+    private float attackRange = 1f;                         // 공격 사거리
+    private int maxComboCount = 1;
+
     private Vector3 boxSize = new Vector3(0.8f, 2f, 0.8f);
     private Vector3 attackOrigin;                             
     private Vector3 attackDir;
+
     
+
     private void Awake()
     {
         // 무기 타입 설정
         type = WeaponType.None;
     }
 
+    // 공격 판정
     public override void Attack()
     {
+        SetComboCount();
+
         attackOrigin = GameManager.Instance.player.transform.position + GameManager.Instance.player.transform.up;
         attackDir = GameManager.Instance.player.transform.forward;
         
@@ -46,6 +53,7 @@ public class Punch : Weapon
         }
     }
 
+
     private  void OnTriggerEnter(Collider other)
     {
         
@@ -60,6 +68,16 @@ public class Punch : Weapon
     {
 
     }
+
+    // ComboCount 설정
+    private void SetComboCount()
+    {
+        if (GameManager.Instance.player.CurComboCount < maxComboCount)
+            GameManager.Instance.player.CurComboCount++;
+        else
+            GameManager.Instance.player.CurComboCount = 0;
+    }
+
     // 공격범위 시각화
     void OnDrawGizmos()
     {

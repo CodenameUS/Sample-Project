@@ -62,6 +62,7 @@ public class Staff : Weapon
     {
         
     }
+
     // 공격범위 시각화
     void OnDrawGizmos()
     {
@@ -72,4 +73,6 @@ public class Staff : Weapon
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(attackOrigin + attackDir * attackRange, attackRadius);
     }
+
+    
 }

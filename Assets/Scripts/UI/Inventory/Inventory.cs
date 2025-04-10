@@ -402,7 +402,7 @@ public class Inventory : MonoBehaviour
             items[beginIndex] = itemB;
             items[endIndex] = itemA;
         }
-        
+        AudioManager.Instance.PlaySFX("InventoryChange");
         // ½½·Ô °»½Å
         UpdateSlot(beginIndex, endIndex);
     }

@@ -39,8 +39,9 @@ public class StoreItemSlotUI : MonoBehaviour
     // 구매 버튼 이벤트
     private void PerchaseItem()
     {
-        if(DataManager.Instance.GetPlayerData().Gold > price)
+        if(DataManager.Instance.GetPlayerData().Gold >= price)
         {
+            AudioManager.Instance.PlaySFX("Gold");
             inventory.AddItem(curItemData);
             DataManager.Instance.GetPlayerData().UseGold(price);
         }

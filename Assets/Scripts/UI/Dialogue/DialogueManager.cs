@@ -75,6 +75,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
         string page = pages.Dequeue();
         StopAllCoroutines();
+        
         StartCoroutine(TypePage(page));
     }
 
@@ -95,13 +96,17 @@ public class DialogueManager : Singleton<DialogueManager>
         isTypipng = true;
         dialogueText.text = "";
 
-        foreach(char letter in page.ToCharArray())
+        AudioManager.Instance.PlaySFX("DialogueEffect");
+
+        foreach (char letter in page.ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
 
         isTypipng = false;
+        AudioManager.Instance.StopSFX("DialogueEffect");
+
     }
 
     // 대화창 비활성화

@@ -17,29 +17,48 @@ public class PlayerController : MonoBehaviour
     readonly private int hashSpeed = Animator.StringToHash("Speed");
     readonly private int hashAttackTrigger = Animator.StringToHash("Attack");
     readonly private int hashDeadTrigger = Animator.StringToHash("Dead");
+    readonly private int hashComboCount = Animator.StringToHash("ComboCount");
 
     private float hAxis;
     private float vAxis;
     private float baseSpeed = 3f;
 
-    private bool isAttackKeyDown;
-    private bool isAttacking = false;
-    private bool isDead = false;
+    private bool isAttackKeyDown;                       // 공격키입력여부(C)
+    private bool isAttacking = false;                   // 공격중여부
+    private bool isDead = false;                        // 생존여부
+    private bool isComboAllowed = false;                // 콤보가능여부
 
-    public bool isCutscenePlaying = false;
+    public bool isCutscenePlaying = false;              // 컷신플레잉 여부
 
-    
     private Vector3 moveVec;
     private Rigidbody rigid;
     private Animator anim;
 
     public Animator Anim => anim;
-    
+
+    public int CurComboCount
+    {
+        get => anim.GetInteger(hashComboCount);
+        set => anim.SetInteger(hashComboCount, value);
+    }
+
     private void Awake()
     {
         Init();
     }
-    
+
+    private void Start()
+    {
+        Vector3 loadedPosition = new Vector3
+        (
+            DataManager.Instance.GetPlayerData().PosX,
+            DataManager.Instance.GetPlayerData().PosY,
+            DataManager.Instance.GetPlayerData().PosZ
+        );
+
+        transform.position = loadedPosition;
+    }
+
     private void Update()
     {
         playerData = DataManager.Instance.GetPlayerData();
@@ -48,6 +67,7 @@ public class PlayerController : MonoBehaviour
         Move();
         Turn();
         Attack();
+        ComboAttack();
         Dead();
 
         // 컷씬동안에는 Idle 애니메이션
@@ -55,12 +75,14 @@ public class PlayerController : MonoBehaviour
             anim.SetFloat(hashSpeed, 0);
     }
 
+    // 컴포넌트 초기화
     private void Init()
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
     }
 
+    // 키입력
     private void GetInput()
     {
         if (isDead || isCutscenePlaying)
@@ -93,10 +115,19 @@ public class PlayerController : MonoBehaviour
         rigid.rotation = Quaternion.Slerp(rigid.rotation, newRotation, playerData.RotateSpeed * Time.deltaTime);
     }
 
-    // 플레이어 공격
+    // 플레이어 공격 
     private void Attack()
     {
         if (isAttackKeyDown && !isAttacking && !isDead && !isCutscenePlaying)
+        {
+            anim.SetTrigger(hashAttackTrigger);
+        }
+    }
+
+    // 플레이어 콤보 공격
+    private void ComboAttack()
+    {
+        if(isAttackKeyDown && isAttacking && isComboAllowed)
         {
             anim.SetTrigger(hashAttackTrigger);
         }
@@ -113,7 +144,13 @@ public class PlayerController : MonoBehaviour
     }
 
     #region ** Animation Events **
-    private void IsAttacking() => isAttacking = !isAttacking;
+    private void SetIsAttackingTrue() => isAttacking = true;
+
+    private void SetIsAttackingFalse() => isAttacking = false;
+
+    private void SetIsComboAllowedTrue() => isComboAllowed = true;
+
+    private void SetIsComboAllowedFalse() => isComboAllowed = false;
 
     private void EnableAttackHitbox() => WeaponManager.Instance.currentWeapon.SetHitBox(true);
     
@@ -125,5 +162,6 @@ public class PlayerController : MonoBehaviour
 
     private void DisableEffect() => WeaponManager.Instance.currentWeapon.SetEffect(false);
 
+    private void ResetComboCount() => CurComboCount = 0;
     #endregion
 }

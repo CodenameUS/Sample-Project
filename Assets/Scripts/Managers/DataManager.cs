@@ -42,6 +42,14 @@ public class DataManager : Singleton<DataManager>
         armorDataDictionary = LoadArmorData();
     }
 
+    // 데이터 저장
+    public void SaveData<T>(T data, string fileName)
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
+        string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
+        File.WriteAllText(filePath, jsonData);
+    }
+
     // 플레이어 데이터 불러오기
     private PlayerData LoadPlayerData()
     {
@@ -50,22 +58,28 @@ public class DataManager : Singleton<DataManager>
             string jsonData = File.ReadAllText(playerDataPath);
             var playerDTO = JsonConvert.DeserializeObject<PlayerDataDTO>(jsonData);
 
-            if(playerDTO != null && playerDTO.Status != null)
+            if (playerDTO != null && playerDTO.Status != null && playerDTO.Position != null)
             {
-                PlayerData playerData = new PlayerData(playerDTO.Status[0]);
-                return playerData;
+                return new PlayerData(playerDTO);
             }
             else
             {
-                Debug.LogWarning("PlayerData.json 파일에 Status 배열이 비어있음");
-                return default(PlayerData);
+                Debug.LogWarning("PlayerData.json 파일에 Status 또는 Position 정보가 없음.");
+                return null;
             }
         }
         else
         {
             Debug.LogWarning("PlayerData.json 파일이 없음.");
-            return default(PlayerData);
+            return null;
         }
+    }
+
+    // 플레이어 데이터 저장
+    public void SavePlayerData()
+    {
+        PlayerDataDTO dto = playerData.ToDTO();
+        SaveData(dto, "PlayerData");
     }
 
     // 무기 데이터 불러오기
@@ -94,12 +108,12 @@ public class DataManager : Singleton<DataManager>
             }
             else
             {
-                Debug.LogWarning("Json 데이터를 파싱할 수 없습니다.");
+                Debug.LogWarning("Json 데이터를 파싱할 수 없음.");
             }
         }
         else
         {
-            Debug.LogWarning("불러올 파일이 없습니다.");
+            Debug.LogWarning("WeaponData.json 파일이 없음.");
         }
         return new Dictionary<int, WeaponItemData>();
     }
@@ -130,12 +144,12 @@ public class DataManager : Singleton<DataManager>
             }
             else
             {
-                Debug.LogWarning("Json 데이터를 파싱할 수 없습니다.");
+                Debug.LogWarning("Json 데이터를 파싱할 수 없음.");
             }
         }
         else
         {
-            Debug.LogWarning("불러올 파일이 없습니다.");
+            Debug.LogWarning("PortionData.json 파일이 없음.");
         }
         return new Dictionary<int, PortionItemData>();
     }
@@ -165,12 +179,12 @@ public class DataManager : Singleton<DataManager>
             }
             else
             {
-                Debug.LogWarning("Json 데이터를 파싱할 수 없습니다.");
+                Debug.LogWarning("Json 데이터를 파싱할 수 없음.");
             }
         }
         else
         {
-            Debug.LogWarning("불러올 파일이 없습니다.");
+            Debug.LogWarning("ArmorData.json 파일이 없음.");
         }
         return new Dictionary<int, ArmorItemData>();
     }
@@ -222,16 +236,5 @@ public class DataManager : Singleton<DataManager>
         return playerData;
     }
 
-    //  데이터 저장(제너릭)
-    public void SaveData<T>(T data, string fileName = "")
-    {
-        string jsonData = JsonUtility.ToJson(data);
-        string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
-        File.WriteAllText(filePath, jsonData);
-
-        if (typeof(T) == typeof(PlayerData))
-        {
-            playerData = data as PlayerData;
-        }
-    }
+   
 }
