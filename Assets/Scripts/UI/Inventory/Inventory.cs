@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using UnityEngine.UI;
+using System.IO;
 
 /*
                         Inventory
@@ -14,6 +13,20 @@ using UnityEngine.UI;
                 - FindCountableItemSlotIndex => 수량이 있는 아이템을 위한 빈 슬롯의 Index 반환
 
 */
+[System.Serializable]
+public class ItemSlotData
+{
+    public int slotIndex;
+    public int itemId;
+    public int amount;
+    public bool isAccessibleSlot;
+}
+
+[System.Serializable]
+public class InventoryDataList
+{
+    public List<ItemSlotData> itemList;
+}
 
 public class Inventory : MonoBehaviour
 {
@@ -25,10 +38,9 @@ public class Inventory : MonoBehaviour
     #endregion
 
     #region ** Fields **
-    public ItemData[] ItemDataArray;
+    public ItemData[] itemDataArray;
     public int Capacity { get; private set; }   // 인벤토리 수용한도
 
-    private bool inventoryKeydown;              // 인벤토리 키(I)
     private int initCapacity = 24;              // 초기 인벤토리 수용한도
     private int maxCapacity = 36;               // 최대 인벤토리 수용한도
 
@@ -39,17 +51,18 @@ public class Inventory : MonoBehaviour
     {
         // 인벤토리에서 관리할 수 있는 아이템은 최대 36개
         items = new Item[maxCapacity];                  
-        ItemDataArray = new ItemData[maxCapacity];
+        itemDataArray = new ItemData[maxCapacity];
 
         // 초기 수용량 : 24(임시)
         Capacity = initCapacity;
-
         inventoryUI.SetInventoryRef(this);
     }
 
     private void Start()
     {
+        LoadInventoryData();
         UpdateAccessibleSlots();
+
         //InitTest();
     }
 
@@ -118,6 +131,98 @@ public class Inventory : MonoBehaviour
         }
     }
     */
+
+    // 인벤토리 데이터 로드
+    private void LoadInventoryData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "InventoryData.json");
+
+        if(File.Exists(path))
+        {
+            string jsonData = File.ReadAllText(path);
+            InventoryDataList dataList = JsonUtility.FromJson<InventoryDataList>(jsonData);
+
+            foreach(var data in dataList.itemList)
+            {
+                itemDataArray[data.slotIndex] = ItemTypeById(data.itemId);
+
+                // 해당 슬롯인덱스에 저장된 아이템이 없을 때
+                if (itemDataArray[data.slotIndex] == null)
+                {
+                    continue;
+                }
+
+                // 아이템 생성 후 해당 슬롯에 직접 배치
+                Item item = itemDataArray[data.slotIndex].CreateItem();
+
+                if (item is CountableItem ci)
+                    ci.SetAmount(data.amount);
+
+                AddItemAt(data.slotIndex, item);
+            }
+        }
+
+        // 아이템 타입별 반환
+        ItemData ItemTypeById(int id)
+        {
+            if (id > 10000 && id < 20000)
+            {
+                PortionItemData temp = DataManager.Instance.GetPortionDataById(id);
+                return temp;
+            }
+            else if (id > 20000 && id < 30000)
+            {
+                ArmorItemData temp = DataManager.Instance.GetArmorDataById(id);
+                return temp;
+            }
+            else if (id > 30000 && id < 40000)
+            {
+                WeaponItemData temp = DataManager.Instance.GetWeaponDataById(id);
+                return temp;
+            }
+            else
+                return null;
+        }
+    }
+
+    // 인벤토리 데이터 저장
+    private void SaveInventoryData()
+    {
+        InventoryDataList saveData = new InventoryDataList();
+        saveData.itemList = new List<ItemSlotData>();
+
+        // 모든 슬롯을 돌며
+        for(int i = 0; i<items.Length; i++)
+        {
+            ItemSlotData slotData = new ItemSlotData();
+            slotData.slotIndex = i;
+
+            // 아이템이 있는경우(id, amount 저장)
+            if(items[i] != null)
+            {
+                slotData.itemId = items[i].Data.ID;
+
+                if (items[i] is CountableItem ci)
+                    slotData.amount = ci.Amount;
+                else
+                    slotData.amount = 1;
+            }
+            // 아이템이 없는경우
+            else
+            {
+                slotData.itemId = 0;
+                slotData.amount = 0;
+            }
+
+            saveData.itemList.Add(slotData);
+        }
+
+        string jsonData = JsonUtility.ToJson(saveData, true);
+        string path = Path.Combine(Application.persistentDataPath, "InventoryData.json");
+        File.WriteAllText(path, jsonData);
+
+        Debug.Log("인벤토리 저장 완료");
+    }
 
     // 인벤토리 앞쪽부터 비어있는 슬롯 인덱스 탐색(성공시 빈슬롯 인덱스 반환, 실패시 -1 반환)
     private int FindEmptySlotIndex(int startIndex = 0)
@@ -210,6 +315,9 @@ public class Inventory : MonoBehaviour
             inventoryUI.RemoveItem(index);
             inventoryUI.HideItemAmountText(index);
         }
+
+        // 인벤토리 데이터 저장
+        SaveInventoryData();
     }
 
     // 인덱스 슬롯 갱신(여러 개의 슬롯) Overload
@@ -354,6 +462,20 @@ public class Inventory : MonoBehaviour
         return amount;
     }
 
+    // 특정 슬롯에 특정 아이템 추가
+    public void AddItemAt(int index, Item item)
+    {
+        if(index < 0 || index >= maxCapacity)
+        {
+            Debug.LogWarning("슬롯 인덱스 범위 초과" + index);
+            return;
+        }
+
+        items[index] = item;
+
+        UpdateSlot(index);
+    }
+
     // 해당 인덱스 슬롯의 아이템 제거
     public void Remove(int index)
     {
@@ -416,13 +538,22 @@ public class Inventory : MonoBehaviour
         // 1. 소모 아이템일 때
         if(items[index] is IUsableItem usable)
         {
-            // 사용
-            bool success = usable.Use();
-
-            // 성공
-            if(success)
+            // 사용에 성공했을 때
+            if(usable.Use())
             {
-                UpdateSlot(index);
+                // 수량이 있는 아이템의 경우
+                if(items[index] is CountableItem ci)
+                {
+                    if(ci.IsEmpty)
+                    {
+                        Remove(index);      // 수량이 다 떨어졌을경우 제거
+                    }
+                }
+                // 일반 아이템은 바로 제거
+                else
+                {
+                    Remove(index);
+                }
             }
         }
         // 2. 장비 아이템일 때
@@ -484,7 +615,6 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-            Remove(index);
             UpdateSlot(index); 
     }
     #endregion

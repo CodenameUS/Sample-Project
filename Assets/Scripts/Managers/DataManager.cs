@@ -20,7 +20,6 @@ public class DataManager : Singleton<DataManager>
     private Dictionary<int, WeaponItemData> weponDataDictionary;
     private Dictionary<int, PortionItemData> portionDataDictionary;
     private Dictionary<int, ArmorItemData> armorDataDictionary;
-
     private PlayerData playerData;
 
     protected override void Awake()
@@ -73,13 +72,6 @@ public class DataManager : Singleton<DataManager>
             Debug.LogWarning("PlayerData.json 파일이 없음.");
             return null;
         }
-    }
-
-    // 플레이어 데이터 저장
-    public void SavePlayerData()
-    {
-        PlayerDataDTO dto = playerData.ToDTO();
-        SaveData(dto, "PlayerData");
     }
 
     // 무기 데이터 불러오기
@@ -230,11 +222,19 @@ public class DataManager : Singleton<DataManager>
             return null;
         }
     }
+
     // 플레이어 데이터에 대한 접근자 메서드
     public PlayerData GetPlayerData()
     {
         return playerData;
     }
 
-   
+    // 플레이어 데이터 저장
+    public void SavePlayerData()
+    {
+        PlayerDataDTO dto = playerData.ToDTO();
+        SaveData(dto, "PlayerData");
+        Debug.Log("세이브 완료!!");
+    }
+
 }
