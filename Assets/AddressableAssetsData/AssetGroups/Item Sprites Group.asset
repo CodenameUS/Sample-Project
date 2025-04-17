@@ -57,6 +57,30 @@ MonoBehaviour:
     m_Address: Assets/Sprites/Item_ArmorItem_Shoes_02.png
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 51d0cbd98e5243c4eac6f1e283a558c2
+    m_Address: Assets/Sprites/Item_WeaponItem_Bow_03.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4ebc70b29cf84034aa52eafdbca3951d
+    m_Address: Assets/Sprites/Item_WeaponItem_Staff_03.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c6b96b87adbd25343b9079d963ffb637
+    m_Address: Assets/Sprites/Item_WeaponItem_Bow_01.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0c7f2b30efde63b4e85506baea6e3484
+    m_Address: Assets/Sprites/Item_WeaponItem_Bow_02.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a4b5f62f33b3e004e8aace652e009615
+    m_Address: Assets/Sprites/Item_WeaponItem_Staff_02.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 469c2629c08b96944b6e1f3575449d4b
+    m_Address: Assets/Sprites/Item_WeaponItem_Staff_01.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 24fbd3b980f40fd4384dc1641c029845, type: 2}
   m_SchemaSet:

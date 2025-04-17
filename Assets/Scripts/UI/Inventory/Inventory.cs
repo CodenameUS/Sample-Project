@@ -5,13 +5,10 @@ using System.IO;
 
 /*
                         Inventory
-
+          
             - 인벤토리의 실질적인 내부 로직
                 - 아이템 추가, 아이템 사용, 아이템 삭제, 아이템 이동
-            - 인벤토리내의 빈슬롯 찾기
-                - FindEmptySlotIndex => 빈 슬롯의 Index 반환
-                - FindCountableItemSlotIndex => 수량이 있는 아이템을 위한 빈 슬롯의 Index 반환
-
+            - 인벤토리 데이터 Save & Load
 */
 [System.Serializable]
 public class ItemSlotData
@@ -614,6 +611,8 @@ public class Inventory : MonoBehaviour
                         return 0;
                 }
             }
+
+            Remove(index);
         }
             UpdateSlot(index); 
     }

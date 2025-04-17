@@ -12,6 +12,8 @@ using System;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private SkillSlotUI[] skillSlots;              // 스킬 슬롯
+
     private PlayerData playerData;
 
     readonly private int hashSpeed = Animator.StringToHash("Speed");
@@ -64,6 +66,7 @@ public class PlayerController : MonoBehaviour
         playerData = DataManager.Instance.GetPlayerData();
 
         GetInput();
+        DoSkill();
         Move();
         Turn();
         Attack();
@@ -93,6 +96,7 @@ public class PlayerController : MonoBehaviour
         isAttackKeyDown = Input.GetButtonDown("Attack");
     }
 
+ 
     // 플레이어 이동로직
     private void Move()
     {
@@ -130,6 +134,26 @@ public class PlayerController : MonoBehaviour
         if(isAttackKeyDown && isAttacking && isComboAllowed)
         {
             anim.SetTrigger(hashAttackTrigger);
+        }
+    }
+
+    // 스킬사용
+    private void DoSkill()
+    {
+        if (isAttacking || isDead || isCutscenePlaying)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            skillSlots[0].UseSkill();
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            skillSlots[1].UseSkill();
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            skillSlots[2].UseSkill();
         }
     }
 

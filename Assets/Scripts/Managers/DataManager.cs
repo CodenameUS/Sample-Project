@@ -17,7 +17,7 @@ public class DataManager : Singleton<DataManager>
     private string portionItemDataPath;     // 포션 데이터 저장경로
     private string armorItemDataPath;       // 방어구 데이터 저장경로
 
-    private Dictionary<int, WeaponItemData> weponDataDictionary;
+    private Dictionary<int, WeaponItemData> weaponDataDictionary;
     private Dictionary<int, PortionItemData> portionDataDictionary;
     private Dictionary<int, ArmorItemData> armorDataDictionary;
     private PlayerData playerData;
@@ -36,7 +36,7 @@ public class DataManager : Singleton<DataManager>
         armorItemDataPath = Path.Combine(Application.persistentDataPath, "ArmorData.json");
 
         playerData = LoadPlayerData();
-        weponDataDictionary = LoadWeaponData();
+        weaponDataDictionary = LoadWeaponData();
         portionDataDictionary = LoadPortionData();
         armorDataDictionary = LoadArmorData();
     }
@@ -184,7 +184,7 @@ public class DataManager : Singleton<DataManager>
     // ID로 무기 데이터 가져오기
     public WeaponItemData GetWeaponDataById(int id)
     {
-        if(weponDataDictionary != null && weponDataDictionary.TryGetValue(id, out var resultData))
+        if(weaponDataDictionary != null && weaponDataDictionary.TryGetValue(id, out var resultData))
         {
             return resultData;
         }
