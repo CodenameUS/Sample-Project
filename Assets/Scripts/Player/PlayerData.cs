@@ -21,8 +21,6 @@ public class PlayerData
     #region ** Player Status **
     [SerializeField] private float maxHp;
     [SerializeField] private float curHp;
-    [SerializeField] private float maxMp;
-    [SerializeField] private float curMp;
     [SerializeField] private float speed;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private float damage;
@@ -39,8 +37,6 @@ public class PlayerData
     #region ** Properties **
     public float MaxHp => maxHp;
     public float CurHp => curHp;
-    public float MaxMp => maxMp;
-    public float CurMp => curMp;
     public float Speed => speed;
     public float RotateSpeed => rotateSpeed;
     public float Damage => damage;
@@ -56,8 +52,6 @@ public class PlayerData
     {
         this.maxHp = dto.Status.maxHp;
         this.curHp = dto.Status.curHp;
-        this.maxMp = dto.Status.maxMp;
-        this.curMp = dto.Status.curMp;
         this.speed = dto.Status.speed;
         this.rotateSpeed = dto.Status.rotateSpeed;
         this.damage = dto.Status.damage;
@@ -78,8 +72,6 @@ public class PlayerData
             {
                 maxHp = this.maxHp,
                 curHp = this.curHp,
-                maxMp = this.maxMp,
-                curMp = this.curMp,
                 speed = this.speed,
                 rotateSpeed = this.rotateSpeed,
                 damage = this.damage,
@@ -103,9 +95,6 @@ public class PlayerData
         {
             case "Health":
                 curHp = Mathf.Min(curHp + value, maxHp);
-                break;
-            case "Mana":
-                curMp = Mathf.Min(curMp + value, maxMp);
                 break;
         }
     }

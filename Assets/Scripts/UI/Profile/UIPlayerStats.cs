@@ -6,40 +6,35 @@ using UnityEngine.UI;
 public class UIPlayerStats : MonoBehaviour
 {
     [SerializeField] private Slider hpBar;
-    [SerializeField] private Slider mpBar;
 
     [SerializeField] private Text hpText;
-    [SerializeField] private Text mpText;
 
     private PlayerData playerData;
 
     private void Start()
     {
         playerData = DataManager.Instance.GetPlayerData();
-        SetHMpText();
-        SetHMpAmount();
+        SetHpText();
+        SetHpAmount();
     }
 
     private void Update()
     {
-        SetHMpText();
-        SetHMpAmount();
+        SetHpText();
+        SetHpAmount();
     }
 
     // Hp, Mp 텍스트 표기 형식
-    private void SetHMpText()
+    private void SetHpText()
     {
         hpText.text = (int)playerData.CurHp + " / " + (int)playerData.MaxHp;
-        mpText.text = (int)playerData.CurMp + " / " + (int)playerData.MaxMp;
     }
 
     // 슬라이더 Value 조절
-    private void SetHMpAmount()
+    private void SetHpAmount()
     {
         float hpFillAmount = (float)(playerData.CurHp / playerData.MaxHp);
         hpBar.value = hpFillAmount;
-        float mpFillAmount = (float)(playerData.CurMp / playerData.MaxMp);
-        mpBar.value = mpFillAmount;
     }
 
     // UI 활성/비활성화

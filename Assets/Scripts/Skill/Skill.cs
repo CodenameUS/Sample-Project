@@ -28,5 +28,5 @@ public abstract class Skill
         anim = user.GetComponent<Animator>();
     }
 
-    public abstract void Activate(GameObject user);
+    public abstract bool Activate(GameObject user);
 }

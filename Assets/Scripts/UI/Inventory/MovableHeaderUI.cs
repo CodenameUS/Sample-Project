@@ -18,6 +18,12 @@ public class MovableHeaderUI : MonoBehaviour, IDragHandler, IPointerDownHandler
             targetUI = transform.parent;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            HideUI();
+    }
+
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
         targetUI.position = beginPoint + (eventData.position - moveBegin);

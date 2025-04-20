@@ -20,6 +20,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private InventoryPopupUI popup;        // 팝업 UI
     [SerializeField] private ItemTooltipUI itemTooltipUI;
     [SerializeField] private Text goldText;                 // 보유 골드 텍스트
+    [SerializeField] private UIRaycaster rc;                // 레이캐스터
     #endregion
 
     #region ** 인벤토리 옵션 **
@@ -65,8 +66,6 @@ public class InventoryUI : MonoBehaviour
 
     private void Update()
     {
-        ped.position = Input.mousePosition;
-
         OnPointerEnterAndExit();
         ShowOrHideTooltipUI();
         OnPointerDown();
@@ -81,13 +80,6 @@ public class InventoryUI : MonoBehaviour
     // 초기화
     private void Init()
     {
-        TryGetComponent(out gr);
-        if (gr == null)
-            gr = gameObject.AddComponent<GraphicRaycaster>();
-
-        ped = new PointerEventData(EventSystem.current);
-        rrList = new List<RaycastResult>();
-
         if(itemTooltipUI == null)
         {
             itemTooltipUI = GetComponentInChildren<ItemTooltipUI>();
@@ -190,6 +182,12 @@ public class InventoryUI : MonoBehaviour
         inventory.Use(index);
     }
 
+    // 플레이어 아이템창에 아이템 등록
+    private void TryRegisterItem(int index, PlayerItemSlotUI end)
+    {
+        inventory.AddItemAtPlayerItemSlot(index, end);
+    }
+
     // 툴팁 UI 슬롯 데이터 갱신
     private void UpdateTooltipUI(ItemSlotUI slot)
     {
@@ -210,23 +208,6 @@ public class InventoryUI : MonoBehaviour
     // 마우스 커서가 UI 위에 있는지 여부
     private bool IsOverUI() => EventSystem.current.IsPointerOverGameObject();
 
-    // 레이캐스팅한 첫 UI요소의 컴포넌트를 가져오기
-    private T RaycastAndgetFirstComponent<T>() where T : Component
-    {
-        // 리스트 초기화
-        rrList.Clear();
-
-        // 현재 마우스 위치에서 감지된 UI요소 저장
-        gr.Raycast(ped, rrList);
-
-        // 없으면 null
-        if (rrList.Count == 0)
-            return null;
-
-        // 첫번째 UI의 컴포넌트 반환
-        return rrList[0].gameObject.GetComponent<T>();
-    }
-
     // 아이템 툴팁 UI 활성/비활성화
     private void ShowOrHideTooltipUI()
     {
@@ -245,6 +226,7 @@ public class InventoryUI : MonoBehaviour
 
     }
 
+    
     // 마우스 올라갈때 나갈때 처리
     private void OnPointerEnterAndExit()
     {
@@ -252,7 +234,7 @@ public class InventoryUI : MonoBehaviour
         var prevSlot = pointerOverSlot;
 
         // 현재 프레임 슬롯
-        var curSlot = pointerOverSlot = RaycastAndgetFirstComponent<ItemSlotUI>();
+        var curSlot = pointerOverSlot = rc.RaycastAndgetFirstComponent<ItemSlotUI>();
 
         // 마우스 올라갈 때
         if (prevSlot == null)
@@ -288,7 +270,7 @@ public class InventoryUI : MonoBehaviour
             prevSlot.Highlight(false);
         }
     }
-
+    
     // 마우스 눌렀을 때 처리
     private void OnPointerDown()
     {
@@ -296,8 +278,7 @@ public class InventoryUI : MonoBehaviour
         if (Input.GetMouseButtonDown(leftClick))
         {
             // 시작 슬롯
-            beginDragSlot = RaycastAndgetFirstComponent<ItemSlotUI>();
-
+            beginDragSlot = rc.RaycastAndgetFirstComponent<ItemSlotUI>();
             // 슬롯에 아이템이 있을 때
             if (beginDragSlot != null && beginDragSlot.HasItem && beginDragSlot.IsAccessible)
             {
@@ -319,7 +300,7 @@ public class InventoryUI : MonoBehaviour
         // 마우스 우클릭(아이템 사용 및 장착)
         else if (Input.GetMouseButtonDown(rightClick))
         {
-            ItemSlotUI slotUI = RaycastAndgetFirstComponent<ItemSlotUI>();
+            ItemSlotUI slotUI = rc.RaycastAndgetFirstComponent<ItemSlotUI>();
             
             if(slotUI != null && slotUI.HasItem && slotUI.IsAccessible)
             {
@@ -372,14 +353,21 @@ public class InventoryUI : MonoBehaviour
     // 마우스 드래그 종료 처리(아이템 교환, 이동, 버리기 등)
     private void EndDrag()
     {
-        ItemSlotUI endDragSlot = RaycastAndgetFirstComponent<ItemSlotUI>();
+        ItemSlotUI endDragSlot = rc.RaycastAndgetFirstComponent<ItemSlotUI>();
+        PlayerItemSlotUI playerSlot = rc.RaycastAndgetFirstComponent<PlayerItemSlotUI>();
+
+        // 플레이어 아이템창에 아이템 등록
+        if (playerSlot != null)
+        {
+            TryRegisterItem(beginDragSlot.Index, playerSlot);
+        }
 
         // 아이템 이동 및 교환
         if (endDragSlot != null && endDragSlot.IsAccessible)
         {
             TrySwapItems(beginDragSlot, endDragSlot);
-
         }
+        
         // 아이템 버리기
         if (!IsOverUI())
         {

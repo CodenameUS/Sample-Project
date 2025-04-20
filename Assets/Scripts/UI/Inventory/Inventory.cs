@@ -28,10 +28,11 @@ public class InventoryDataList
 public class Inventory : MonoBehaviour
 {
     #region ** Serialized Fields **
-    [SerializeField] InventoryUI inventoryUI;
-    [SerializeField] GameObject inventoryGo;
-    [SerializeField] Item[] items;
-    [SerializeField] EquipmentUI equipmentUI;
+    [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private GameObject inventoryGo;
+    [SerializeField] private Item[] items;
+    [SerializeField] private EquipmentUI equipmentUI;
+    [SerializeField] private PlayerItemGroupUI playerItemGruopUI;
     #endregion
 
     #region ** Fields **
@@ -59,8 +60,6 @@ public class Inventory : MonoBehaviour
     {
         LoadInventoryData();
         UpdateAccessibleSlots();
-
-        //InitTest();
     }
 
     private void Update()
@@ -74,61 +73,7 @@ public class Inventory : MonoBehaviour
     #endregion
 
     #region ** Private Methods **
-    /* 인벤토리에 아이템 추가해보기(임시)
-    private void InitTest()
-    {
-        int testItem01 = 1001;
-
-        // 장비아이템 임시추가
-        for(int i = 0; i<2;i++)
-        {
-            int id = testItem01 + i;
-
-            WeaponItemData weaponData = DataManager.Instance.GetWeaponDataById(id);
-
-            // 업 캐스팅(WeaponItemData => ItemData)
-            ItemDataArray[i] = weaponData;
-
-            // 다운 캐스팅
-            if (ItemDataArray[i] is WeaponItemData)
-            {
-                AddItem(ItemDataArray[i]);
-            }
-        }
-
-        int testItem02 = 2001;
-        // 포션아이템 임시추가
-        for (int i = 0; i < 2; i++)
-        {
-            int id = testItem02 + i;
-
-            PortionItemData portionData = DataManager.Instance.GetPortionDataById(id);
-
-            ItemDataArray[i + 2] = portionData;
-
-            if (ItemDataArray[i + 2] is PortionItemData)
-            {
-                AddItem(ItemDataArray[i + 2], 110);
-            }
-        }
-
-        int testItem03 = 3001;
-        // 방어구 아이템 임시추가
-        for (int i = 0; i < 2; i++)
-        {
-            int id = testItem03 + i;
-
-            ArmorItemData armorData = DataManager.Instance.GetArmorDataById(id);
-            ItemDataArray[i + 6] = armorData;
-
-            if (ItemDataArray[i + 6] is ArmorItemData)
-            {
-                AddItem(ItemDataArray[i + 6]);
-            }
-        }
-    }
-    */
-
+    
     // 인벤토리 데이터 로드
     private void LoadInventoryData()
     {
@@ -275,18 +220,8 @@ public class Inventory : MonoBehaviour
             // 1. 수량이 있는 아이템인 경우
             if(item is CountableItem ci)
             {
-                // 수량이 없을 때 아이템 제거
-                if(ci.IsEmpty)
-                {
-                    items[index] = null;
-                    RemoveIcon();
-                    return;
-                }
-                // 아이콘 및 수량 표시
-                else
-                {
-                    inventoryUI.SetItemIconAndAmountText(index, item.Data.ItemIcon, ci.Amount);
-                }
+                inventoryUI.SetItemIconAndAmountText(index, item.Data.ItemIcon, ci.Amount);
+                playerItemGruopUI.UpdateSlots();
             }
             // 2. 장비 아이템
             else if(item is EquipmentItem ei)
@@ -303,7 +238,9 @@ public class Inventory : MonoBehaviour
         // 슬롯에 아이템이 없을 때
         else
         {
-            RemoveIcon();
+            Remove(index);
+            playerItemGruopUI.UpdateSlots();
+            //RemoveIcon();
         }
 
         // 아이콘 제거 함수
@@ -325,7 +262,6 @@ public class Inventory : MonoBehaviour
             UpdateSlot(i);
         }
     }
-
     #endregion
 
     #region ** Getter & Check Methods **
@@ -459,7 +395,7 @@ public class Inventory : MonoBehaviour
         return amount;
     }
 
-    // 특정 슬롯에 특정 아이템 추가
+    // 특정 인벤토리 슬롯에 특정 아이템 추가
     public void AddItemAt(int index, Item item)
     {
         if(index < 0 || index >= maxCapacity)
@@ -473,10 +409,19 @@ public class Inventory : MonoBehaviour
         UpdateSlot(index);
     }
 
+    // 플레이어 아이템 슬롯에 아이템 추가
+    public void AddItemAtPlayerItemSlot(int index, PlayerItemSlotUI slot)
+    {
+        if (items[index] is CountableItem ci)
+            playerItemGruopUI.SetItemIconAndAmountText(slot.index, ci);
+    }
+
     // 해당 인덱스 슬롯의 아이템 제거
     public void Remove(int index)
     {
         if (!IsValidIndex(index)) return;
+
+        playerItemGruopUI.RemoveItem((CountableItem)items[index]);
 
         // 인덱스의 아이템 제거
         items[index] = null;
