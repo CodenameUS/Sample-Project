@@ -240,14 +240,6 @@ public class Inventory : MonoBehaviour
         {
             Remove(index);
             playerItemGruopUI.UpdateSlots();
-            //RemoveIcon();
-        }
-
-        // 아이콘 제거 함수
-        void RemoveIcon()
-        {
-            inventoryUI.RemoveItem(index);
-            inventoryUI.HideItemAmountText(index);
         }
 
         // 인벤토리 데이터 저장
@@ -421,7 +413,8 @@ public class Inventory : MonoBehaviour
     {
         if (!IsValidIndex(index)) return;
 
-        playerItemGruopUI.RemoveItem((CountableItem)items[index]);
+        if(items[index] is CountableItem)
+            playerItemGruopUI.RemoveItem((CountableItem)items[index]);
 
         // 인덱스의 아이템 제거
         items[index] = null;
@@ -560,6 +553,19 @@ public class Inventory : MonoBehaviour
             Remove(index);
         }
             UpdateSlot(index); 
+    }
+
+    // 아이템 슬롯의 아이템 사용
+    public void Use(CountableItem ci)
+    {
+        for(int i = 0;i<=items.Length;i++)
+        {
+            if (items[i] == ci)
+            {
+                Use(i);
+                return;
+            }
+        }
     }
     #endregion
 }

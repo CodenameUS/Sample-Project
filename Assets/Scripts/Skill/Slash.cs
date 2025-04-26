@@ -12,6 +12,7 @@ public class Slash : Skill
 {
     public Slash(SkillData data) : base(data) { }
 
+    
     // 스킬 사용
     public override bool Activate(GameObject user)
     {
@@ -32,7 +33,23 @@ public class Slash : Skill
         { 
             anim.SetTrigger("Skill");
             anim.SetInteger("SkillId", data.AnimId);
-            Debug.Log($"{data.Name} : 사용!");
+
+            if(cachedEffect == null)
+            {
+                // 생성된 이펙트가 없으면 생성
+                cachedEffect = UnityEngine.Object.Instantiate(effectPrefab,
+                user.transform.position + new Vector3(0,1,0),
+                user.transform.rotation, SkillManager.Instance.gameObject.transform);
+            }
+            else
+            {
+                // 생성된 이펙트가 있으면 새로운 위치 지정
+                cachedEffect.transform.position = user.transform.position + new Vector3(0, 1, 0);
+                cachedEffect.transform.rotation = user.transform.rotation;
+            }
+
+            cachedEffect.SetActive(true);
+
             return true;
         }
     }

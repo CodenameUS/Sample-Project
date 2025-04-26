@@ -38,15 +38,22 @@ public class SkillSlotUI : MonoBehaviour
         cooldownTime = skillData.Cooldown;
     }
 
+    // 스킬 사용
     public void UseSkill()
     {
-        if (skill != null && !isCooldown)
+        // 쿨타임 아닐때
+        if(!isCooldown)
         {
-            if(skill.Activate(GameManager.Instance.player.gameObject))
-                StartCoroutine(Cooldown());
-        }
+            // 스킬사용 성공여부에따라 쿨타임적용
+            SkillManager.Instance.ExecuteSkill(skillId, GameManager.Instance.player.gameObject, successed =>
+            {
+                if (successed)
+                    StartCoroutine(Cooldown());
+            });
+        }  
     }
-
+    
+    // 스킬 쿨타임 표시
     private IEnumerator Cooldown()
     {
         isCooldown = true;
@@ -64,7 +71,7 @@ public class SkillSlotUI : MonoBehaviour
         StartCoroutine(Highlight());
     }
 
-    // 하이라이트 Fade-in
+    // 슬롯 강조효과
     private IEnumerator Highlight()
     {
         // 하이라이트 이미지 활성화

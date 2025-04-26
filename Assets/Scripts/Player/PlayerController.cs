@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        // 플레이어 위치 로딩
         Vector3 loadedPosition = new Vector3
         (
             DataManager.Instance.GetPlayerData().PosX,

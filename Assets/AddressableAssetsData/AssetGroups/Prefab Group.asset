@@ -57,6 +57,18 @@ MonoBehaviour:
     m_Address: Assets/Prefabs/WeaponPrefabs/Staff_03.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 40786069a2346224fa103c2e53ae82f8
+    m_Address: Assets/Prefabs/EffectPrefabs/Effect_Slash.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 74ee8c8d2cf6d9e4d8e50ca8899d2df1
+    m_Address: Assets/Prefabs/EffectPrefabs/Effect_Buff.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: eac6dd6046944e84a9bb1eb3f9132cff
+    m_Address: Assets/Prefabs/EffectPrefabs/Effect_IceShot.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 24fbd3b980f40fd4384dc1641c029845, type: 2}
   m_SchemaSet:

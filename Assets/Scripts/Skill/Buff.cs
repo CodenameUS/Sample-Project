@@ -9,10 +9,11 @@ using UnityEngine;
              
 */
 
-public class Buff : Skill
+public class Buff : Skill, IBuffSkill
 {
     public Buff(SkillData data) : base(data) { }
 
+    // 스킬 사용
     public override bool Activate(GameObject user)
     {
         // 무기를 장착했는지 여부
@@ -30,10 +31,35 @@ public class Buff : Skill
         }
         else
         {
+            // 애니메이션 설정
             anim.SetTrigger("Skill");
             anim.SetInteger("SkillId", data.AnimId);
-            Debug.Log($"{data.Name} : 사용!");
+
+            if(cachedEffect == null)
+            {
+                cachedEffect = UnityEngine.Object.Instantiate(effectPrefab);
+
+                FollowingEffect(user);
+            }
+            else
+            {
+                // 생성된 이펙트가 있으면 새로운 위치 지정
+                cachedEffect.transform.position = user.transform.position;
+                cachedEffect.transform.rotation = user.transform.rotation;
+            }
+
+            cachedEffect.SetActive(true);
+
             return true;
         }
     }
+
+    public void FollowingEffect(GameObject user)
+    {
+        FollowTarget follow = cachedEffect.AddComponent<FollowTarget>();
+        follow.target = user.transform;
+        follow.duration = data.Cooldown / 2;
+    }
+
+  
 }

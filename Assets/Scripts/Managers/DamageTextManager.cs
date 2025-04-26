@@ -2,7 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+/*
+                        DamageTextManager - 데미지 표시
+ 
+                    - 풀링으로 데미지 텍스트 재사용
+                    - 지정 위치에 데미지 
+ */
 public class DamageTextManager : Singleton<DamageTextManager>
 {
     [SerializeField] private GameObject damageTextPrefab;               // 데미지 텍스트 프리팹

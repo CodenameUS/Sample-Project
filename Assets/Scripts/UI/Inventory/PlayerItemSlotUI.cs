@@ -78,4 +78,10 @@ public class PlayerItemSlotUI : MonoBehaviour
     {
         return slotItem == ci;
     }
+
+    // 슬롯의 아이템 사용
+    public void UseItem(Inventory iv)
+    {
+        iv.Use(slotItem);
+    }
 }

@@ -36,10 +36,6 @@ public class InventoryUI : MonoBehaviour
     private Inventory inventory;                            // 연결된 인벤토리
     private List<ItemSlotUI> slotUIList = new List<ItemSlotUI>();
 
-    private GraphicRaycaster gr;
-    private PointerEventData ped;
-    private List<RaycastResult> rrList;
-
     private ItemSlotUI pointerOverSlot;                     // 현재 마우스 포인터가 위치한 곳의 슬롯
     private ItemSlotUI beginDragSlot;                       // 마우스 드래그를 시작한 슬롯
     private Transform beginDragIconTransform;               // 마우스 드래그를 시작한 슬롯의 위치

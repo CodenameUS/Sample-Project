@@ -20,6 +20,9 @@ public class ResourceManager : Singleton<ResourceManager>
     // 어드레서블 무기 Prefab 경로
     private const string wPrefabRef = "Assets/Prefabs/WeaponPrefabs/";
 
+    // 어드레서블 이펙트 Prefab 경로
+    private const string ePrefabRef = "Assets/Prefabs/EffectPrefabs/";
+
     // 어드레서블 사운드 경로
     private const string soundRef = "Assets/Sounds/";
 
@@ -73,6 +76,23 @@ public class ResourceManager : Singleton<ResourceManager>
         };
     }
 
+    // 무기 프리팹 불러오기
+    public void LoadEffectPrefab(string prefabName, System.Action<GameObject> onLoaded)
+    {
+        Addressables.LoadAssetAsync<GameObject>(ePrefabRef + prefabName + ".prefab").Completed += handle =>
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                GameObject loadedPrefab = handle.Result;
+                onLoaded?.Invoke(loadedPrefab);
+            }
+            else
+            {
+                Debug.Log($"다음 Prefab을 가져오는데 실패함.{ prefabName }");
+                onLoaded?.Invoke(null);
+            }
+        };
+    }
     // 사운드 불러오기
     public void LoadSound(string clipName, System.Action<AudioClip> onLoaded)
     {

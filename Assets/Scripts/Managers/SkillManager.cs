@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
+using System;
 
 /// <summary>
 ///                             SkillManager 
 ///                     1. 스킬 데이터 로드
 ///                     2. 스킬 실행 
-///                     
+///                     3. 스킬 오브젝트 풀링
 /// </summary>
 
 public class SkillManager : Singleton<SkillManager>
 {
     public List<Skill> playerSkills = new();
 
-    private Dictionary<string, SkillData> skillDataDictionary = new();
+    private Dictionary<string, SkillData> skillDataDictionary = new();  // 스킬 데이터 캐싱 딕셔너리
+    private Dictionary<string, Queue<Skill>> skillPool = new();         // 스킬 풀링 딕셔너리
 
     protected override void Awake()
     {
@@ -24,7 +26,7 @@ public class SkillManager : Singleton<SkillManager>
     }
 
     
-    // 스킬 데이터 불러오기
+    // 스킬 데이터 불러오기(캐싱)
     private void LoadSkillData()
     {
         string path = Path.Combine(Application.persistentDataPath, "SkillData.json");
@@ -87,13 +89,75 @@ public class SkillManager : Singleton<SkillManager>
         }
     }
 
-    // 스킬 사용(Id 기반)
-    public void ExecuteSkill(string skillId, GameObject user)
+    // 풀에서 스킬 가져오기
+    private Skill GetSkillFromPool(SkillData data)
+    {
+        // 풀에 스킬이 있으면 반환
+        if(skillPool.TryGetValue(data.Id, out var queue) && queue.Count > 0)
+        {
+            return queue.Dequeue();
+        }
+
+        // 없으면 스킬 인스턴스 생성후 반환
+        return CreateSkillInstance(data);
+    }
+
+    //  스킬 사용 후 풀에넣기
+    private void ReturnSkillToPool(string skillId, Skill skill)
+    {
+        // 새로운 스킬이면 
+        if(!skillPool.ContainsKey(skillId))
+        {
+            skillPool[skillId] = new Queue<Skill>();
+        }
+
+        skillPool[skillId].Enqueue(skill);
+    }
+
+    // 스킬 실행
+    public void ExecuteSkill(string skillId, GameObject user, Action<bool> onSkillExecuted)
     {
         var skillData = GetSkillDataById(skillId);
-        if (skillData == null) return;
+        if (skillData == null)
+        {
+            onSkillExecuted?.Invoke(false);
+            return;
+        }
 
-        Skill skill = CreateSkillInstance(skillData);
-        skill.Activate(user);
+        // 스킬 인스턴스 생성
+        Skill skill = GetSkillFromPool(skillData);
+
+        // 이펙트를 미리 로딩 하여
+        ResourceManager.Instance.LoadEffectPrefab(skillData.EffectName, prefab =>
+        {
+            // 스킬 세팅(애니메이터, 이펙트)후 발동
+            if (prefab != null)
+            {
+                skill.SetEffect(prefab);                        // 이펙트 설정
+                skill.InitAnimator(user.gameObject);            // 애니메이터 캐싱
+                bool successed = skill.Activate(user);          // 스킬 실행 성공여부
+
+                if (successed)
+                {
+                    StartCoroutine(ReturnSkillAfterUse(skillId, skill, skillData.Cooldown));
+                }
+
+                onSkillExecuted?.Invoke(successed);             // 성공여부 콜백
+            }
+            else
+            {
+                Debug.Log($"Failed to load prefab for item : {prefab}");
+                onSkillExecuted?.Invoke(false);                 // 실패 콜백
+            }
+        });
+    }
+
+    // 스킬 사용 후
+    private IEnumerator ReturnSkillAfterUse(string skillId, Skill skill, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ReturnSkillToPool(skillId, skill);              // 풀에 넣어놓기
+        if (!(skill is IBuffSkill))
+            skill.cachedEffect.SetActive(false);
     }
 }

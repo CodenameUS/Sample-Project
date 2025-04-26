@@ -13,6 +13,7 @@ public class IceShot : Skill
 {
     public IceShot(SkillData data) : base(data) { }
 
+    // 스킬 사용
     public override bool Activate(GameObject user)
     {
         // 올바른 무기를 장착했는지 여부
@@ -30,9 +31,26 @@ public class IceShot : Skill
         }
         else
         {
+            // 애니메이션 설정
             anim.SetTrigger("Skill");
             anim.SetInteger("SkillId", data.AnimId);
-            Debug.Log($"{data.Name} : 사용!");
+
+            if (cachedEffect == null)
+            {
+                // 생성된 이펙트가 없으면 생성
+                cachedEffect = UnityEngine.Object.Instantiate(effectPrefab,
+                user.transform.position + user.transform.forward * 3f,
+                user.transform.rotation, SkillManager.Instance.gameObject.transform);
+            }
+            else
+            {
+                // 생성된 이펙트가 있으면 새로운 위치 지정
+                cachedEffect.transform.position = user.transform.position + user.transform.forward * 2f;
+                cachedEffect.transform.rotation = user.transform.rotation;
+            }
+
+            cachedEffect.SetActive(true);
+
             return true;
         }
     }
