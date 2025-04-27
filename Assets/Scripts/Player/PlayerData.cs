@@ -39,8 +39,16 @@ public class PlayerData
     public float CurHp => curHp;
     public float Speed => speed;
     public float RotateSpeed => rotateSpeed;
-    public float Damage => damage;
-    public float Defense => defense;
+    public float Damage
+    {
+        get => damage;
+        set => damage = Mathf.Max(0, value);
+    }
+    public float Defense
+    {
+        get => defense;
+        set => defense = Mathf.Max(0, value);
+    }
     public int Gold => gold;
     public float PosX => posX;
     public float PosY => posY;
@@ -141,4 +149,6 @@ public class PlayerData
     {
         gold = (gold - amount) < 0 ? 0 : gold - amount;
     }
+
+    
 }

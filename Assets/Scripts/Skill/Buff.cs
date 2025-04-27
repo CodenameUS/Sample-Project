@@ -6,7 +6,8 @@ using UnityEngine;
                         Buff
           
             - 버프스킬
-             
+            - Buff 스킬 인터페이스 상속
+                - FollowingEffect : 버프 이펙트가 플레이어를 따라다님
 */
 
 public class Buff : Skill, IBuffSkill
@@ -37,7 +38,7 @@ public class Buff : Skill, IBuffSkill
 
             if(cachedEffect == null)
             {
-                cachedEffect = UnityEngine.Object.Instantiate(effectPrefab);
+                cachedEffect = UnityEngine.Object.Instantiate(effectPrefab, SkillManager.Instance.gameObject.transform);
 
                 FollowingEffect(user);
             }
@@ -49,11 +50,12 @@ public class Buff : Skill, IBuffSkill
             }
 
             cachedEffect.SetActive(true);
-
+            SkillManager.Instance.StartCoroutine(EnhanceStatus());
             return true;
         }
     }
 
+    // 버프 이펙트가 플레이어를 따라다니도록
     public void FollowingEffect(GameObject user)
     {
         FollowTarget follow = cachedEffect.AddComponent<FollowTarget>();
@@ -61,5 +63,18 @@ public class Buff : Skill, IBuffSkill
         follow.duration = data.Cooldown / 2;
     }
 
-  
+    // 버프 : 능력치 상승
+    private IEnumerator EnhanceStatus()
+    {
+        // 공격력, 방어력 증가
+        DataManager.Instance.GetPlayerData().Defense += data.Damage;
+        DataManager.Instance.GetPlayerData().Damage += data.Damage;
+
+        // 지속시간 5초
+        yield return new WaitForSeconds(data.Cooldown / 2);
+
+        // 공격력, 방어력 복구
+        DataManager.Instance.GetPlayerData().Defense -= data.Damage;
+        DataManager.Instance.GetPlayerData().Damage -= data.Damage;
+    }
 }

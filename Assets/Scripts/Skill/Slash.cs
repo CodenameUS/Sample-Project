@@ -5,13 +5,15 @@ using UnityEngine;
 /*
                         Slash
           
-            - 검스킬    
+            - 검스킬
+            - 공격판정 : SphereCast
 */
 
 public class Slash : Skill
 {
     public Slash(SkillData data) : base(data) { }
-
+    private float attackRadius = 2f;
+    private float attackRange = 2f;
     
     // 스킬 사용
     public override bool Activate(GameObject user)
@@ -49,8 +51,41 @@ public class Slash : Skill
             }
 
             cachedEffect.SetActive(true);
-
+            SkillManager.Instance.StartCoroutine(Attack());
             return true;
         }
+    }
+
+    // 공격판정(SphereCast 사용)
+    private void EnableHitBox()
+    {
+        Vector3 origin = GameManager.Instance.player.transform.position + GameManager.Instance.player.transform.forward * 2f;
+        Vector3 dir = GameManager.Instance.player.transform.forward;
+
+        RaycastHit[] hits = Physics.SphereCastAll(
+            origin,
+            attackRadius,
+            dir,
+            attackRange,
+            LayerMask.GetMask("Monster")
+        );
+
+        foreach(RaycastHit hit in hits)
+        {
+            Monster monster = hit.collider.GetComponent<Monster>();
+            if(monster != null)
+            {
+                // 데미지
+                monster.GetDamaged((DataManager.Instance.GetPlayerData().Damage + data.Damage) * Random.Range(0.8f, 1f));
+            }
+        }
+    }
+    
+    // 애니메이션에 맞춰 공격판정 ON
+    private IEnumerator Attack()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        EnableHitBox();
     }
 }

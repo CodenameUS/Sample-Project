@@ -50,8 +50,25 @@ public class IceShot : Skill
             }
 
             cachedEffect.SetActive(true);
+            SkillManager.Instance.StartCoroutine(EnableHitbox(cachedEffect));
 
             return true;
         }
+    }
+
+    // 공격판정
+    private IEnumerator EnableHitbox(GameObject effect)
+    {
+        effect.TryGetComponent<StayHitbox>(out StayHitbox hitbox);
+        if(hitbox == null)
+        {
+            hitbox = effect.AddComponent<StayHitbox>();
+            hitbox.damage = data.Damage + Random.Range(DataManager.Instance.GetPlayerData().Damage * 0.1f, DataManager.Instance.GetPlayerData().Damage * 0.2f);
+        }
+
+        // 지속시간 3초
+        yield return new WaitForSeconds(3f);
+
+        effect.SetActive(false);
     }
 }
