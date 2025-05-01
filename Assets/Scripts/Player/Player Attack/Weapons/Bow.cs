@@ -29,4 +29,9 @@ public class Bow : Weapon
     {
         
     }
+
+    public override void PlayerSfx()
+    {
+        
+    }
 }

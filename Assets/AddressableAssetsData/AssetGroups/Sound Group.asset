@@ -37,6 +37,30 @@ MonoBehaviour:
     m_Address: Assets/Sounds/DialogueEffect.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 14577ad91c7cf364ab749d1cb1bdfcb5
+    m_Address: Assets/Sounds/SwordSwing.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8be6292f3b85c714b9e922cd9379dbc5
+    m_Address: Assets/Sounds/Punch.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ec3df33fb103e174f9edb3e5e7c63aa9
+    m_Address: Assets/Sounds/Staff.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6e623341f80f9334ea7273f9db45a6ce
+    m_Address: Assets/Sounds/Slash.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9e185cf6d14da4c4eaf9a5e231ad5b93
+    m_Address: Assets/Sounds/Buff.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a0af681cbbe3d3e4eb531bade5d2d93a
+    m_Address: Assets/Sounds/IceShot.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 24fbd3b980f40fd4384dc1641c029845, type: 2}
   m_SchemaSet:

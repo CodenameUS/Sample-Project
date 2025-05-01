@@ -22,6 +22,8 @@ public class Staff : Weapon
     private void Awake()
     {
         type = WeaponType.Staff;
+
+        soundId = "Staff";
     }
 
     // 공격 구현
@@ -61,6 +63,11 @@ public class Staff : Weapon
     public override void SetEffect(bool isEnabled)
     {
         
+    }
+
+    public override void PlayerSfx()
+    {
+        AudioManager.Instance.PlaySFX(soundId);
     }
 
     // 공격범위 시각화

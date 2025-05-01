@@ -15,7 +15,7 @@ public class Slash : Skill
     private float attackRadius = 2f;
     private float attackRange = 2f;
     
-    // 스킬 사용
+    // 스킬 사용(공격판정, 이펙트, 사운드)
     public override bool Activate(GameObject user)
     {
         // 올바른 무기를 장착했는지 여부
@@ -52,6 +52,7 @@ public class Slash : Skill
 
             cachedEffect.SetActive(true);
             SkillManager.Instance.StartCoroutine(Attack());
+            AudioManager.Instance.PlaySFX(data.Name, 0.3f);     // 공격음 재생
             return true;
         }
     }

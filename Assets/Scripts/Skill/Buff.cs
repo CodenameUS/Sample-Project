@@ -50,7 +50,12 @@ public class Buff : Skill, IBuffSkill
             }
 
             cachedEffect.SetActive(true);
+
+            // 버프 효과 적용
             SkillManager.Instance.StartCoroutine(EnhanceStatus());
+            // 사운드 출력
+            AudioManager.Instance.PlaySFX(data.Name, 0.3f);             
+
             return true;
         }
     }
@@ -70,7 +75,7 @@ public class Buff : Skill, IBuffSkill
         DataManager.Instance.GetPlayerData().Defense += data.Damage;
         DataManager.Instance.GetPlayerData().Damage += data.Damage;
 
-        // 지속시간 5초
+        // 지속시간
         yield return new WaitForSeconds(data.Cooldown / 2);
 
         // 공격력, 방어력 복구

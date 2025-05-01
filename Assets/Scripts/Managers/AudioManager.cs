@@ -158,7 +158,7 @@ public class AudioManager : Singleton<AudioManager>
     }
 
     // SFX 실행(ID)
-    public void PlaySFX(string sfxId)
+    public void PlaySFX(string sfxId, float delay = 0f)
     {
         // BGM ID로 BGM 실행
         if (sfxDictionary.TryGetValue(sfxId, out SFXData sfxData))
@@ -179,7 +179,7 @@ public class AudioManager : Singleton<AudioManager>
                         sfxSource[currentSFXIndex].clip = sfx;
                         sfxSource[currentSFXIndex].volume = sfxData.volume;
                         sfxSource[currentSFXIndex].loop = sfxData.loop;
-                        sfxSource[currentSFXIndex].Play();
+                        sfxSource[currentSFXIndex].PlayDelayed(delay);
 
                         // 반복재생되는 SFX 는 추적대상
                         if(sfxSource[currentSFXIndex].loop)
@@ -239,6 +239,4 @@ public class AudioManager : Singleton<AudioManager>
             source.clip = null;
         }
     }
-
-    
 }

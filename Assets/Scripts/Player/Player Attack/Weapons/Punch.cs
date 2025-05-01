@@ -16,12 +16,12 @@ public class Punch : Weapon
     private Vector3 attackOrigin;                             
     private Vector3 attackDir;
 
-    
 
     private void Awake()
     {
         // 무기 타입 설정
         type = WeaponType.None;
+        soundId = "Punch";
     }
 
     // 공격 판정
@@ -67,6 +67,11 @@ public class Punch : Weapon
     public override void SetEffect(bool isEnabled)
     {
 
+    }
+
+    public override void PlayerSfx()
+    {
+        AudioManager.Instance.PlaySFX(soundId);
     }
 
     // ComboCount 설정

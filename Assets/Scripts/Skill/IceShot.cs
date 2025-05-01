@@ -51,7 +51,7 @@ public class IceShot : Skill
 
             cachedEffect.SetActive(true);
             SkillManager.Instance.StartCoroutine(EnableHitbox(cachedEffect));
-
+            AudioManager.Instance.PlaySFX(data.Name);
             return true;
         }
     }

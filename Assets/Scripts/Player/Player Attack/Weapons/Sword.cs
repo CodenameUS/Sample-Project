@@ -20,6 +20,7 @@ public class Sword : Weapon
 
         hitBox = GetComponent<BoxCollider>();
         effect = GetComponentInChildren<TrailRenderer>();
+        soundId = "Sword";
     }
 
     public override void Attack()
@@ -49,5 +50,10 @@ public class Sword : Weapon
     public override void SetEffect(bool isEnabled)
     {
         effect.enabled = isEnabled;
+    }
+
+    public override void PlayerSfx()
+    {
+        AudioManager.Instance.PlaySFX(soundId);
     }
 }

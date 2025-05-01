@@ -168,25 +168,40 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    
     #region ** Animation Events **
+    // 공격상태 돌입
     private void SetIsAttackingTrue() => isAttacking = true;
 
+    // 공격상태 해제
     private void SetIsAttackingFalse() => isAttacking = false;
 
+    // 콤보 가능
     private void SetIsComboAllowedTrue() => isComboAllowed = true;
 
+    // 콤보 불가능
     private void SetIsComboAllowedFalse() => isComboAllowed = false;
 
+    // 공격판정(Collider) On
     private void EnableAttackHitbox() => WeaponManager.Instance.currentWeapon.SetHitBox(true);
-    
+
+    // 공격판정(Collider) Off
     private void DisableAttackHitbox() => WeaponManager.Instance.currentWeapon.SetHitBox(false);
 
+    // 공격판정(Raycast etc..)
     private void TriggerAttack() => WeaponManager.Instance.currentWeapon.Attack();
 
+    // 공격이펙트 On
     private void EnableEffect() => WeaponManager.Instance.currentWeapon.SetEffect(true);
 
+    // 공격이펙트 Off
     private void DisableEffect() => WeaponManager.Instance.currentWeapon.SetEffect(false);
 
+    // 콤보 카운트 리셋
     private void ResetComboCount() => CurComboCount = 0;
+
+    // 무기 공격효과음 실행
+    private void PlayWeaponSfx() => WeaponManager.Instance.currentWeapon.PlayerSfx();
+
     #endregion
 }

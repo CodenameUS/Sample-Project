@@ -16,9 +16,10 @@ using UnityEngine;
 */
 public abstract class Skill
 {
-    protected SkillData data;
-    protected Animator anim;
-    protected GameObject effectPrefab;
+    protected SkillData data;                       
+    protected Animator anim;                        
+    protected GameObject effectPrefab;               
+
     public GameObject cachedEffect;                 // 캐싱된 이펙트 오브젝트
 
     public Skill(SkillData data)
@@ -40,6 +41,4 @@ public abstract class Skill
 
     // 스킬 사용
     public abstract bool Activate(GameObject user);
-
-    
 }
