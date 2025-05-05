@@ -13,7 +13,7 @@ public class Slash : Skill
 {
     public Slash(SkillData data) : base(data) { }
     private float attackRadius = 2f;
-    private float attackRange = 2f;
+    private float attackRange = 1f;
     
     // 스킬 사용(공격판정, 이펙트, 사운드)
     public override bool Activate(GameObject user)
@@ -68,16 +68,28 @@ public class Slash : Skill
             attackRadius,
             dir,
             attackRange,
-            LayerMask.GetMask("Monster")
+            LayerMask.GetMask("Monster", "BossMonster")
         );
 
         foreach(RaycastHit hit in hits)
         {
-            Monster monster = hit.collider.GetComponent<Monster>();
-            if(monster != null)
+            if(hit.collider.CompareTag("Monster"))
             {
-                // 데미지
-                monster.GetDamaged((DataManager.Instance.GetPlayerData().Damage + data.Damage) * Random.Range(0.8f, 1f));
+                Monster monster = hit.collider.GetComponent<Monster>();
+                if (monster != null)
+                {
+                    // 데미지
+                    monster.GetDamaged((DataManager.Instance.GetPlayerData().Damage + data.Damage) * Random.Range(0.8f, 1f));
+                }
+            }
+            else if(hit.collider.CompareTag("BossMonster"))
+            {
+                BossMonster boss = hit.collider.GetComponent<BossMonster>();
+                if (boss != null)
+                {
+                    // 데미지
+                    boss.GetDamaged((DataManager.Instance.GetPlayerData().Damage + data.Damage) * Random.Range(0.8f, 1f));
+                }
             }
         }
     }

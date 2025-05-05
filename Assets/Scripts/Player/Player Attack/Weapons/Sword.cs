@@ -33,12 +33,12 @@ public class Sword : Weapon
         if(other.CompareTag("Monster"))
         {
             Monster monster = other.GetComponent<Monster>();
-            monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage);
+            monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
         }
         else if(other.CompareTag("BossMonster"))
         {
             BossMonster boss = other.GetComponent<BossMonster>();
-            boss.GetDamaged(DataManager.Instance.GetPlayerData().Damage);
+            boss.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
         }
     }
 

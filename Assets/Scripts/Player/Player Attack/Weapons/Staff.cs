@@ -39,18 +39,31 @@ public class Staff : Weapon
             attackRadius,
             attackDir,
             attackRange,
-            LayerMask.GetMask("Monster")
+            LayerMask.GetMask("Monster", "BossMonster")
         );
 
         // 공격범위에 몬스터가 있을경우
         foreach(RaycastHit hit in hits)
         {
-            Monster monster = hit.collider.GetComponent<Monster>();
-            if(monster != null)
+            if(hit.collider.CompareTag("Monster"))
             {
-                // .. 몬스터에게 데미지
-                Debug.Log("몬스터를 맞추었음.");
-                monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage);
+                Monster monster = hit.collider.GetComponent<Monster>();
+                if (monster != null)
+                {
+                    // .. 몬스터에게 데미지
+                    Debug.Log("몬스터를 맞추었음.");
+                    monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+                }
+            }
+            else if(hit.collider.CompareTag("BossMonster"))
+            {
+                BossMonster boss = hit.collider.GetComponent<BossMonster>();
+                if (boss != null)
+                {
+                    // .. 몬스터에게 데미지
+                    Debug.Log("몬스터를 맞추었음.");
+                    boss.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+                }
             }
         }
     }

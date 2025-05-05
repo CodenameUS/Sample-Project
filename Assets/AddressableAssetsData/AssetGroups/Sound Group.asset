@@ -38,7 +38,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 14577ad91c7cf364ab749d1cb1bdfcb5
-    m_Address: Assets/Sounds/SwordSwing.mp3
+    m_Address: Assets/Sounds/Sword.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 8be6292f3b85c714b9e922cd9379dbc5

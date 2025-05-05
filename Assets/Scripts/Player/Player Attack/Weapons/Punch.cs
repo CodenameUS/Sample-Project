@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 */
 public class Punch : Weapon
 {
-    private float attackRange = 1f;                         // 공격 사거리
+    private float attackRange = 2f;                         // 공격 사거리
     private int maxComboCount = 1;
 
     private Vector3 boxSize = new Vector3(0.8f, 2f, 0.8f);
@@ -24,14 +24,13 @@ public class Punch : Weapon
         soundId = "Punch";
     }
 
-    // 공격 판정
+    // 공격 판정(레이 캐스트)
     public override void Attack()
     {
         SetComboCount();
 
         attackOrigin = GameManager.Instance.player.transform.position + GameManager.Instance.player.transform.up;
         attackDir = GameManager.Instance.player.transform.forward;
-        
 
         RaycastHit[] hits = Physics.BoxCastAll(
             attackOrigin,                       // 중심위치 : 플레이어
@@ -39,16 +38,28 @@ public class Punch : Weapon
             attackDir,                          // 공격방향     
             Quaternion.identity,                // 회전X
             attackRange,                        // 공격최대거리
-            LayerMask.GetMask("Monster")
+            LayerMask.GetMask("Monster", "BossMonster")
             );
-        
-        // 한마리만 공격
-        if(hits.Length > 0)
+
+        foreach(RaycastHit hit in hits)
         {
-            Monster monster = hits[0].collider.GetComponent<Monster>();
-            if (monster != null)
+            if(hit.collider.CompareTag("Monster"))
             {
-                monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage);
+                Monster monster = hit.collider.GetComponent<Monster>();
+                if(monster != null)
+                {
+                    monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+                    return;
+                }
+            }
+            else if(hit.collider.CompareTag("BossMonster"))
+            {
+                BossMonster boss = hit.collider.GetComponent<BossMonster>();
+                if(boss!=null)
+                {
+                    boss.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+                    return;
+                }
             }
         }
     }
@@ -84,7 +95,7 @@ public class Punch : Weapon
     }
 
     // 공격범위 시각화
-    void OnDrawGizmos()
+    void OnDrawGizmos() 
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(attackOrigin, boxSize);

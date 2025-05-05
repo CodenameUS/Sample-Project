@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+                지속공격형 스킬
+
+            - 공격 간격마다 데미지 발생
+ */
 public class StayHitbox : MonoBehaviour
 {
     public float damage;
@@ -11,15 +16,27 @@ public class StayHitbox : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (!other.CompareTag("Monster"))
-            return;
-        Monster monster = other.GetComponent<Monster>();
-
-        timer += Time.deltaTime;
-        if (timer >= 0.5f)
+        if (other.CompareTag("Monster"))
         {
-            monster.GetDamaged(damage);
-            timer = 0;
+            Monster monster = other.GetComponent<Monster>();
+
+            timer += Time.deltaTime;
+            if (timer >= 0.5f)
+            {
+                monster.GetDamaged(damage);
+                timer = 0;
+            }
+        }
+        else if(other.CompareTag("BossMonster"))
+        {
+            BossMonster boss = other.GetComponent<BossMonster>();
+
+            timer += Time.deltaTime;
+            if (timer >= 0.5f)
+            {
+                boss.GetDamaged(damage);
+                timer = 0;
+            }
         }
     }
 }

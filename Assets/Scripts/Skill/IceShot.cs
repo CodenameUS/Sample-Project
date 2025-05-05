@@ -35,6 +35,7 @@ public class IceShot : Skill
             anim.SetTrigger("Skill");
             anim.SetInteger("SkillId", data.AnimId);
 
+            // 이펙트 처리
             if (cachedEffect == null)
             {
                 // 생성된 이펙트가 없으면 생성
