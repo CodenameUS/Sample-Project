@@ -4,7 +4,9 @@
 Unity 공부한 내용을 토대로 그때그때 구현해보고싶은 기능들을 추가해나가는 방식으로 제작중입니다.  
 
 Blog - https://codenameus.github.io/
+
 Youtube - https://www.youtube.com/@%EC%B5%9C%EC%9A%B0%EC%84%B1-z7v
+
 ## 개발 기간
 - 2024-10-13 ~
 
