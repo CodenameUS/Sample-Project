@@ -61,6 +61,30 @@ MonoBehaviour:
     m_Address: Assets/Sounds/IceShot.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: ec834e3a0a9a041e58e015c0bf39ed52
+    m_Address: Assets/Sounds/Grunt_Attack02.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 228a434ca9f954909a9176e45f877eaa
+    m_Address: Assets/Sounds/Grunt_Attack03.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9a2d033f7760b4ef09400945a538ccd9
+    m_Address: Assets/Sounds/Grunt_Attack01.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c55fb47f6865f480c989e8407de1d19c
+    m_Address: Assets/Sounds/Grunt_Roar.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8a42266be58db4c518b5d4e47cc0f780
+    m_Address: Assets/Sounds/Grunt_Attack04.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6beb606fbac8f4d0e9ea410969417e51
+    m_Address: Assets/Sounds/Grunt_Die.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 24fbd3b980f40fd4384dc1641c029845, type: 2}
   m_SchemaSet:

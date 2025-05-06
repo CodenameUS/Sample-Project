@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIPlayerStats : MonoBehaviour
+public class BossHpUI : MonoBehaviour
 {
     [SerializeField] private Slider hpBar;
-
     [SerializeField] private Text hpText;
 
-    private PlayerData playerData;
+    private BossMonster boss;
+
+    private void Awake()
+    {
+        boss = GetComponentInParent<BossMonster>();
+    }
 
     private void Start()
     {
-        playerData = DataManager.Instance.GetPlayerData();
         SetHpText();
         SetHpAmount();
     }
@@ -24,17 +27,19 @@ public class UIPlayerStats : MonoBehaviour
         SetHpAmount();
     }
 
-    // Hp, Mp 텍스트 표기 형식
     private void SetHpText()
     {
-        hpText.text = (int)playerData.CurHp + " / " + (int)playerData.MaxHp;
+        if (boss.curHp <= 0)
+            hpText.text = 0 + " / " + (int)boss.maxHp;
+        else
+        {
+            hpText.text = (int)boss.curHp + " / " + (int)boss.maxHp;
+        }
     }
 
-    // 슬라이더 Value 조절
     private void SetHpAmount()
     {
-        float hpFillAmount = (float)(playerData.CurHp / playerData.MaxHp);
+        float hpFillAmount = (float)(boss.curHp / boss.maxHp);
         hpBar.value = hpFillAmount;
     }
-   
 }

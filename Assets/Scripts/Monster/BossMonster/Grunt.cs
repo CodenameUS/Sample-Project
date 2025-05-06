@@ -75,11 +75,13 @@ public class Grunt : BossMonster
         {
             isDead = true;
             anim.SetTrigger(hashDeadTrigger);
+            PlaySFX("Grunt_Die");
             hitBoxCol.enabled = false;
             nav.isStopped = true;
         }
     }
 
+    #region ** Coroutines **
     // 다음 공격 정하기
     private IEnumerator DecideNextAttack()
     {
@@ -96,6 +98,7 @@ public class Grunt : BossMonster
         switch(randomAct)
         {
             case 0:
+                PlaySFX("Grunt_Attack01");
                 anim.SetInteger(hashAttackType, randomAct);
                 anim.SetTrigger(hashAttackTrigger);
                 prevAttack = 0;
@@ -113,6 +116,7 @@ public class Grunt : BossMonster
                 }
                 else
                 {
+                    PlaySFX("Grunt_Attack03");
                     anim.SetInteger(hashAttackType, randomAct);
                     anim.SetTrigger(hashAttackTrigger);
                     StartCoroutine(Thunderbolt());
@@ -127,6 +131,7 @@ public class Grunt : BossMonster
                 }
                 else
                 {
+                    PlaySFX("Grunt_Attack04");
                     anim.SetInteger(hashAttackType, randomAct);
                     anim.SetTrigger(hashAttackTrigger);
                     StartCoroutine(Explosion());
@@ -145,7 +150,7 @@ public class Grunt : BossMonster
         if (hitbox == null)
         {
             hitbox = thunderboltEffect.AddComponent<GruntThunderbolt>();
-            hitbox.damage = damage * Random.Range(0.1f, 0.4f);
+            hitbox.damage = damage;
         }
         thunderboltEffect.SetActive(true);
 
@@ -195,11 +200,20 @@ public class Grunt : BossMonster
             }
         }
     }
+    #endregion
 
+    #region ** Animation Events **
     // 공격 끝(애니메이션 이벤트)
     private void EndAttack()
     {
         isAttacking = !isAttacking;
         nav.isStopped = false;
     }
+
+    // 효과음 출력
+    private void PlaySFX(string soundId)
+    {
+        AudioManager.Instance.PlaySFX(soundId);
+    }
+    #endregion
 }

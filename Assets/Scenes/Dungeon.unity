@@ -1551,7 +1551,7 @@ MonoBehaviour:
   timelineAsset:
   - {fileID: 11400000, guid: c1accfa3dac3b6f4c8d3c79ca14dac3e, type: 2}
   cutSceneObj: {fileID: 633070147}
-  bossMonsterPrefab: {fileID: 8600655662448598092, guid: f77136ca3a122a341bee13627901b054, type: 3}
+  bossMonsterPrefab: {fileID: 411410963279570769, guid: 92b0c17ae8a61944d98624ecd34ffb2a, type: 3}
 --- !u!114 &157897997
 MonoBehaviour:
   m_ObjectHideFlags: 0
