@@ -69,10 +69,11 @@ public class Grunt : BossMonster
     }
 
     // Á×À½
-    private void Die()
+    public override void Die()
     {
         if(!isDead && curHp <= 0)
         {
+            base.Die();
             isDead = true;
             anim.SetTrigger(hashDeadTrigger);
             PlaySFX("Grunt_Die");
@@ -172,6 +173,7 @@ public class Grunt : BossMonster
         explosionEffect.SetActive(true);
 
         yield return new WaitForSeconds(1f);
+        explosionAttacker.transform.position = GameManager.Instance.player.transform.position + GameManager.Instance.player.transform.up * 2f;
         explosionAttacker.SetActive(true);
 
         yield return new WaitForSeconds(1f);

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
@@ -21,6 +22,9 @@ public class DungeonManager : Singleton<DungeonManager>
     [SerializeField] private TimelineAsset[] timelineAsset;         // 타임라인 에셋
     [SerializeField] private GameObject cutSceneObj;                // 컷씬 카메라 오브젝트
     [SerializeField] private GameObject bossMonsterPrefab;          // 보스몬스터 프리팹
+
+    [Header("#UI")]
+    [SerializeField] private GameObject clearUI;
 
     private bool bossSpawned = false;                               // 보스 등장여부
     private PlayableDirector pd;
@@ -72,14 +76,27 @@ public class DungeonManager : Singleton<DungeonManager>
 
         // 보스몬스터 정보 가져오기
         boss = GetComponentInChildren<BossMonster>();
-        
+        // 보스 죽음 이벤트 등록
+        boss.OnBossDied += OnBossDied;
         // 컷씬 출력
         cutSceneObj.gameObject.SetActive(false);
         pd.Play(timelineAsset[0]);
 
         Debug.Log("모든 몬스터 처리 완료");
     }
+    
+    // 보스 죽음
+    private void OnBossDied()
+    {
+        StartCoroutine(DungeonClear());
+    }
 
+    private IEnumerator DungeonClear()
+    {
+        yield return new WaitForSeconds(3f);
+
+        clearUI.SetActive(true);
+    }
     // 컷씬 시작(플레이어 움직임 제어)
     private void OnCutsceneStarted(PlayableDirector director)
     {
@@ -97,5 +114,11 @@ public class DungeonManager : Singleton<DungeonManager>
     {
         GameManager.Instance.player.isCutscenePlaying = false;
         Debug.Log("컷씬 끝");
+    }
+
+    public void GetRewardsAndSetActiveFalse()
+    {
+        clearUI.SetActive(false);
+        DataManager.Instance.GetPlayerData().UseGold(-500);
     }
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GruntExplosion : MonoBehaviour
 {
-    public float damage = 10f;
-    public float knocebackForce = 80f;
+    public float damage;
+    public float knocebackForce = 7f;
     public float duration = 0.2f;
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
@@ -20,7 +20,8 @@ public class GruntExplosion : MonoBehaviour
         Rigidbody rigid = other.GetComponent<Rigidbody>();
         if(rigid != null)
         {
-            Vector3 knockbackDir = (other.transform.position - transform.position).normalized;
+            Debug.Log("플레이어 히트");
+            Vector3 knockbackDir = (other.transform.forward).normalized;
             rigid.AddForce(knockbackDir * knocebackForce, ForceMode.Impulse);
         }
     }

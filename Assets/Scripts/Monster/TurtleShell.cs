@@ -113,6 +113,7 @@ public class TurtleShell : Monster
         if (curHp <= 0 && !isDead)
         {
             isDead = true;
+            AudioManager.Instance.PlaySFX("TurtleShell_Die");
             ChangeState(States.Die);
         }
     }

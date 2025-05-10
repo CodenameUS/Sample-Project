@@ -16,6 +16,10 @@ public class BossMonster : MonoBehaviour
 {
     [SerializeField] private Transform damageTextPos; // 데미지 텍스트 표시 위치
 
+    #region ** Events **
+    public event System.Action OnBossDied;
+
+    #endregion
     #region ** Monster Status **
     [Header("#Boss Monster Stats")]
     public float maxHp;
@@ -67,5 +71,8 @@ public class BossMonster : MonoBehaviour
         curHp -= randomDamage;
     }
 
-    
+    public virtual void Die()
+    {
+        OnBossDied?.Invoke();
+    }
 }

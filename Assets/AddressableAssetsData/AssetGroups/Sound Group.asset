@@ -85,6 +85,10 @@ MonoBehaviour:
     m_Address: Assets/Sounds/Grunt_Die.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 138388b4a8cf8304db6d5713cc759f49
+    m_Address: Assets/Sounds/TurtleShell_Die.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 24fbd3b980f40fd4384dc1641c029845, type: 2}
   m_SchemaSet:
