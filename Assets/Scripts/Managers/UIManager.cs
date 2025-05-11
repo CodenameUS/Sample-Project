@@ -10,6 +10,8 @@ using UnityEngine;
  */
 public class UIManager : Singleton<UIManager>
 {
+    [SerializeField] private GameObject menuUI;
+
     private Stack<GameObject> uiStack = new();
     
     protected override void Awake()
@@ -21,7 +23,14 @@ public class UIManager : Singleton<UIManager>
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            CloseTopUI();
+            if(IsAnyUIOpen())
+            {
+                CloseTopUI();
+            }
+            else
+            {
+                ToggleMenuUI();
+            }
         }
     }
 
@@ -80,5 +89,10 @@ public class UIManager : Singleton<UIManager>
     public bool IsAnyUIOpen()
     {
         return uiStack.Count > 0;
+    }
+
+    private void ToggleMenuUI()
+    {
+        menuUI.SetActive(!menuUI.activeSelf);
     }
 }
