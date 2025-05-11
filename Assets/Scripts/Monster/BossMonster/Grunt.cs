@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class Grunt : BossMonster
 {
@@ -14,6 +15,7 @@ public class Grunt : BossMonster
     readonly private int hashSpeed = Animator.StringToHash("Speed");
 
     private int prevAttack = 0;
+    private CinemachineBasicMultiChannelPerlin noise;           // 카메라 노이즈(흔들림)
 
     protected override void Awake()
     {
@@ -21,6 +23,7 @@ public class Grunt : BossMonster
         base.Awake();
         InitData();
     }
+
 
     private void Update()
     {
@@ -42,6 +45,8 @@ public class Grunt : BossMonster
         attackRange = 3f;
 
         nav.speed = speed;
+
+        noise = GameManager.Instance.virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
     // 이동
@@ -153,10 +158,11 @@ public class Grunt : BossMonster
             hitbox = thunderboltEffect.AddComponent<GruntThunderbolt>();
             hitbox.damage = damage;
         }
+        noise.m_AmplitudeGain = 1f;             // 카메라 흔들림 ON
         thunderboltEffect.SetActive(true);
 
         yield return new WaitForSeconds(3f);
-
+        noise.m_AmplitudeGain = 0f;             // 카메라 흔들림 Off
         thunderboltEffect.SetActive(false);
     }
     

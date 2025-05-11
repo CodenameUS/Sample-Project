@@ -25,7 +25,7 @@ public class GruntThunderbolt : MonoBehaviour
             {
                 DataManager.Instance.GetPlayerData().GetDamaged(damage * Random.Range(0.1f, 0.4f));
                 timer = 0;
-            }
+            } 
         }
     }
 }

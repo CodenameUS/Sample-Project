@@ -22,7 +22,7 @@ public class DungeonManager : Singleton<DungeonManager>
     [SerializeField] private TimelineAsset[] timelineAsset;         // 타임라인 에셋
     [SerializeField] private GameObject cutSceneObj;                // 컷씬 카메라 오브젝트
     [SerializeField] private GameObject bossMonsterPrefab;          // 보스몬스터 프리팹
-
+    [SerializeField] private GameObject portal;                     // 출구
     [Header("#UI")]
     [SerializeField] private GameObject clearUI;
 
@@ -91,12 +91,15 @@ public class DungeonManager : Singleton<DungeonManager>
         StartCoroutine(DungeonClear());
     }
 
+    // 던전 클리어 UI활성화
     private IEnumerator DungeonClear()
     {
+        // 딜레이
         yield return new WaitForSeconds(3f);
 
         clearUI.SetActive(true);
     }
+
     // 컷씬 시작(플레이어 움직임 제어)
     private void OnCutsceneStarted(PlayableDirector director)
     {
@@ -116,9 +119,11 @@ public class DungeonManager : Singleton<DungeonManager>
         Debug.Log("컷씬 끝");
     }
 
+    // 던전 클리어 UI 닫기 및 보상획득
     public void GetRewardsAndSetActiveFalse()
     {
         clearUI.SetActive(false);
         DataManager.Instance.GetPlayerData().UseGold(-500);
+        portal.SetActive(true);
     }
 }

@@ -66,7 +66,7 @@ public class Inventory : MonoBehaviour
     {
         if (Input.GetButtonDown("Inventory"))
         {
-            inventoryGo.SetActive(!inventoryGo.activeSelf);
+            UIManager.Instance.ToggleUI(inventoryGo);
         }
     }
 

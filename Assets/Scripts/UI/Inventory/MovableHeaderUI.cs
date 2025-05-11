@@ -18,12 +18,6 @@ public class MovableHeaderUI : MonoBehaviour, IDragHandler, IPointerDownHandler
             targetUI = transform.parent;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            HideUI();
-    }
-
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
         targetUI.position = beginPoint + (eventData.position - moveBegin);
@@ -36,9 +30,9 @@ public class MovableHeaderUI : MonoBehaviour, IDragHandler, IPointerDownHandler
         moveBegin = eventData.position;
     }
 
-
+    // 타겟 UI 비활성화
     public void HideUI()
     {
-        targetUI.gameObject.SetActive(false);
+        UIManager.Instance.CloseUI(targetUI.gameObject);
     }
 }
