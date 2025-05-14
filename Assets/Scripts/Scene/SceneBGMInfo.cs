@@ -7,6 +7,7 @@ public class SceneBGMInfo : MonoBehaviour
 {
     [Tooltip("이 씬에서 재생한 BGM Key")]
     [SerializeField] private string bgmKey;
+    [SerializeField] private Transform startingPoint;    
 
     private void Start()
     {
@@ -14,5 +15,7 @@ public class SceneBGMInfo : MonoBehaviour
         {
             AudioManager.Instance.PlayBGM(bgmKey);
         }
+
+        GameManager.Instance.player.transform.position = startingPoint.position;
     }
 }

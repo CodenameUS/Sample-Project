@@ -33,6 +33,8 @@ public class DataManager : Singleton<DataManager>
         // 5초마다 자동 저장
         InvokeRepeating("SavePlayerData", 5f, 5f);
     }
+
+    // 게임 시작시 저장된 데이터 로드
     private void InitAndLoadData()
     {
         playerDataPath = Path.Combine(Application.persistentDataPath, "Playerdata.json");
@@ -234,7 +236,7 @@ public class DataManager : Singleton<DataManager>
         return playerData;
     }
 
-    // 플레이어 데이터 저장
+    // 현재 플레이어 데이터 저장
     public void SavePlayerData()
     {
         PlayerDataDTO dto = playerData.ToDTO();
@@ -242,6 +244,7 @@ public class DataManager : Singleton<DataManager>
         Debug.Log("세이브 완료!!");
     }
 
+    // 게임 종료시 데이터 저장
     private void OnApplicationQuit()
     {
         SavePlayerData();

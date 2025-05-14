@@ -20656,6 +20656,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmKey: DungeonScene
+  startingPoint: {fileID: 642652697}
 --- !u!4 &2121923546
 Transform:
   m_ObjectHideFlags: 0

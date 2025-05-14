@@ -46,6 +46,7 @@ public class Loading : MonoBehaviour
             {
                 progressBar.rectTransform.sizeDelta = new Vector2(op.progress * 1920f, 80f);
             }
+            // 90% 로딩 이후로 Fake 로딩
             else
             {
                 timer += Time.unscaledDeltaTime;

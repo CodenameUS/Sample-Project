@@ -82,6 +82,8 @@ public class Grunt : BossMonster
             isDead = true;
             anim.SetTrigger(hashDeadTrigger);
             PlaySFX("Grunt_Die");
+            var bossCanvas = GetComponentInChildren<Canvas>();
+            bossCanvas.gameObject.gameObject.SetActive(false);
             hitBoxCol.enabled = false;
             nav.isStopped = true;
         }

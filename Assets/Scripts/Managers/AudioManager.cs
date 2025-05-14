@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.Audio;
 
 [System.Serializable]
 public class BGMData
@@ -36,6 +37,10 @@ public class SFXList
 
 public class AudioManager : Singleton<AudioManager>
 {
+    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private AudioMixerGroup bgmGroup;
+    [SerializeField] private AudioMixerGroup sfxGroup;
+
     #region ** BGM Settings **
     private AudioSource bgmSource;
     #endregion
@@ -49,6 +54,10 @@ public class AudioManager : Singleton<AudioManager>
     private Dictionary<string, BGMData> bgmDictionary;                  // BGM 캐싱 데이터
     private Dictionary<string, SFXData> sfxDictionary;                  // SFX 캐싱 데이터
     private Dictionary<string, List<AudioSource>> loopedSFXMap = new(); // 반복재생되는 SFX를 추적하기위한 딕셔너리
+
+    private const string MASTER_VOL = "MasterVolume";
+    private const string BGM_VOL = "BGMVolume";
+    private const string SFX_VOL = "SFXVolume";
 
     protected override void Awake()
     {
@@ -64,6 +73,7 @@ public class AudioManager : Singleton<AudioManager>
         GameObject bgmObject = new GameObject("BgmPlayer");
         bgmObject.transform.parent = transform;
         bgmSource = bgmObject.AddComponent<AudioSource>();
+        bgmSource.outputAudioMixerGroup = bgmGroup;
 
         // SFX
         GameObject sfxObject = new GameObject("SfxPlayer");
@@ -73,6 +83,7 @@ public class AudioManager : Singleton<AudioManager>
         for (int i = 0; i < sfxPoolSize; i++)
         {
             AudioSource source = sfxObject.AddComponent<AudioSource>();
+            source.outputAudioMixerGroup = sfxGroup;
             sfxSource.Add(source);
         }
 
@@ -228,6 +239,34 @@ public class AudioManager : Singleton<AudioManager>
             loopedSFXMap.Remove(sfxId);
         }
     }
+
+    // 마스터 볼륨제어
+    public void SetMasterVolume(float value)
+    {
+        // 0.0001~1 => -80db~0db
+        float volume = Mathf.Clamp(value, 0.0001f, 1f); // 최소값 제한
+        float dB = Mathf.Log10(volume) * 20;
+        audioMixer.SetFloat(MASTER_VOL, dB);
+    }
+
+    // BGM 볼륨제어
+    public void SetBGMVolume(float value)
+    {
+        // 0.0001~1 => -80db~0db
+        float volume = Mathf.Clamp(value, 0.0001f, 1f); // 최소값 제한
+        float dB = Mathf.Log10(volume) * 20;
+        audioMixer.SetFloat(BGM_VOL, Mathf.Log10(value) * 20);
+    }
+
+    // SFX 볼륨제어
+    public void SetSFXVolume(float value)
+    {
+        // 0.0001~1 => -80db~0db
+        float volume = Mathf.Clamp(value, 0.0001f, 1f); // 최소값 제한
+        float dB = Mathf.Log10(volume) * 20;
+        audioMixer.SetFloat(SFX_VOL, Mathf.Log10(value) * 20);
+    }
+
 
     // 사운드 출력 후 AudioSource 정리
     private IEnumerator CleanupClipAfterPlay(AudioSource source)

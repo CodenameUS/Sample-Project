@@ -13,7 +13,7 @@ using UnityEngine.Timeline;
                     - 보스몬스터 처치시 보상
                     - 플레이어 죽을시 귀환
  */
-public class DungeonManager : Singleton<DungeonManager>
+public class DungeonManager : MonoBehaviour
 {
     [SerializeField] private Transform startingPoint;               // 플레이어 시작 위치
     [SerializeField] private Transform bossSpawnPoint;              // 보스 등장 위치
@@ -37,10 +37,6 @@ public class DungeonManager : Singleton<DungeonManager>
         // 이벤트 연결 
         pd.played += OnCutsceneStarted;
         pd.stopped += OnCutsceneEnded;
-
-        // 플레이어 위치 설정
-        GameManager.Instance.player.transform.position = startingPoint.position;
-        GameManager.Instance.player.transform.rotation = Quaternion.identity;
 
         Spawn();
     }

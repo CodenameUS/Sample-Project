@@ -4,6 +4,20 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.IO;
+
+[System.Serializable]
+public class EquipmentSlotData
+{
+    public int slotIndex;              
+    public int itemId;
+}
+
+[System.Serializable]
+public class EquipmentSlotDataList
+{
+    public List<EquipmentSlotData> itemList;
+}
 
 public class EquipmentUI : MonoBehaviour
 {
@@ -18,6 +32,7 @@ public class EquipmentUI : MonoBehaviour
     [Tooltip("캐릭터 장비 슬롯")]
     public List<EquipmentSlotUI> slotUIList = new List<EquipmentSlotUI>();
     public Item[] items;
+    public ItemData[] itemDataArray;
 
     private GraphicRaycaster gr;
     private PointerEventData ped;
@@ -44,6 +59,7 @@ public class EquipmentUI : MonoBehaviour
 
     private void Start()
     {
+        LoadEquipmentSlotData();
         HideUI();
     }
     private void Update()
@@ -55,7 +71,6 @@ public class EquipmentUI : MonoBehaviour
         OnPointerDown();
         OnPointerDrag();
         OnPointerUp();
-        EndDrag();
     }
     #endregion
 
@@ -64,6 +79,7 @@ public class EquipmentUI : MonoBehaviour
     private void Init()
     {
         items = new Item[slotCounts];
+        itemDataArray = new ItemData[slotCounts];
 
         TryGetComponent(out gr);
         if (gr == null)
@@ -71,6 +87,89 @@ public class EquipmentUI : MonoBehaviour
 
         ped = new PointerEventData(EventSystem.current);
         rrList = new List<RaycastResult>(10);
+    }
+
+    // 플레이어가 장착중인 아이템 데이터 로드
+    private void LoadEquipmentSlotData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "EquipmentSlotData.json");
+
+        if (File.Exists(path))
+        {
+            string jsonData = File.ReadAllText(path);
+            EquipmentSlotDataList dataList = JsonUtility.FromJson<EquipmentSlotDataList>(jsonData);
+
+            foreach (var data in dataList.itemList)
+            {
+                itemDataArray[data.slotIndex] = ItemTypeById(data.itemId);
+
+                // 해당 슬롯인덱스에 저장된 아이템이 없을 때
+                if (itemDataArray[data.slotIndex] == null)
+                {
+                    continue;
+                }
+
+                // 슬롯에 아이템 추가
+                Item item = itemDataArray[data.slotIndex].CreateItem();
+
+                if(item is WeaponItem wi)
+                {
+                    SetItemIcon(wi, wi.WeaponData.Type, wi.Data.ItemIcon);
+                }
+                else if(item is ArmorItem ai)
+                {
+                    SetItemIcon(ai, ai.ArmorData.SubType, ai.Data.ItemIcon);
+                }
+            }
+        }
+
+
+        // 아이템 타입별 반환
+        ItemData ItemTypeById(int id)
+        { 
+            if (id > 20000 && id < 30000)
+            {
+                ArmorItemData temp = DataManager.Instance.GetArmorDataById(id);
+                return temp;
+            }
+            else if (id > 30000 && id < 40000)
+            {
+                WeaponItemData temp = DataManager.Instance.GetWeaponDataById(id);
+                return temp;
+            }
+            else
+                return null;
+        }
+    }
+
+    // 장작중인 아이템 데이터 저장
+    private void SaveEquipmentSlotData()
+    {
+        EquipmentSlotDataList saveData = new EquipmentSlotDataList();
+        saveData.itemList = new List<EquipmentSlotData>();
+
+        for(int i = 0;i<items.Length;i++)
+        {
+            EquipmentSlotData slotData = new EquipmentSlotData();
+            slotData.slotIndex = i;
+
+            if(items[i] != null)
+            {
+                slotData.itemId = items[i].Data.ID;
+            }
+            else
+            {
+                slotData.itemId = 0;
+            }
+
+            saveData.itemList.Add(slotData);
+        }
+
+        string jsonData = JsonUtility.ToJson(saveData, true);
+        string path = Path.Combine(Application.persistentDataPath, "EquipmentSlotData.json");
+        File.WriteAllText(path, jsonData);
+
+        Debug.Log("장착 장비 저장완료");
     }
 
     private void HideUI() => targetUI.SetActive(false);
@@ -221,9 +320,6 @@ public class EquipmentUI : MonoBehaviour
                 // UI 순서 복원
                 beginDragSlot.transform.SetSiblingIndex(beginDragSlotSiblingIndex);
 
-                // 드래그 완료
-                EndDrag();
-
                 // 하이라이트 이미지를 아이콘보다 앞에
                 beginDragSlot.SetHighlightOnTop(true);
 
@@ -232,12 +328,6 @@ public class EquipmentUI : MonoBehaviour
                 beginDragIconTransform = null;
             }
         }
-    }
-
-    // 마우스 드래그 종료 처리
-    private void EndDrag()
-    {
-        
     }
 
     // 아이템 툴팁 UI 활성/비활성화
@@ -274,6 +364,8 @@ public class EquipmentUI : MonoBehaviour
         {
             Debug.LogError($"'{type}'은(는) 유효한 타입이 아닙니다.");
         }
+
+        SaveEquipmentSlotData();
     }
 
 
