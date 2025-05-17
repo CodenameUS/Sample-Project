@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 /*
-                    WeaponManager : 무기전략 및 무기별 애니메이션 설정
+                    WeaponManager : 플레이어 무기에 따른 무기 프리팹생성 및 무기애니메이션 설정
 
             - SetWeapon() : 현재 무기 설정
  */
@@ -31,9 +31,9 @@ public class WeaponManager : Singleton<WeaponManager>
         set => GameManager.Instance.player.Anim.SetInteger(hashWeaponType, value);
     }
 
-    private void Start()
+    protected override void Awake()
     {
-        InitWeapon();
+        base.Awake();
     }
 
     // 시작 무기 세팅

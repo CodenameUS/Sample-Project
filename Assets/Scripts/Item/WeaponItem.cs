@@ -7,7 +7,7 @@ using UnityEngine;
                 
                 Equip() : 무기 장착
                     - 무기 데이터의 수치만큼 플레이어 능력치 상승
-                Unequip() : 방어구 해제
+                Unequip() : 장착 해제
                     - 무기 데이터의 수치만큼 플레이어 능력치 하락
  */
 

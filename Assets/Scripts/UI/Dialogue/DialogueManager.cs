@@ -16,9 +16,9 @@ using TMPro;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
-    [SerializeField] private GameObject dialogueUI;             // 대화창 오브젝트
-    [SerializeField] private TMP_Text npcNameText;              // NPC 이름 텍스트
-    [SerializeField] private TMP_Text dialogueText;             // 대화 텍스트
+    [SerializeField] public GameObject dialogueUI;             // 대화창 오브젝트
+    [SerializeField] public TMP_Text npcNameText;              // NPC 이름 텍스트
+    [SerializeField] public TMP_Text dialogueText;             // 대화 텍스트
 
     private Queue<string> pages = new Queue<string>();
     private bool isTypipng = false;                             // 대화 타이핑 효과

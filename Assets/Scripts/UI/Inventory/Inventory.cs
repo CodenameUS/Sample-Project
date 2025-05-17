@@ -25,7 +25,7 @@ public class InventoryDataList
     public List<ItemSlotData> itemList;
 }
 
-public class Inventory : MonoBehaviour
+public class Inventory : Singleton<Inventory>
 {
     #region ** Serialized Fields **
     [SerializeField] private InventoryUI inventoryUI;
@@ -45,8 +45,10 @@ public class Inventory : MonoBehaviour
     #endregion
 
     #region  ** Unity Events **
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         // 인벤토리에서 관리할 수 있는 아이템은 최대 36개
         items = new Item[maxCapacity];                  
         itemDataArray = new ItemData[maxCapacity];
@@ -238,7 +240,6 @@ public class Inventory : MonoBehaviour
         // 슬롯에 아이템이 없을 때
         else
         {
-            Remove(index);
             playerItemGruopUI.UpdateSlots();
         }
 
@@ -421,6 +422,8 @@ public class Inventory : MonoBehaviour
 
         // 아이콘 및 텍스트 제거
         inventoryUI.RemoveItem(index);
+
+        UpdateSlot(index);
     }
 
     // 두 슬롯 아이템 스왑

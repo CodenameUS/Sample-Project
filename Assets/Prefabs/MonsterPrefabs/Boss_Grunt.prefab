@@ -229,7 +229,6 @@ GameObject:
   - component: {fileID: 3819924536378851741}
   - component: {fileID: 4438558096378136223}
   - component: {fileID: 3163533783709604448}
-  - component: {fileID: 8281568681634318037}
   m_Layer: 0
   m_Name: Explosion Effect
   m_TagString: Untagged
@@ -5109,21 +5108,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &8281568681634318037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 479908927654770662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ee71a8b5a93dbf4c8b1b10281d6a9d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 0
-  knocebackForce: 10
-  duration: 0.2
 --- !u!1 &641187582138171710
 GameObject:
   m_ObjectHideFlags: 0
@@ -44366,7 +44350,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

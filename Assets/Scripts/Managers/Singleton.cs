@@ -9,25 +9,8 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance;
 
-    public static T Instance
-    {
-        get
-        {
-            if(instance == null)
-            {
-                // 인스턴스가 존재하는지 한번 더 체크
-                instance = (T)FindAnyObjectByType(typeof(T));
-
-                // 없다면
-                if(instance == null)
-                {
-                    GameObject obj = new GameObject(typeof(T).Name, typeof(T));
-                    instance = obj.GetComponent<T>();
-                }
-            }
-            return instance;
-        }
-    }
+    public static T Instance => instance;
+   
 
     protected virtual void Awake()
     {

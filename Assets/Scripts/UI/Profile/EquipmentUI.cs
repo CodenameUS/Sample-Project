@@ -106,6 +106,11 @@ public class EquipmentUI : MonoBehaviour
                 // 해당 슬롯인덱스에 저장된 아이템이 없을 때
                 if (itemDataArray[data.slotIndex] == null)
                 {
+                    // 기본무기로 세팅
+                    if(data.slotIndex == 0)
+                    {
+                        WeaponManager.Instance.SetWeapon();
+                    }
                     continue;
                 }
 
@@ -115,6 +120,7 @@ public class EquipmentUI : MonoBehaviour
                 if(item is WeaponItem wi)
                 {
                     SetItemIcon(wi, wi.WeaponData.Type, wi.Data.ItemIcon);
+                    WeaponManager.Instance.SetWeapon(wi.WeaponData.SubType, wi.WeaponData.ItemPrefab);
                 }
                 else if(item is ArmorItem ai)
                 {
@@ -122,8 +128,6 @@ public class EquipmentUI : MonoBehaviour
                 }
             }
         }
-
-
         // 아이템 타입별 반환
         ItemData ItemTypeById(int id)
         { 
@@ -288,7 +292,14 @@ public class EquipmentUI : MonoBehaviour
                 EquipmentItem item = (EquipmentItem)items[slotUI.index];
                 inventory.AddItem(item.Data);
                 item.Unequip();
+
+                // 아이템제거
+                items[slotUI.index] = null;
+                itemDataArray[slotUI.index] = null;
                 slotUIList[slotUI.index].RemoveItemIcon();
+
+                // 저장
+                SaveEquipmentSlotData();
             }
         }
     }

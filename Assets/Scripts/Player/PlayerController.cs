@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
 
     private float hAxis;
     private float vAxis;
-    private float baseSpeed = 3f;
+    private float baseSpeed = 4f;
 
     private bool isAttackKeyDown;                       // 공격키입력여부(C)
     private bool isAttacking = false;                   // 공격중여부
@@ -104,7 +104,11 @@ public class PlayerController : MonoBehaviour
         if (isAttacking || isDead || isCutscenePlaying)
             return;
 
-        moveVec = new Vector3(hAxis, 0, vAxis).normalized;
+        Vector3 inputDir = new Vector3(hAxis, 0, vAxis);
+        Quaternion terrainRotation = Quaternion.Euler(0, -90f, 0);
+
+        //moveVec = new Vector3(hAxis, 0, vAxis).normalized;
+        moveVec = (terrainRotation * inputDir).normalized;
 
         rigid.position += moveVec * (baseSpeed + playerData.Speed) * Time.deltaTime;
         anim.SetFloat(hashSpeed, moveVec == Vector3.zero ? 0 : (baseSpeed + playerData.Speed));

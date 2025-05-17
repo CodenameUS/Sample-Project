@@ -20,8 +20,8 @@ public class StoreItemSlotUI : MonoBehaviour
     [SerializeField] private Text   itemExplanation;            // 아이템 설명
     [SerializeField] private Text   itemPrice;                  // 아이템 가격
     [SerializeField] private Button perchaseBtn;                // 구매 버튼
-    [SerializeField] private Inventory inventory;               // 연결된 인벤토리
 
+    private Inventory inventory;               // 연결된 인벤토리
     private ArmorItemData armorItemData;
     private WeaponItemData weaponItemData;
     private PortionItemData portionItemData;
@@ -29,6 +29,10 @@ public class StoreItemSlotUI : MonoBehaviour
 
     private int price;                                          // 아이템 가격
 
+    private void Awake()
+    {
+        inventory = Inventory.Instance;
+    }
     private void Start()
     {
         GetItemData();

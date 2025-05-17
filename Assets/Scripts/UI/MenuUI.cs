@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class MenuUI : MonoBehaviour
 {
-    [SerializeField] private GameObject settingsButtonGo;
-    [SerializeField] private GameObject exitButtonGo;
-    [SerializeField] private GameObject cancelButtonGo;
+    [Header("Connected UI")]
+    [SerializeField] private GameObject settingsButtonGo;               
+    [SerializeField] private GameObject exitButtonGo;                   
+    [SerializeField] private GameObject cancelButtonGo;                
     [SerializeField] private GameObject settingsGo;
 
   

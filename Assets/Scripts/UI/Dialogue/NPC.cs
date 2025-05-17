@@ -13,12 +13,17 @@ using UnityEngine;
  */
 public class NPC : MonoBehaviour
 {
-    [SerializeField] protected GameObject dialogueUI;
+    protected GameObject dialogueUI;
     
     [HideInInspector]
     public GameObject npcUI;                                     // 개별 NPC의 UI
 
     protected bool isPlayerInRange = false;                      // 플레이어가 범위안에 있는지 여부
+
+    private void Awake()
+    {
+        dialogueUI = DialogueManager.Instance.dialogueUI;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

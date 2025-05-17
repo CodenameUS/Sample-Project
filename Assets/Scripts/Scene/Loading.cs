@@ -11,6 +11,8 @@ public class Loading : MonoBehaviour
 
     
     private static string nextScene;
+    private static string prevSceneName;
+
     string[] gameTips =
     {
         "플레이어가 사망하면 마을로 돌아갑니다.",
@@ -27,13 +29,17 @@ public class Loading : MonoBehaviour
     // 로딩씬 불러오기
     public static void LoadNextScene(string sceneName)
     {
+        prevSceneName = SceneManager.GetActiveScene().name;
         nextScene = sceneName;
-        SceneManager.LoadScene("Loading");
+        SceneManager.LoadSceneAsync("Loading", LoadSceneMode.Additive);
     }
 
     private IEnumerator LoadSceneProgress()
     {
-        AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
+        // 로딩씬을 ActiveScene으로 설정
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName("Loading"));
+
+        AsyncOperation op = SceneManager.LoadSceneAsync(nextScene, LoadSceneMode.Additive);
         op.allowSceneActivation = false;
         
         float timer = 0f;
@@ -54,10 +60,24 @@ public class Loading : MonoBehaviour
                 if(progressBar.rectTransform.sizeDelta.x >= 1920f)
                 {
                     op.allowSceneActivation = true;
-                    yield break;
                 }
             }
         }
+
+        // 로딩 완료 후 전환
+        yield return null;
+
+        // 로드될 다음 씬을 ActiveScene으로 설정
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene));
+
+        // 이전 씬 언로드(PersistentScene 제외)
+        if(prevSceneName != "PersistentScene" && prevSceneName != "Loading")
+        {
+            SceneManager.UnloadSceneAsync(prevSceneName);
+        }
+
+        // 로딩씬은 언로드
+        SceneManager.UnloadSceneAsync("Loading");
     }
 
     private void ShowGameTips()
