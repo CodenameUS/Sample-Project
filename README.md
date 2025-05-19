@@ -16,7 +16,7 @@ Youtube - https://www.youtube.com/@%EC%B5%9C%EC%9A%B0%EC%84%B1-z7v
 - Unity 2021.3.36f1
 
 ## 게임 개요
-- 장르 : 백뷰 RPG
+- 장르 : 쿼터뷰 RPG
 - 플랫폼 : PC(싱글) - 싱글로 우선개발 후 멀티로 확장가능성
 - 개발인원 : 1명
 - 게임 요약
