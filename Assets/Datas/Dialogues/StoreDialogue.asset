@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d021a39b585bb444e8613ed7222b3ede, type: 3}
   m_Name: StoreDialogue
   m_EditorClassIdentifier: 
-  npcName: "\uC0C1\uC810"
+  npcName: "\uC0C1\uC810\uC8FC\uC778"
   sentences:
   - "\uC5B4\uC11C\uC624\uC138\uC694.\n\uC6D0\uD558\uC2DC\uB294 \uBB3C\uAC74\uC774
     \uC788\uC73C\uC2E0\uAC00\uC694?\n--\n\uC800\uD76C \uC0C1\uC810\uC5D0\uB294 \uC5C6\uB294

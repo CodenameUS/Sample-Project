@@ -67,7 +67,7 @@ public class BossMonster : MonoBehaviour
         float minDamage = damage * 0.8f;
         float maxDamage = damage * 1.2f;
         int randomDamage = (int)Random.Range(minDamage, maxDamage);
-        DamageTextManager.Instance.ShowDamage(damageTextPos.position, randomDamage);
+        DamageTextManager.Instance.ShowDamage(damageTextPos, randomDamage);
         curHp -= randomDamage;
     }
 

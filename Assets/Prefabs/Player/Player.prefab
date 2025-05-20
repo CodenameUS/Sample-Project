@@ -2208,7 +2208,6 @@ GameObject:
   - component: {fileID: 4098229123586463562}
   - component: {fileID: 4098229123586463563}
   - component: {fileID: 4098229123586463565}
-  - component: {fileID: 4098229123586463553}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -2302,18 +2301,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   isCutscenePlaying: 0
---- !u!114 &4098229123586463553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8940531991326444701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f00842695893be44ca8be02c4a587b7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8940531991334018923
 GameObject:
   m_ObjectHideFlags: 0

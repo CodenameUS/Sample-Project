@@ -22,7 +22,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: ece6cd49f8c91f944a8888e604ded989
-    m_Address: Assets/Sounds/MainScene.mp3
+    m_Address: Assets/Sounds/ViliageScene.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 6291cf2f68ed7ad4996085063ce8418d

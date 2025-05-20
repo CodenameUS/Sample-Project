@@ -112,6 +112,7 @@ public class Grunt : BossMonster
                 prevAttack = 0;
                 break;
             case 1:
+                PlaySFX("Grunt_Attack02");
                 anim.SetInteger(hashAttackType, randomAct);
                 anim.SetTrigger(hashAttackTrigger);
                 prevAttack = 1;

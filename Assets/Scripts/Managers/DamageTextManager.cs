@@ -33,13 +33,12 @@ public class DamageTextManager : Singleton<DamageTextManager>
         }
     }
 
-    public void ShowDamage(Vector3 position, int damage)
+    public void ShowDamage(Transform pos, int damage)
     {
         TextMeshPro damageText = GetDamageText();
 
         // 위치 설정
-        damageText.transform.position = position;
-
+        damageText.transform.position = pos.transform.position;
         // 데미지 텍스트 설정
         damageText.text = damage.ToString();
 

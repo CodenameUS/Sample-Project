@@ -103,7 +103,7 @@ public class DungeonManager : MonoBehaviour
 
         // 플레이어 위치 설정
         GameManager.Instance.player.transform.position = cutScenePlayerPos.position;
-        GameManager.Instance.player.transform.rotation = Quaternion.identity;
+        GameManager.Instance.player.transform.LookAt(boss.transform);
 
         Debug.Log("컷씬 시작");
     }
