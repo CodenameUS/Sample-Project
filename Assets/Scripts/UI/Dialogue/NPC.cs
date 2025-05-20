@@ -41,11 +41,12 @@ public class NPC : MonoBehaviour
         }
     }
 
-    // NPC UI 활성/비활성화
+    // NPC UI 활성
     public void SetActiveNpcUI()
     {
-        npcUI.SetActive(!npcUI.activeSelf);
-        DialogueManager.Instance.isReadyToTalk = !npcUI.activeSelf;
+        npcUI.SetActive(true);
         DialogueManager.Instance.npc = null;
     }
+
+    
 }

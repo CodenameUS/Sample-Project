@@ -26,8 +26,10 @@ public class DialogueManager : Singleton<DialogueManager>
 
     [HideInInspector]
     public NPC npc;                                             // 현재 대상 NPC
-    [HideInInspector]                                           // 대화하기 가능여부(중복대화방지)
-    public bool isReadyToTalk = true;
+    [HideInInspector]                                           
+    public bool isReadyToTalk = true;                           // 대화하기 가능여부(중복대화방지)
+    [HideInInspector]
+    public bool isFirstDialogue = true;                         // 대화의 시작인지여부
 
     private void Update()
     {
@@ -40,7 +42,7 @@ public class DialogueManager : Singleton<DialogueManager>
     // 대화시작
     public void StartDialogue(DialogueDataSO dialogue, NPC npcData)
     {
-        if (!isReadyToTalk)
+        if (!isReadyToTalk || !isFirstDialogue)
             return;
 
         isReadyToTalk = false;
@@ -113,5 +115,6 @@ public class DialogueManager : Singleton<DialogueManager>
     private void EndDialogue()
     {
         dialogueUI.SetActive(false);
+        isReadyToTalk = true;
     }
 }

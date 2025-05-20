@@ -15,7 +15,7 @@ public class Store : NPC
     private void Update()
     {
         // 대화 시작
-        if(isPlayerInRange && Input.GetKeyDown(KeyCode.G) && !dialogueUI.activeSelf)
+        if(isPlayerInRange && Input.GetKeyDown(KeyCode.G) && !dialogueUI.activeSelf && !storeUI.activeSelf)
         {
             DialogueManager.Instance.StartDialogue(dialogueData, this);
         }

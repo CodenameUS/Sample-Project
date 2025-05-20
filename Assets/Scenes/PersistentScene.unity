@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2000,6 +2000,7 @@ MonoBehaviour:
   dialogueText: {fileID: 701089162}
   npc: {fileID: 0}
   isReadyToTalk: 1
+  isFirstDialogue: 1
 --- !u!4 &310373914
 Transform:
   m_ObjectHideFlags: 0
@@ -4579,6 +4580,7 @@ MonoBehaviour:
   itemTooltipUI: {fileID: 1399909495}
   inventory: {fileID: 501796816}
   targetUI: {fileID: 1905584537}
+  rc: {fileID: 1961893471}
   slotUIList:
   - {fileID: 1397803717}
   - {fileID: 1408586788}

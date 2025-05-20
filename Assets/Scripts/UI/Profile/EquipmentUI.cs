@@ -24,6 +24,7 @@ public class EquipmentUI : MonoBehaviour
     [SerializeField] private ItemTooltipUI itemTooltipUI;
     [SerializeField] private Inventory inventory;
     [SerializeField] private GameObject targetUI;
+    [SerializeField] private UIRaycaster rc;
 
     // 장비 타입별 idx(0: Weapon, 1: Shoes, 2: Gloves, 3: Top)
     private enum Type { Weapon, Shoes, Gloves, Top}
@@ -33,10 +34,6 @@ public class EquipmentUI : MonoBehaviour
     public List<EquipmentSlotUI> slotUIList = new List<EquipmentSlotUI>();
     public Item[] items;
     public ItemData[] itemDataArray;
-
-    private GraphicRaycaster gr;
-    private PointerEventData ped;
-    private List<RaycastResult> rrList;
 
     private int leftClick = 0;                              // 좌클릭 = 0
     private int rightClick = 1;                             // 우클릭 = 0;
@@ -64,8 +61,6 @@ public class EquipmentUI : MonoBehaviour
     }
     private void Update()
     {
-        ped.position = Input.mousePosition;
-
         OnPointerEnterAndExit();
         ShowOrHideTooltipUI();
         OnPointerDown();
@@ -80,13 +75,6 @@ public class EquipmentUI : MonoBehaviour
     {
         items = new Item[slotCounts];
         itemDataArray = new ItemData[slotCounts];
-
-        TryGetComponent(out gr);
-        if (gr == null)
-            gr = gameObject.AddComponent<GraphicRaycaster>();
-
-        ped = new PointerEventData(EventSystem.current);
-        rrList = new List<RaycastResult>(10);
     }
 
     // 플레이어가 장착중인 아이템 데이터 로드
@@ -193,23 +181,6 @@ public class EquipmentUI : MonoBehaviour
     // 마우스 커서가 UI 위에 있는지 여부
     private bool IsOverUI() => EventSystem.current.IsPointerOverGameObject();
 
-    // 레이캐스팅한 첫 UI요소의 컴포넌트를 가져오기
-    private T RaycastAndgetFirstComponent<T>() where T : Component
-    {
-        // RaycastResult 초기화
-        rrList.Clear();
-
-        // 현재 마우스 위치에서 감지된 UI요소 저장
-        gr.Raycast(ped, rrList);
-
-        // 없으면
-        if (rrList.Count == 0)
-            return null;
-
-        // 첫번째 UI의 컴포넌트 반환
-        return rrList[0].gameObject.GetComponent<T>();
-    }
-
     // 마우스 올라갈때 나갈때 처리
     private void OnPointerEnterAndExit()
     {
@@ -217,7 +188,7 @@ public class EquipmentUI : MonoBehaviour
         var prevSlot = pointerOverSlot;
 
         // 현재 프레임 슬롯
-        var curSlot = pointerOverSlot = RaycastAndgetFirstComponent<EquipmentSlotUI>();
+        var curSlot = pointerOverSlot = rc.RaycastAndgetFirstComponent<EquipmentSlotUI>();
 
         // 마우스 올라갈 때
         if(prevSlot == null)
@@ -260,7 +231,7 @@ public class EquipmentUI : MonoBehaviour
         if (Input.GetMouseButtonDown(leftClick))
         {
             // 시작 슬롯
-            beginDragSlot = RaycastAndgetFirstComponent<EquipmentSlotUI>();
+            beginDragSlot = rc.RaycastAndgetFirstComponent<EquipmentSlotUI>();
 
             // 슬롯에 아이템이 있을 때
             if(beginDragSlot != null && beginDragSlot.HasItem)
@@ -284,7 +255,7 @@ public class EquipmentUI : MonoBehaviour
         else if (Input.GetMouseButtonDown(rightClick))
         {
             // 우클릭 위치의 슬롯
-            EquipmentSlotUI slotUI = RaycastAndgetFirstComponent<EquipmentSlotUI>();
+            EquipmentSlotUI slotUI = rc.RaycastAndgetFirstComponent<EquipmentSlotUI>();
             
             // 장비 장착 해제
             if(slotUI != null && slotUI.HasItem)
