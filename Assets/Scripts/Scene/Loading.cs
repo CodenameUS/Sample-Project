@@ -15,9 +15,9 @@ public class Loading : MonoBehaviour
 
     string[] gameTips =
     {
-        "ÇÃ·¹ÀÌ¾î°¡ »ç¸ÁÇÏ¸é ¸¶À»·Î µ¹¾Æ°©´Ï´Ù.",
-        "Æ÷¼ÇÀ¸·Î Ã¼·ÂÀ» º¸ÃæÇÒ ¼ö ÀÖ½À´Ï´Ù.",
-        "´õ ÁÁÀº Àåºñ´Â ´øÀüÀ» Å¬¸®¾îÇÏ´Âµ¥ Å« µµ¿òÀÌ µË´Ï´Ù."
+        "í”Œë ˆì´ì–´ê°€ ì‚¬ë§í•˜ë©´ ë§ˆì„ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤.",
+        "í¬ì…˜ìœ¼ë¡œ ì²´ë ¥ì„ ë³´ì¶©í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.",
+        "ë” ì¢‹ì€ ì¥ë¹„ëŠ” ë˜ì „ì„ í´ë¦¬ì–´í•˜ëŠ”ë° í° ë„ì›€ì´ ë©ë‹ˆë‹¤."
     };
 
     private void Start()
@@ -26,7 +26,7 @@ public class Loading : MonoBehaviour
         ShowGameTips();
     }
 
-    // ·Îµù¾À ºÒ·¯¿À±â
+    // ë¡œë”©ì”¬ ë¶ˆëŸ¬ì˜¤ê¸°
     public static void LoadNextScene(string sceneName)
     {
         prevSceneName = SceneManager.GetActiveScene().name;
@@ -36,7 +36,7 @@ public class Loading : MonoBehaviour
 
     private IEnumerator LoadSceneProgress()
     {
-        // ·Îµù¾ÀÀ» ActiveSceneÀ¸·Î ¼³Á¤
+        // ë¡œë”©ì”¬ì„ ActiveSceneìœ¼ë¡œ ì„¤ì •
         SceneManager.SetActiveScene(SceneManager.GetSceneByName("Loading"));
 
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene, LoadSceneMode.Additive);
@@ -44,6 +44,7 @@ public class Loading : MonoBehaviour
         
         float timer = 0f;
 
+        // ë¡œë”©ê²Œì´ì§€ í‘œì‹œ
         while(!op.isDone)
         {
             yield return null;
@@ -52,7 +53,7 @@ public class Loading : MonoBehaviour
             {
                 progressBar.rectTransform.sizeDelta = new Vector2(op.progress * 1920f, 80f);
             }
-            // 90% ·Îµù ÀÌÈÄ·Î Fake ·Îµù
+            // 90% ë¡œë”© ì´í›„ë¡œ Fake ë¡œë”©
             else
             {
                 timer += Time.unscaledDeltaTime;
@@ -64,19 +65,19 @@ public class Loading : MonoBehaviour
             }
         }
 
-        // ·Îµù ¿Ï·á ÈÄ ÀüÈ¯
+        // ë¡œë”© ì™„ë£Œ í›„ ì „í™˜
         yield return null;
 
-        // ·ÎµåµÉ ´ÙÀ½ ¾ÀÀ» ActiveSceneÀ¸·Î ¼³Á¤
+        // ë¡œë“œë  ë‹¤ìŒ ì”¬ì„ ActiveSceneìœ¼ë¡œ ì„¤ì •
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene));
 
-        // ÀÌÀü ¾À ¾ğ·Îµå(PersistentScene Á¦¿Ü)
+        // ì´ì „ ì”¬ ì–¸ë¡œë“œ(PersistentScene ì œì™¸)
         if(prevSceneName != "PersistentScene" && prevSceneName != "Loading")
         {
             SceneManager.UnloadSceneAsync(prevSceneName);
         }
 
-        // ·Îµù¾ÀÀº ¾ğ·Îµå
+        // ë¡œë”©ì”¬ì€ ì–¸ë¡œë“œ
         SceneManager.UnloadSceneAsync("Loading");
     }
 
