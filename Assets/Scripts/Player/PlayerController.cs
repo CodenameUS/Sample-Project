@@ -187,10 +187,10 @@ public class PlayerController : MonoBehaviour
     private void SetIsComboAllowedFalse() => isComboAllowed = false;
 
     // 공격판정(Collider) On
-    private void EnableAttackHitbox() => WeaponManager.Instance.currentWeapon.SetHitBox(true);
+    private void EnableAttackHitbox() => WeaponManager.Instance.currentWeapon.Attack(true);
 
     // 공격판정(Collider) Off
-    private void DisableAttackHitbox() => WeaponManager.Instance.currentWeapon.SetHitBox(false);
+    private void DisableAttackHitbox() => WeaponManager.Instance.currentWeapon.Attack(false);
 
     // 공격판정(Raycast etc..)
     private void TriggerAttack() => WeaponManager.Instance.currentWeapon.Attack();

@@ -23,10 +23,7 @@ public class Sword : Weapon
         soundId = "Sword";
     }
 
-    public override void Attack()
-    {
-       
-    }
+    
 
     private void OnTriggerEnter(Collider other)
     {
@@ -42,7 +39,12 @@ public class Sword : Weapon
         }
     }
 
-    public override void SetHitBox(bool isEnabled)
+    public override void Attack()
+    {
+
+    }
+
+    public override void Attack(bool isEnabled)
     {
         hitBox.enabled = isEnabled;
     }

@@ -26,7 +26,6 @@ public class Staff : Weapon
         soundId = "Staff";
     }
 
-    // 공격 구현
     public override void Attack()
     {
         // 공격시작 위치 : 플레이어약간앞, 공격방향 : 플레이어 정면
@@ -68,7 +67,7 @@ public class Staff : Weapon
         }
     }
 
-    public override void SetHitBox(bool isEnabled)
+    public override void Attack(bool isEnabled)
     {
         
     }

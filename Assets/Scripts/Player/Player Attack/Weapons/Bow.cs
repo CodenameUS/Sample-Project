@@ -20,7 +20,7 @@ public class Bow : Weapon
         // 화살 생성
     }
 
-    public override void SetHitBox(bool isEnabled)
+    public override void Attack(bool isEnabled)
     {
         
     }

@@ -30,7 +30,6 @@ public class StayHitbox : MonoBehaviour
         else if(other.CompareTag("BossMonster"))
         {
             BossMonster boss = other.GetComponent<BossMonster>();
-
             timer += Time.deltaTime;
             if (timer >= 0.5f)
             {

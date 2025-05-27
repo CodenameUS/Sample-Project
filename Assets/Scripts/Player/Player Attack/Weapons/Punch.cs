@@ -24,7 +24,13 @@ public class Punch : Weapon
         soundId = "Punch";
     }
 
-    // 공격 판정(레이 캐스트)
+
+
+    private  void OnTriggerEnter(Collider other)
+    {
+        
+    }
+
     public override void Attack()
     {
         SetComboCount();
@@ -41,21 +47,24 @@ public class Punch : Weapon
             LayerMask.GetMask("Monster", "BossMonster")
             );
 
-        foreach(RaycastHit hit in hits)
+        // Raycast된 결과를 순회
+        foreach (RaycastHit hit in hits)
         {
-            if(hit.collider.CompareTag("Monster"))
+            // 1. Monster 경우
+            if (hit.collider.CompareTag("Monster"))
             {
                 Monster monster = hit.collider.GetComponent<Monster>();
-                if(monster != null)
+                if (monster != null)
                 {
                     monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
                     return;
                 }
             }
-            else if(hit.collider.CompareTag("BossMonster"))
+            // 2. BossMonster 경우
+            else if (hit.collider.CompareTag("BossMonster"))
             {
                 BossMonster boss = hit.collider.GetComponent<BossMonster>();
-                if(boss!=null)
+                if (boss != null)
                 {
                     boss.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
                     return;
@@ -64,13 +73,7 @@ public class Punch : Weapon
         }
     }
 
-
-    private  void OnTriggerEnter(Collider other)
-    {
-        
-    }
-
-    public override void SetHitBox(bool isEnabled)
+    public override void Attack(bool isEnabled)
     {
         
     }
