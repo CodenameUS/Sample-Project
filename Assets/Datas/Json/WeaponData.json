@@ -1,0 +1,126 @@
+{
+    "Sword": [
+        {
+            "id": 30001,
+            "itemName": "기본 검",
+            "itemToolTip": "기본 검이다.\n공격력+10",
+	"itemExplanation": "공격력+10",
+            "itemIcon": "Item_WeaponItem_Sword_01.png",
+            "itemPrefab": "Sword_01",
+	"itemPrice": 700,
+            "damage": 10,
+            "rate": 1.0,
+            "type": "Weapon",
+            "subType": "Sword"
+        },
+        {
+            "id": 30002,
+            "itemName": "강철 검",
+            "itemToolTip": "강철 검이다.\n공격력+20",
+            "itemExplanation": "공격력+20",
+            "itemIcon": "Item_WeaponItem_Sword_02.png",
+            "itemPrefab": "Sword_02",
+            "itemPrice": 2000,
+            "damage": 20,
+            "rate": 1.0,
+            "type": "Weapon",
+            "subType": "Sword"
+        },
+        {
+            "id": 30003,
+            "itemName": "룬 검",
+            "itemToolTip": "룬 검이다.\n공격력+30",
+            "itemExplanation": "공격력+30",
+            "itemIcon": "Item_WeaponItem_Sword_03.png",
+            "itemPrefab": "Sword_03",
+            "itemPrice": 5500,
+            "damage": 30,
+            "rate": 1.0,
+            "type": "Weapon",
+            "subType": "Sword"
+        }
+    ],
+    "Bow": [
+        {
+            "id": 31001,
+            "itemName": "수련용 활",
+            "itemToolTip": "수련용 활이다.\n공격력+6",
+            "itemExplanation": "공격력+6",
+            "itemIcon": "Item_WeaponItem_Bow_01.png",
+            "itemPrefab": "Bow_01",
+            "itemPrice": 700,
+            "damage": 6,
+            "rate": 1.5,
+            "type": "Weapon",
+            "subType": "Bow"
+        },
+        {
+            "id": 31002,
+            "itemName": "강철 활",
+            "itemToolTip": "강철 활이다.\n공격력+12",
+            "itemExplanation": "공격력+12",
+            "itemIcon": "Item_WeaponItem_Bow_02.png",
+            "itemPrefab": "Bow_02",
+            "itemPrice": 2000,
+            "damage": 12,
+            "rate": 1.5,
+            "type": "Weapon",
+            "subType": "Bow"
+        },
+        {
+            "id": 31003,
+            "itemName": "전문가용 활",
+            "itemToolTip": "전문가용 활이다.\n공격력+18",
+            "itemExplanation": "공격력+18",
+            "itemIcon": "Item_WeaponItem_Bow_03.png",
+            "itemPrefab": "Bow_03",
+            "itemPrice": 5500,
+            "damage": 18,
+            "rate": 1.5,
+            "type": "Weapon",
+            "subType": "Bow"
+        }
+    ],
+    "Staff": [
+        {
+            "id": 32001,
+            "itemName": "나무 스태프",
+            "itemToolTip": "나무 스태프다.\n공격력+8",
+            "itemExplanation": "공격력+8",
+            "itemIcon": "Item_WeaponItem_Staff_01.png",
+            "itemPrefab": "Staff_01",
+            "itemPrice": 700,
+            "damage": 8,
+            "rate": 0.5,
+            "type": "Weapon",
+            "subType": "Staff"
+        },
+        {
+            "id": 32002,
+            "itemName": "미스릴 스태프",
+            "itemToolTip": "미스릴 스태프다.\n공격력+15",
+            "itemExplanation": "공격력+15",
+            "itemIcon": "Item_WeaponItem_Staff_02.png",
+            "itemPrefab": "Staff_02",
+            "itemPrice": 2000,
+            "damage": 15,
+            "rate": 0.5,
+            "type": "Weapon",
+            "subType": "Staff"
+        },
+        {
+            "id": 32003,
+            "itemName": "위저드 스태프",
+            "itemToolTip": "위저드 스태프다.\n공격력+22",
+            "itemExplanation": "공격력+22",
+            "itemIcon": "Item_WeaponItem_Staff_03.png",
+            "itemPrefab": "Staff_03",
+            "itemPrice": 5500,
+            "damage": 22,
+            "rate": 0.5,
+            "type": "Weapon",
+            "subType": "Staff"
+        }
+    ]
+
+}

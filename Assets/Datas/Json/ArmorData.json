@@ -1,0 +1,74 @@
+{
+    "Top": [
+        {
+            "id": 20001,
+            "itemName": "낡은 갑옷",
+            "itemToolTip": "낡은 갑옷이다.\n방어력+5",
+            "itemExplanation": "방어력+5",
+            "itemIcon": "Item_ArmorItem_Top_01.png",
+            "itemPrice": 500,
+            "defense": 5,
+            "type": "Armor",
+            "subType": "Top"
+        },
+        {
+            "id": 20002,
+            "itemName": "단단한 갑옷",
+            "itemToolTip": "단단한 갑옷이다.\n방어력+10",
+            "itemExplanation": "방어력+10",
+            "itemIcon": "Item_ArmorItem_Top_02.png",
+            "itemPrice": 1100,
+            "defense": 10,
+            "type": "Armor",
+            "subType": "Top"
+        }
+    ],
+    "Shoes": [
+        {
+            "id": 21001,
+            "itemName": "낡은 장화",
+            "itemToolTip": "낡은 신발이다.\n방어력+3",
+            "itemExplanation": "방어력+3",
+            "itemIcon": "Item_ArmorItem_Shoes_01.png",
+            "itemPrice": 300,
+            "defense": 3,
+            "type": "Armor",
+            "subType": "Shoes"
+        },
+        {
+            "id": 21002,
+            "itemName": "판금 장화",
+            "itemToolTip": "단단한 신발이다.\n방어력+6",
+            "itemExplanation": "방어력+6",
+            "itemIcon": "Item_ArmorItem_Shoes_02.png",
+            "itemPrice": 700,
+            "defense": 6,
+            "type": "Armor",
+            "subType": "Shoes"
+        }
+    ],
+    "Gloves": [
+        {
+            "id": 22001,
+            "itemName": "허름한 장갑",
+            "itemToolTip": "허름한 장갑이다.\n방어력+3",
+            "itemExplanation": "방어력+3",
+            "itemIcon": "Item_ArmorItem_Gloves_01.png",
+            "itemPrice": 400,
+            "defense": 3,
+            "type": "Armor",
+            "subType": "Gloves"
+        },
+        {
+            "id": 22002,
+            "itemName": "부드러운 장갑",
+            "itemToolTip": "부드러운 장갑이다.\n방어력+6",
+            "itemExplanation": "방어력+6",
+            "itemIcon": "Item_ArmorItem_Gloves_02.png",
+            "itemPrice": 900,
+            "defense": 6,
+            "type": "Armor",
+            "subType": "Gloves"
+        }
+    ]
+}

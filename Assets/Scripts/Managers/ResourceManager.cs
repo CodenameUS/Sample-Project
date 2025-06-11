@@ -93,6 +93,7 @@ public class ResourceManager : Singleton<ResourceManager>
             }
         };
     }
+
     // 사운드 불러오기
     public void LoadSound(string clipName, System.Action<AudioClip> onLoaded)
     {

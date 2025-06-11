@@ -93,5 +93,6 @@ public class SkillSlotUI : MonoBehaviour
         }
 
         highlightImage.gameObject.SetActive(false);
+        currentHighlightAlpha = 0f;
     }
 }

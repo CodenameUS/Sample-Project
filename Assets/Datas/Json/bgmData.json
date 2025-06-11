@@ -1,0 +1,16 @@
+{
+  "bgmList": [
+    {
+        "id": "ViliageScene",
+        "clipName": "ViliageScene.mp3",
+        "volume": 0.4,
+        "loop": true
+    },
+    {
+      "id": "DungeonScene",
+      "clipName": "DungeonScene.mp3",
+      "volume": 0.4,
+      "loop": true
+    }
+  ]
+}

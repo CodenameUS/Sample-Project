@@ -1,0 +1,27 @@
+{
+    "Portion": [
+      {
+        "id": 10001,
+        "itemName": "엘릭서",
+        "itemToolTip": "Hp를 일정량 회복시켜준다.",
+        "itemExplanation": "Hp를 30 회복시켜줍니다.",
+        "itemIcon": "Item_PortionItem_Elixir.png",
+        "itemPrice": 50,
+        "maxAmount": 99,
+        "PortionType": "Health",
+        "value": 30.0
+      },
+      {
+        "id": 10002,
+        "itemName": "마나 엘릭서",
+        "itemToolTip": "Mp를 일정량 회복시켜준다.",
+        "itemExplanation": "Mp를 30 회복시켜줍니다.",
+        "itemIcon": "Item_PortionItem_ManaElixir.png",
+        "itemPrice": 50,
+        "maxAmount": 99,
+        "PortionType": "Mana",
+        "value": 30.0
+      }
+    ]
+  }
+  

@@ -1,0 +1,32 @@
+{
+    "Sword": [
+        {
+            "id": "slash",
+            "name": "Slash",
+            "animId": 10,
+            "effectName": "Effect_Slash",
+            "cooldown": 4.0,
+            "damage": 25
+        }
+    ],
+    "Staff": [
+        {
+            "id": "iceshot",
+            "name": "IceShot",
+            "animId": 20,
+            "effectName": "Effect_IceShot",
+            "cooldown": 10.0,
+            "damage": 5
+        }
+    ],
+    "Public": [
+        {
+            "id": "buff",
+            "name": "Buff",
+            "animId": 0,
+            "effectName": "Effect_Buff",
+            "cooldown": 10.0,
+            "damage": 10
+        }
+    ],
+}

@@ -1,0 +1,16 @@
+{
+  "Status": {
+    "maxHp": 1000.0,
+    "curHp": 920.0,
+    "speed": 0.0,
+    "rotateSpeed": 10.0,
+    "damage": 40.0,
+    "defense": 13.0,
+    "gold": 3050
+  },
+  "Position": {
+    "posX": 34.5697479,
+    "posY": 42.7820129,
+    "posZ": -0.2261847
+  }
+}

@@ -443,12 +443,14 @@ public class Inventory : Singleton<Inventory>
             int maxAmount = ciB.MaxAmount;          // B 슬롯의 최대량
             int sum = ciA.Amount + ciB.Amount;      // 두 아이템 합한 갯수
 
-            // 두 아이템을 합쳐도 최대치보다 크지않을 때
+            // 합쳤을 때 잉여갯수가 남지않을경우
             if(sum <= maxAmount)
             {
                 ciA.SetAmount(0);
+                Remove(beginIndex);
                 ciB.SetAmount(sum);
             }
+            // 남는경우
             else
             {
                 ciA.SetAmount(sum - maxAmount);     

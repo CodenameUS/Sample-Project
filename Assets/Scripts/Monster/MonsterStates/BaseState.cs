@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 /*
                 BaseState : 몬스터가 가지는 상태 구현을 위한 추상클래스
 
@@ -9,7 +5,7 @@ using UnityEngine;
             => 제네릭으로 구현하여 여러 몬스터들을 받을 수 있게 구현
 
         - OnStateEnter() : 상태에 처음 진입했을 때 한 번만 호출(초기설정)
-        - OnStateUpdate() : 매 프레임마다 호출
+        - OnStateUpdate() : 매 프레임마다 호출(상태동안 진행할 동작)
         - OnStateExit() : 상태 변경시 호출(마무리작업)
  */
 

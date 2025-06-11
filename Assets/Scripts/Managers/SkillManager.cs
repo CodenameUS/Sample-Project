@@ -152,7 +152,7 @@ public class SkillManager : Singleton<SkillManager>
         });
     }
 
-    // 스킬 사용 후
+    // 스킬 사용 후(delay = 쿨타임)
     private IEnumerator ReturnSkillAfterUse(string skillId, Skill skill, float delay)
     {
         yield return new WaitForSeconds(delay);

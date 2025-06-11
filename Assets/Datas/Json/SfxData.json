@@ -1,0 +1,100 @@
+{
+    "sfxList": [
+        {
+            "id": "Gold",
+            "clipName": "Gold.mp3",
+            "volume": 1.0,
+            "loop": false
+        },
+        {
+            "id": "InventoryChange",
+            "clipName": "InventoryChange.mp3",
+            "volume": 1.0,
+            "loop": false
+        },
+        {
+            "id": "DialogueEffect",
+            "clipName": "DialogueEffect.mp3",
+            "volume": 1.0,
+            "loop": true
+        },
+        {
+            "id": "Sword",
+            "clipName": "SwordSwing.mp3",
+            "volume": 0.5,
+            "loop": false
+        },
+        {
+            "id": "Punch",
+            "clipName": "Punch.mp3",
+            "volume": 0.5,
+            "loop": false
+        },
+        {
+            "id": "Staff",
+            "clipName": "Staff.mp3",
+            "volume": 0.5,
+            "loop": false
+        },
+        {
+            "id": "Slash",
+            "clipName": "Slash.mp3",
+            "volume": 0.5,
+            "loop": false
+        },
+        {
+            "id": "IceShot",
+            "clipName": "IceShot.mp3",
+            "volume": 0.5,
+            "loop": false
+        },
+        {
+            "id": "Buff",
+            "clipName": "Buff.mp3",
+            "volume": 0.5,
+            "loop": false
+        },
+        {
+            "id": "Grunt_Roar",
+            "clipName": "Grunt_Roar.mp3",
+            "volume": 0.25,
+            "loop": false
+        },
+        {
+            "id": "Grunt_Attack01",
+            "clipName": "Grunt_Attack01.mp3",
+            "volume": 0.25,
+            "loop": false
+        },
+        {
+            "id": "Grunt_Attack02",
+            "clipName": "Grunt_Attack02.mp3",
+            "volume": 0.25,
+            "loop": false
+        },
+        {
+            "id": "Grunt_Attack03",
+            "clipName": "Grunt_Attack03.mp3",
+            "volume": 0.25,
+            "loop": false
+        },
+        {
+            "id": "Grunt_Attack04",
+            "clipName": "Grunt_Attack04.mp3",
+            "volume": 0.25,
+            "loop": false
+        },
+        {
+            "id": "Grunt_Die",
+            "clipName": "Grunt_Die.mp3",
+            "volume": 0.25,
+            "loop": false
+        },
+        {
+            "id": "TurtleShell_Die",
+            "clipName": "TurtleShell_Die.mp3",
+            "volume": 0.25,
+            "loop": false
+        }
+    ]
+}
