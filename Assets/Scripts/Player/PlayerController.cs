@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Photon.Pun;
+
 
 /// <summary>
 /// 플레이어 제어와 관련된 동작수행 및 애니메이션
@@ -10,7 +12,9 @@ using System;
 /// 3. Attack(공격)
 /// 4. Dead(죽음)
 /// </summary>
-public class PlayerController : MonoBehaviour
+/// 
+
+public class PlayerController : MonoBehaviourPun
 {
     [SerializeField] private SkillSlotUI[] skillSlots;              // 스킬 슬롯
 
@@ -29,7 +33,6 @@ public class PlayerController : MonoBehaviour
     private bool isAttacking = false;                   // 공격중여부
     private bool isDead = false;                        // 생존여부
     private bool isComboAllowed = false;                // 콤보가능여부
-
     public bool isCutscenePlaying = false;              // 컷신플레잉 여부
 
     private Vector3 moveVec;
@@ -46,11 +49,15 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        GameManager.Instance.isMultiPlaying = PhotonNetwork.InRoom;            // 멀티 여부
         Init();
     }
 
     private void Start()
     {
+        if (GameManager.Instance.isMultiPlaying)
+            return;
+
         // 플레이어 위치 로딩
         Vector3 loadedPosition = new Vector3
         (
@@ -65,6 +72,9 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         playerData = DataManager.Instance.GetPlayerData();
+
+        if (GameManager.Instance.isMultiPlaying && !photonView.IsMine)
+            return;
 
         GetInput();
         DoSkill();
@@ -172,7 +182,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    
+    private void OnDestroy()
+    {
+        DataManager.Instance.SavePlayerData();
+    }
+
     #region ** Animation Events **
     // 공격상태 돌입
     private void SetIsAttackingTrue() => isAttacking = true;

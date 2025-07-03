@@ -39,30 +39,39 @@ public class WeaponManager : Singleton<WeaponManager>
     {
         if(Enum.TryParse(type, out WeaponType result))
         {
-            ResourceManager.Instance.LoadWeaponPrefab(weapon + ".prefab", prefab =>
+            if(!GameManager.Instance.isMultiPlaying)
             {
-                if (prefab != null)
+                // 싱글플레이 무기프리팹 생성
+                ResourceManager.Instance.LoadWeaponPrefab(weapon + ".prefab", prefab =>
                 {
-                    currentWeapon = null;
-                    // 기존 무기 오브젝트 제거
-                    Destroy(myWeaponGo);
+                    if (prefab != null)
+                    {
+                        currentWeapon = null;
+                        // 기존 무기 오브젝트 제거
+                        Destroy(myWeaponGo);
 
-                    // 프리팹 생성
-                    GameObject newWeapon = Instantiate(prefab, prefab.transform.position, prefab.transform.rotation, weaponTransform);
-                    newWeapon.transform.localPosition = prefab.transform.localPosition;
-                    newWeapon.transform.localRotation = prefab.transform.localRotation;
+                        // 프리팹 생성
+                        GameObject newWeapon = Instantiate(prefab, prefab.transform.position, prefab.transform.rotation, weaponTransform);
+                        newWeapon.transform.localPosition = prefab.transform.localPosition;
+                        newWeapon.transform.localRotation = prefab.transform.localRotation;
 
-                    // 현재 무기 설정
-                    myWeaponGo = newWeapon;
-                    currentWeapon = myWeaponGo.GetComponent<Weapon>();
-                    myWeaponType = result;
-                    CurWeaponType = (int)myWeaponType;
-                }
-                else
-                {
-                    Debug.Log($"다음 프리팹을 불러오는데 실패하였습니다. : {prefab}");
-                }
-            });
+                        // 현재 무기 설정
+                        myWeaponGo = newWeapon;
+                        currentWeapon = myWeaponGo.GetComponent<Weapon>();
+                        myWeaponType = result;
+                        CurWeaponType = (int)myWeaponType;
+                    }
+                    else
+                    {
+                        Debug.Log($"다음 프리팹을 불러오는데 실패하였습니다. : {prefab}");
+                    }
+                });
+            }
+            // 멀티플레이 무기프리팹 생성
+            else
+            {
+
+            }
         }
         else
         {

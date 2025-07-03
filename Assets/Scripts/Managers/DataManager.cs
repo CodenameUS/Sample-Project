@@ -57,7 +57,7 @@ public class DataManager : Singleton<DataManager>
     }
 
     // 플레이어 데이터 불러오기
-    private PlayerData LoadPlayerData()
+    public PlayerData LoadPlayerData()
     {
         if(File.Exists(playerDataPath))
         {

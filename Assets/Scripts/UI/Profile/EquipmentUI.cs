@@ -59,6 +59,7 @@ public class EquipmentUI : MonoBehaviour
         LoadEquipmentSlotData();
         HideUI();
     }
+
     private void Update()
     {
         OnPointerEnterAndExit();
@@ -78,7 +79,7 @@ public class EquipmentUI : MonoBehaviour
     }
 
     // 플레이어가 장착중인 아이템 데이터 로드
-    private void LoadEquipmentSlotData()
+    public void LoadEquipmentSlotData()
     {
         string path = Path.Combine(Application.persistentDataPath, "EquipmentSlotData.json");
 

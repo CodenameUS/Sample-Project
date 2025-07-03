@@ -31,8 +31,8 @@ public class Inventory : Singleton<Inventory>
     [SerializeField] private InventoryUI inventoryUI;
     [SerializeField] private GameObject inventoryGo;
     [SerializeField] private Item[] items;
-    [SerializeField] private EquipmentUI equipmentUI;
     [SerializeField] private PlayerItemGroupUI playerItemGruopUI;
+    [SerializeField] public EquipmentUI equipmentUI;
     #endregion
 
     #region ** Fields **

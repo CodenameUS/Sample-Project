@@ -10,22 +10,40 @@ using Cinemachine;
  */
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] public PlayerController player;
+    public PlayerController player;
+    public CinemachineVirtualCamera virtualCamera;
+    public bool isMultiPlaying = false;                     // 멀티플레잉 여부
+
     [SerializeField] public GameObject profileUI;
-    [SerializeField] public CinemachineVirtualCamera virtualCamera;
 
     protected override void Awake()
     {
         base.Awake();
+        FindPlayerObject();
+        FindCameraObject();
     }
-
-  
+    
     private void Update()
     {
         // 캐릭터 정보창 활성화
         if (Input.GetKeyDown(KeyCode.P))
         {
             UIManager.Instance.ToggleUI(profileUI);
+        }
+    }
+
+    public void FindPlayerObject()
+    {
+        player = FindObjectOfType<PlayerController>();
+    }
+
+    public void FindCameraObject()
+    {
+        GameObject cam = GameObject.FindWithTag("PlayerCamera");
+        if(cam != null)
+        {
+            virtualCamera = cam.GetComponent<CinemachineVirtualCamera>();
+            virtualCamera.Follow = player.transform;
         }
     }
 }
