@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class MultiDungeonManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] public GameObject playerPrefab;
-    [SerializeField] public Transform[] spawnPositions;
+    [SerializeField] public GameObject playerPrefab;                // 플레이어 프리팹(멀티용)
+    [SerializeField] public Transform[] spawnPositions;             // 플레이어 스폰위치
 
     private static MultiDungeonManager instance;
 
@@ -26,17 +26,20 @@ public class MultiDungeonManager : MonoBehaviourPunCallbacks
     {
         SpawnPlayer();
 
+        /*
         if(PhotonNetwork.IsMasterClient)
         {
             
         }
+        */
     }
+
 
     // 플레이어 오브젝트 생성
     private void SpawnPlayer()
     {
-        var localPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;                       // 플레이어 넘버
-        var spawnPosition = spawnPositions[localPlayerIndex];           // 플레이어 위치 설정
+        var localPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;                    // 플레이어 넘버
+        var spawnPosition = spawnPositions[localPlayerIndex];                                // 플레이어 위치 설정
 
         PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
 

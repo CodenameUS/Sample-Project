@@ -60,6 +60,7 @@ public class WeaponManager : Singleton<WeaponManager>
                         currentWeapon = myWeaponGo.GetComponent<Weapon>();
                         myWeaponType = result;
                         CurWeaponType = (int)myWeaponType;
+                        Debug.Log("현재 내 무기 : " + CurWeaponType);
                     }
                     else
                     {

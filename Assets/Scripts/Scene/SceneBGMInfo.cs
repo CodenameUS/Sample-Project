@@ -16,6 +16,7 @@ public class SceneBGMInfo : MonoBehaviour
             AudioManager.Instance.PlayBGM(bgmKey);
         }
 
-        GameManager.Instance.player.transform.position = startingPoint.position;
+        if(startingPoint != null)
+            GameManager.Instance.player.transform.position = startingPoint.position;
     }
 }

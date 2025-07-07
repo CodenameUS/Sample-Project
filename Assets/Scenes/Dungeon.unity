@@ -21097,7 +21097,7 @@ GameObject:
   - component: {fileID: 2121923546}
   - component: {fileID: 2121923545}
   m_Layer: 0
-  m_Name: SceneBGMInfo
+  m_Name: Scene BGM Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -49,12 +49,13 @@ public class PlayerController : MonoBehaviourPun
 
     private void Awake()
     {
-        GameManager.Instance.isMultiPlaying = PhotonNetwork.InRoom;            // 멀티 여부
         Init();
     }
 
     private void Start()
     {
+        GameManager.Instance.isMultiPlaying = PhotonNetwork.InRoom;            // 멀티 여부
+
         if (GameManager.Instance.isMultiPlaying)
             return;
 

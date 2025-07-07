@@ -32,11 +32,13 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    // 플레이어 오브젝트 탐색(멀티 <-> 싱글 변경시)후 할당
     public void FindPlayerObject()
     {
         player = FindObjectOfType<PlayerController>();
     }
-
+    
+    // 카메라 오브젝트 탐색(멀티 <-> 싱글 변경시)후 할당
     public void FindCameraObject()
     {
         GameObject cam = GameObject.FindWithTag("PlayerCamera");
