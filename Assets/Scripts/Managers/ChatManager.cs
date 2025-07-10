@@ -10,24 +10,32 @@ using UnityEngine.EventSystems;
 
 public class ChatManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] TMP_InputField inputField;             // 채팅 입력칸
-    [SerializeField] TMP_Text chatContent;                  // 채팅 표시칸
-    [SerializeField] ScrollRect scrollRect;
+    [SerializeField] private TMP_InputField inputField;             // 채팅 입력란
+    [SerializeField] private ScrollRect scrollRect;                 // 채팅 스크롤뷰
 
-    private Queue<string> messageQueue = new();
-    private int maxMessages = 10;
-    private bool isInputActive = false;                     // InputField 활성화여부
+    [SerializeField] private GameObject chatLogPrefab;              // 채팅로그 프리팹
+    [SerializeField] private Transform contentTransform;            // 채팅로그가 생성될 위치
+
+    private Queue<GameObject> messageQueue = new();
+    private int maxMessages = 10;                           // 최대 10개 메세지 표시
+    private bool isInputActive = false;                     // 입력모드인지 여부
 
     private void Start()
     {
-        AppendMessage($"<color=green>{PhotonNetwork.NickName} Joined the chat room.</color>");
+        // 플레이어 입장 메세지
+        string temp = $"<color=green>{PhotonNetwork.NickName} Joined the chat room.</color>";
+        photonView.RPC("ReceiveMessage",RpcTarget.All, temp);
+
+        // 엔터키 입력
         inputField.onSubmit.AddListener(_ => SendChatMessage());
+        inputField.DeactivateInputField();
     }
 
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Return))
         {
+            // 입력모드가 아닐 경우 -> 입력시작
             if(!isInputActive)
             {
                 isInputActive = true;
@@ -35,11 +43,8 @@ public class ChatManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                if(!string.IsNullOrWhiteSpace(inputField.text))
-                {
-
-                }
-                else
+                // 입력모드일 때 -> 텍스트가 없으면 포커스해제
+                if(string.IsNullOrWhiteSpace(inputField.text))
                 {
                     isInputActive = false;
                     inputField.DeactivateInputField();
@@ -49,15 +54,19 @@ public class ChatManager : MonoBehaviourPunCallbacks
         }
 
     }
+
+    // 채팅 전송
     private void SendChatMessage()
     {
         if(!string.IsNullOrEmpty(inputField.text))
         {
+            // Player : ~~~
             string message = PhotonNetwork.NickName + ": " + inputField.text;
             photonView.RPC("ReceiveMessage", RpcTarget.All, message);
-            inputField.text = "";
+            inputField.text = "";               // 입력창 초기화
 
-            
+            // 포커스 유지
+            inputField.ActivateInputField();
         }
     }
 
@@ -69,22 +78,44 @@ public class ChatManager : MonoBehaviourPunCallbacks
 
     void AppendMessage(string message)
     {
-        messageQueue.Enqueue(message);
+        // 채팅로그 생성
+        GameObject go = Instantiate(chatLogPrefab, contentTransform);
+        TMP_Text text = go.GetComponent<TMP_Text>();
+
+        text.text = "";
+        StartCoroutine(AssignMessageDelayed(text, message));
+        
+        messageQueue.Enqueue(go);
         if(messageQueue.Count > maxMessages)
         {
-            messageQueue.Dequeue();
+            GameObject oldestMessage = messageQueue.Dequeue();
+            Destroy(oldestMessage);
         }
-
-        chatContent.text = string.Join("\n", messageQueue);
 
         ScrollToBottom();
     }
 
-    // 새로운 채팅은 맨아래로
+    // 새로운 채팅으로 포커싱
     void ScrollToBottom()
     {
-        Canvas.ForceUpdateCanvases();
+        StartCoroutine(ScrollToBottomCoroutine());
+    }
 
+    private IEnumerator ScrollToBottomCoroutine()
+    {
+        yield return new WaitForEndOfFrame();
+
+        // 아래로 스크롤
         scrollRect.verticalNormalizedPosition = 0f;
+
+        // Canvas 갱신
+        Canvas.ForceUpdateCanvases();
+    }
+
+    // 이전 메세지 출력 방지
+    private IEnumerator AssignMessageDelayed(TMP_Text text, string message)
+    {
+        yield return null;
+        text.SetText(message);
     }
 }
