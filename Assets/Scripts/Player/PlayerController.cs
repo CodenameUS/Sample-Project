@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviourPun
     // 키입력
     private void GetInput()
     {
-        if (isDead || isCutscenePlaying)
+        if (isDead || isCutscenePlaying || GameManager.Instance.isChatting)
             return;
 
         hAxis = Input.GetAxisRaw("Horizontal");
@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviourPun
     // 플레이어 이동로직
     private void Move()
     {
-        if (isAttacking || isDead || isCutscenePlaying)
+        if (isAttacking || isDead || isCutscenePlaying || GameManager.Instance.isChatting)
             return;
 
         Vector3 inputDir = new Vector3(hAxis, 0, vAxis);
@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviourPun
     // 플레이어 회전로직
     private void Turn()
     {
-        if (isAttacking || moveVec == Vector3.zero || isDead || isCutscenePlaying)
+        if (isAttacking || moveVec == Vector3.zero || isDead || isCutscenePlaying || GameManager.Instance.isChatting)
             return;
 
         Quaternion newRotation = Quaternion.LookRotation(moveVec);
@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviourPun
     // 플레이어 공격 
     private void Attack()
     {
-        if (isAttackKeyDown && !isAttacking && !isDead && !isCutscenePlaying)
+        if (isAttackKeyDown && !isAttacking && !isDead && !isCutscenePlaying && !GameManager.Instance.isChatting)
         {
             anim.SetTrigger(hashAttackTrigger);
         }
@@ -147,7 +147,7 @@ public class PlayerController : MonoBehaviourPun
     // 플레이어 콤보 공격
     private void ComboAttack()
     {
-        if(isAttackKeyDown && isAttacking && isComboAllowed)
+        if(isAttackKeyDown && isAttacking && isComboAllowed && !GameManager.Instance.isChatting)
         {
             anim.SetTrigger(hashAttackTrigger);
         }
@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviourPun
     // 스킬사용
     private void DoSkill()
     {
-        if (isAttacking || isDead || isCutscenePlaying)
+        if (isAttacking || isDead || isCutscenePlaying || GameManager.Instance.isChatting)
             return;
 
         if (Input.GetKeyDown(KeyCode.A))

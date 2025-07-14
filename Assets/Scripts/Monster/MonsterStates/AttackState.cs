@@ -33,7 +33,14 @@ public class AttackState<T> : BaseState<T> where T : Monster
         // 공격준비가 되었을 때
         if(monster.isAttackReady)
         {
-            monster.Anim.SetTrigger("Attack");
+            if(GameManager.Instance.isMultiPlaying)
+            {
+                monster.photonView.RPC(nameof(monster.RPC_TriggerAttack), Photon.Pun.RpcTarget.All);
+            }
+            else
+            {
+                monster.TriggerAttack();
+            }
 
             // 공격속도에 따른 공격가능여부 설정
             monster.isAttackReady = false;

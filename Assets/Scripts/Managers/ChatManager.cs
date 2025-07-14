@@ -39,6 +39,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
             if(!isInputActive)
             {
                 isInputActive = true;
+                GameManager.Instance.isChatting = true;
                 inputField.ActivateInputField();
             }
             else
@@ -47,6 +48,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
                 if(string.IsNullOrWhiteSpace(inputField.text))
                 {
                     isInputActive = false;
+                    GameManager.Instance.isChatting = true;
                     inputField.DeactivateInputField();
                     EventSystem.current.SetSelectedGameObject(null);        // 포커스해제
                 }

@@ -18,8 +18,16 @@ public class DieState<T> : BaseState<T> where T : Monster
 
     public override void OnStateEnter()
     {
-        // 몬스터 Die 애니메이션
-        monster.Anim.SetTrigger("Die");
+        // 죽음 애니메이션 실행
+        if(GameManager.Instance.isMultiPlaying)
+        {
+            monster.photonView.RPC(nameof(monster.RPC_TriggerDie), Photon.Pun.RpcTarget.All);
+        }
+        else
+        {
+            monster.TriggerDie();
+        }
+
         monster.Anim.SetBool("Walk", false);
 
         // 몬스터 히트박스 제거

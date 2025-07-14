@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+
 
 /*
                              Monster - TurtleShell
@@ -59,9 +61,12 @@ public class TurtleShell : Monster
 
     private void Update()
     {
+        if (GameManager.Instance.isMultiPlaying && !PhotonNetwork.IsMasterClient) return;
+
         stateMachine.curState.OnStateUpdate();
 
-        DecideState();
+        // 1초에 한번씩 상태결정
+        InvokeRepeating(nameof(DecideState), 0f, 1f);
     }
 
     // 상태 변경
@@ -89,6 +94,8 @@ public class TurtleShell : Monster
     // 조건에따른 상태전환 결정
     private void DecideState()
     {
+        FindClosestPlayer();
+
         // 플레이어 <-> 몬스터 거리
         float distanceToPlayer = Vector3.Distance(transform.position, Target.transform.position);
 
@@ -118,27 +125,8 @@ public class TurtleShell : Monster
         }
     }
 
-    // 근접공격
-    public void MeleeAttack()
+    public void OnAttackAnimEvent()
     {
-        // Raycast할 위치, 방향
-        Vector3 origin = transform.position + new Vector3(0, 0.5f, 0);
-        Vector3 direction = transform.forward;
-
-        // Raycast 결과
-        RaycastHit hit;
-
-        // SphereRayCast로 플레이어에 닿았는지 확인
-        if(Physics.SphereCast(origin, 0.5f,direction,out hit,1f, LayerMask.GetMask("Player")))
-        {
-            if(hit.collider.CompareTag("Player"))
-            {
-                // 플레이어에게 데미지입힘
-                PlayerData playerData = DataManager.Instance.GetPlayerData();
-                playerData.GetDamaged(damage);
-            }
-        }
+        Attack();
     }
-
-    
 }

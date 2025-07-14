@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
+using Photon.Realtime;
 
 /*
                     Monster - 몬스터의 공통 데이터를 관리
@@ -16,7 +18,7 @@ using UnityEngine.AI;
             - GetDamaged : 받은 데미지만큼 Hp 감소
  */
 
-public class Monster : MonoBehaviour
+public class Monster : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Transform damageTextPos; // 데미지 텍스트 표시 위치
 
@@ -64,7 +66,7 @@ public class Monster : MonoBehaviour
 
     private void Init()
     {
-        targetPlayer = GameManager.Instance.player;
+        FindClosestPlayer();
         startPosition = transform.position;
 
         isAttackReady = true;
@@ -75,6 +77,24 @@ public class Monster : MonoBehaviour
         hitBoxCol = GetComponent<BoxCollider>();
     }
 
+    protected void FindClosestPlayer()
+    {
+        float minDistance = float.MaxValue;
+        PlayerController closest = null;
+
+        foreach(var player in FindObjectsOfType<PlayerController>())
+        {
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            if(distance < minDistance)
+            {
+                minDistance = distance;
+                closest = player;
+            }
+        }
+
+        if (closest != null)
+            targetPlayer = closest;
+    }
 
     // 공격 가능상태로 전환
     public void ReadyToAttack()
@@ -94,8 +114,61 @@ public class Monster : MonoBehaviour
         float minDamage = damage * 0.8f;
         float maxDamage = damage * 1.2f;
         int randomDamage = (int)Random.Range(minDamage, maxDamage);
+
         DamageTextManager.Instance.ShowDamage(damageTextPos, randomDamage);
+
         curHp -= randomDamage;
     }
 
+    [PunRPC]
+    public void RPC_TriggerAttack()
+    {
+        TriggerAttack();
+    }
+
+    public void TriggerAttack()
+    {
+        anim.SetTrigger("Attack");
+    }
+
+    [PunRPC]
+    public void RPC_TriggerDie()
+    {
+        TriggerDie();
+    }
+
+    public void TriggerDie()
+    {
+        anim.SetTrigger("Die");
+    }
+
+    // 공격판정
+    public virtual void Attack()
+    {
+        if (GameManager.Instance.isMultiPlaying && !PhotonNetwork.IsMasterClient)
+            return;
+
+        // Raycast할 위치, 방향
+        Vector3 origin = transform.position + new Vector3(0, 0.5f, 0);
+        Vector3 direction = transform.forward;
+
+        if (Physics.SphereCast(origin, 0.5f, direction, out RaycastHit hit, 1f, LayerMask.GetMask("Player")))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                // 멀티플레이
+                if (GameManager.Instance.isMultiPlaying)
+                {
+                    // 플레이어 데미지받음
+                    //hit.collider.GetComponent<PhotonView>()?.RPC("", RpcTarget.All, damage);
+                }
+                // 싱글플레이
+                else
+                {
+                    PlayerData playerData = DataManager.Instance.GetPlayerData();
+                    playerData.GetDamaged(damage);
+                }
+            }
+        }
+    }
 }

@@ -12,7 +12,9 @@ public class GameManager : Singleton<GameManager>
 {
     public PlayerController player;
     public CinemachineVirtualCamera virtualCamera;
+    
     public bool isMultiPlaying = false;                     // 멀티플레잉 여부
+    public bool isChatting = false;                         // 채팅중인지 여부
 
     [SerializeField] public GameObject profileUI;
 

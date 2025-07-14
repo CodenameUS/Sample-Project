@@ -7,8 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class MultiDungeonManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] public GameObject playerPrefab;                // 플레이어 프리팹(멀티용)
-    [SerializeField] public Transform[] spawnPositions;             // 플레이어 스폰위치
+    [SerializeField] private Transform[] playerSpawnPositions;              // 플레이어 스폰위치
+    [SerializeField] private Transform[] monsterSpawnPositions;             // 몬스터 스폰위치
+    [SerializeField] private Transform bossSpawnPosition;                   // 보스모늣터 스폰위치
 
     private static MultiDungeonManager instance;
 
@@ -25,13 +26,7 @@ public class MultiDungeonManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         SpawnPlayer();
-
-        /*
-        if(PhotonNetwork.IsMasterClient)
-        {
-            
-        }
-        */
+        SpawnMonster();
     }
 
 
@@ -39,13 +34,27 @@ public class MultiDungeonManager : MonoBehaviourPunCallbacks
     private void SpawnPlayer()
     {
         var localPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;                    // 플레이어 넘버
-        var spawnPosition = spawnPositions[localPlayerIndex];                                // 플레이어 위치 설정
+        var spawnPosition = playerSpawnPositions[localPlayerIndex];                          // 플레이어 위치 설정
 
-        PhotonNetwork.Instantiate(playerPrefab.name, spawnPosition.position, spawnPosition.rotation);
+        PhotonNetwork.Instantiate("Player/MultiPlayer", spawnPosition.position, spawnPosition.rotation);
 
         // 플레이어 관련 초기화
         GameManager.Instance.FindPlayerObject();
         GameManager.Instance.FindCameraObject();
         DataManager.Instance.LoadPlayerData();
     }
+
+    // 몬스터 생성
+    private void SpawnMonster()
+    {
+        // 마스터 클라이언트만 
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        for(int i = 0;i<monsterSpawnPositions.Length;i++)
+        {
+            PhotonNetwork.Instantiate("Monsters/TurtleShell_Multi",
+                monsterSpawnPositions[i].position, monsterSpawnPositions[i].rotation);
+        }
+    }
+
 }
