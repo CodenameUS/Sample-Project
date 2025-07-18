@@ -13,20 +13,26 @@ public class MultiDungeonManager : MonoBehaviourPunCallbacks
 
     private static MultiDungeonManager instance;
 
-    public static MultiDungeonManager Instance
-    {
-        get
-        {
-            if (Instance == null) instance = FindObjectOfType<MultiDungeonManager>();
+    public static MultiDungeonManager Instance => instance;
+   
 
-            return instance;
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
         }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
         SpawnPlayer();
         SpawnMonster();
+        InitPlayerSession();
     }
 
 
@@ -36,12 +42,17 @@ public class MultiDungeonManager : MonoBehaviourPunCallbacks
         var localPlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;                    // 플레이어 넘버
         var spawnPosition = playerSpawnPositions[localPlayerIndex];                          // 플레이어 위치 설정
 
-        PhotonNetwork.Instantiate("Player/MultiPlayer", spawnPosition.position, spawnPosition.rotation);
+        PhotonNetwork.Instantiate("Player/MultiPlayer", spawnPosition.position, spawnPosition.rotation); 
+    }
 
-        // 플레이어 관련 초기화
+    // 초기화
+    private void InitPlayerSession()
+    {
+        // 데이터 리프레쉬
         GameManager.Instance.FindPlayerObject();
         GameManager.Instance.FindCameraObject();
         DataManager.Instance.LoadPlayerData();
+        EquipmentUI.Instance.LoadEquipmentSlotData();
     }
 
     // 몬스터 생성
@@ -56,5 +67,4 @@ public class MultiDungeonManager : MonoBehaviourPunCallbacks
                 monsterSpawnPositions[i].position, monsterSpawnPositions[i].rotation);
         }
     }
-
 }

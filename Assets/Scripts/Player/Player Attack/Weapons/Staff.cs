@@ -49,9 +49,16 @@ public class Staff : Weapon
                 Monster monster = hit.collider.GetComponent<Monster>();
                 if (monster != null)
                 {
-                    // .. 몬스터에게 데미지
-                    Debug.Log("몬스터를 맞추었음.");
-                    monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+                    if (GameManager.Instance.isMultiPlaying)
+                    {
+                        monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All,
+                            DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+                    }
+                    else
+                    {
+                        monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+
+                    }
                 }
             }
             else if(hit.collider.CompareTag("BossMonster"))
@@ -60,7 +67,6 @@ public class Staff : Weapon
                 if (boss != null)
                 {
                     // .. 몬스터에게 데미지
-                    Debug.Log("몬스터를 맞추었음.");
                     boss.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
                 }
             }

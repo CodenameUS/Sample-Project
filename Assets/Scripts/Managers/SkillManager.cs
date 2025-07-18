@@ -14,6 +14,8 @@ using System;
 
 public class SkillManager : Singleton<SkillManager>
 {
+    [SerializeField] public SkillSlotUI[] skillSlots;              // 스킬 슬롯
+
     public List<Skill> playerSkills = new();
 
     private Dictionary<string, SkillData> skillDataDictionary = new();  // 스킬 데이터 캐싱 딕셔너리
@@ -134,7 +136,7 @@ public class SkillManager : Singleton<SkillManager>
             if (prefab != null)
             {
                 skill.SetEffect(prefab);                        // 이펙트 설정
-                skill.InitAnimator(user.gameObject);            // 애니메이터 캐싱
+                skill.CachingData(user.gameObject);             // 데이터 캐싱
                 bool successed = skill.Activate(user);          // 스킬 실행 성공여부
 
                 if (successed)

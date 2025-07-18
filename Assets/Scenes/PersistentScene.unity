@@ -4914,6 +4914,7 @@ MonoBehaviour:
   player: {fileID: 0}
   virtualCamera: {fileID: 0}
   isMultiPlaying: 0
+  isChatting: 0
   profileUI: {fileID: 1905584537}
 --- !u!4 &845459668
 Transform:
@@ -10514,11 +10515,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4098229123586463553, guid: 70c740549a7a448409acde49c22bcdd8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 70c740549a7a448409acde49c22bcdd8, type: 3}
---- !u!4 &1597026506 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4098229123948337353, guid: 70c740549a7a448409acde49c22bcdd8, type: 3}
-  m_PrefabInstance: {fileID: 1597026503}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1615211681
 GameObject:
   m_ObjectHideFlags: 0
@@ -11634,6 +11630,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1836833542}
   - component: {fileID: 1836833541}
+  - component: {fileID: 1836833543}
   m_Layer: 0
   m_Name: WeaponManager
   m_TagString: Untagged
@@ -11653,7 +11650,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d84f0b6ed9386c24ea283d181a9ec71b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponTransform: {fileID: 1597026506}
   currentWeapon: {fileID: 0}
 --- !u!4 &1836833542
 Transform:
@@ -11670,6 +11666,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1836833543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836833540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1837474913
 GameObject:
   m_ObjectHideFlags: 0
@@ -13309,6 +13327,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd0ce58d873734848b28c8538c829db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillSlots:
+  - {fileID: 616433177}
+  - {fileID: 1530259119}
+  - {fileID: 1875114944}
 --- !u!4 &2082101337
 Transform:
   m_ObjectHideFlags: 0

@@ -19,6 +19,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
     private Queue<GameObject> messageQueue = new();
     private int maxMessages = 10;                           // 최대 10개 메세지 표시
     private bool isInputActive = false;                     // 입력모드인지 여부
+  
 
     private void Start()
     {

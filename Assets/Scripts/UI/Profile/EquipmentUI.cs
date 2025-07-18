@@ -19,7 +19,7 @@ public class EquipmentSlotDataList
     public List<EquipmentSlotData> itemList;
 }
 
-public class EquipmentUI : MonoBehaviour
+public class EquipmentUI : Singleton<EquipmentUI>
 {
     [SerializeField] private ItemTooltipUI itemTooltipUI;
     [SerializeField] private Inventory inventory;
@@ -46,11 +46,12 @@ public class EquipmentUI : MonoBehaviour
     private Vector3 beginDragIconPoint;                     // 마우스 드래그를 시작한 아이콘 위치
     private Vector3 beginDragCursorPoint;                   // 마우스 드래그를 시작한 커서 위치
     private int beginDragSlotSiblingIndex;                  // 마우스 드래그를 시작한 슬롯의 SiblingIdx
-    #endregion  
+    #endregion
 
     #region ** 유니티 이벤트 함수 **
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Init();
     }
 
@@ -98,7 +99,7 @@ public class EquipmentUI : MonoBehaviour
                     // 기본무기로 세팅
                     if(data.slotIndex == 0)
                     {
-                        WeaponManager.Instance.SetWeapon();
+                        WeaponManager.Instance.RequestSetWeapon();
                     }
                     continue;
                 }
@@ -109,7 +110,7 @@ public class EquipmentUI : MonoBehaviour
                 if(item is WeaponItem wi)
                 {
                     SetItemIcon(wi, wi.WeaponData.Type, wi.Data.ItemIcon);
-                    WeaponManager.Instance.SetWeapon(wi.WeaponData.SubType, wi.WeaponData.ItemPrefab);
+                    WeaponManager.Instance.RequestSetWeapon(wi.WeaponData.SubType, wi.WeaponData.ItemPrefab);
                 }
                 else if(item is ArmorItem ai)
                 {

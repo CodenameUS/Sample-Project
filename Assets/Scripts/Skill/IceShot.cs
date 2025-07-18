@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 /*
                         IceShot
@@ -31,11 +32,13 @@ public class IceShot : Skill
         }
         else
         {
-            // 애니메이션 설정
-            anim.SetTrigger("Skill");
-            anim.SetInteger("SkillId", data.AnimId);
+            // 애니메이션 실행
+            if (GameManager.Instance.isMultiPlaying)
+                player.GetComponent<PhotonView>()?.RPC(nameof(player.RPC_TriggerSkillAnim), RpcTarget.All, data.AnimId);
+            else
+                player.TriggerSkillAnim(data.AnimId);
 
-            // 이펙트 처리
+            // 이펙트 실행
             if (cachedEffect == null)
             {
                 // 생성된 이펙트가 없으면 생성

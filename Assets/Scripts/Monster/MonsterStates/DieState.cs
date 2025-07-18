@@ -21,11 +21,11 @@ public class DieState<T> : BaseState<T> where T : Monster
         // 죽음 애니메이션 실행
         if(GameManager.Instance.isMultiPlaying)
         {
-            monster.photonView.RPC(nameof(monster.RPC_TriggerDie), Photon.Pun.RpcTarget.All);
+            monster.photonView.RPC(nameof(monster.RPC_TriggerDieAnim), Photon.Pun.RpcTarget.All);
         }
         else
         {
-            monster.TriggerDie();
+            monster.TriggerDieAnim();
         }
 
         monster.Anim.SetBool("Walk", false);

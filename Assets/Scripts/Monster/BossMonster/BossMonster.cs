@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
+using Photon.Realtime;
 
 /*
                     BossMonster - 보스몬스터의 공통 데이터를 관리
@@ -12,7 +14,7 @@ using UnityEngine.AI;
             - GetDamaged : 받은 데미지만큼 Hp 감소
  */
 
-public class BossMonster : MonoBehaviour
+public class BossMonster : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Transform damageTextPos; // 데미지 텍스트 표시 위치
 
@@ -62,13 +64,27 @@ public class BossMonster : MonoBehaviour
     }
 
     // 공격받음
+    [PunRPC]
     public void GetDamaged(float damage)
     {
         float minDamage = damage * 0.8f;
         float maxDamage = damage * 1.2f;
         int randomDamage = (int)Random.Range(minDamage, maxDamage);
+
         DamageTextManager.Instance.ShowDamage(damageTextPos, randomDamage);
+
         curHp -= randomDamage;
+    }
+
+    [PunRPC]
+    public void RPC_TriggerAttack()
+    {
+        TriggerAttack();
+    }
+
+    public void TriggerAttack()
+    {
+        anim.SetTrigger("Attack");
     }
 
     public virtual void Die()

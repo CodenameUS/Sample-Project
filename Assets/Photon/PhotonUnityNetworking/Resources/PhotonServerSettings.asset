@@ -41,6 +41,12 @@ MonoBehaviour:
   - RespawnSpaceship
   - ReceiveMessage
   - RPC_TriggerAttack
+  - RPC_TriggerDie
+  - GetDamaged
+  - RPC_TriggerAttackAnim
+  - RPC_TriggerDieAnim
+  - RPC_SetWeapon
+  - RPC_TriggerSkillAnim
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

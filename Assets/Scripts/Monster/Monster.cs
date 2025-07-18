@@ -18,7 +18,7 @@ using Photon.Realtime;
             - GetDamaged : 받은 데미지만큼 Hp 감소
  */
 
-public class Monster : MonoBehaviourPunCallbacks
+public class Monster : MonoBehaviourPun
 {
     [SerializeField] private Transform damageTextPos; // 데미지 텍스트 표시 위치
 
@@ -77,6 +77,7 @@ public class Monster : MonoBehaviourPunCallbacks
         hitBoxCol = GetComponent<BoxCollider>();
     }
 
+    // 타깃플레이어할당 - 가장 가까운 플레이어 
     protected void FindClosestPlayer()
     {
         float minDistance = float.MaxValue;
@@ -109,6 +110,7 @@ public class Monster : MonoBehaviourPunCallbacks
     }
 
     // 공격받음
+    [PunRPC]
     public void GetDamaged(float damage)
     {
         float minDamage = damage * 0.8f;
@@ -121,23 +123,23 @@ public class Monster : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    public void RPC_TriggerAttack()
+    public void RPC_TriggerAttackAnim()
     {
-        TriggerAttack();
+        TriggerAttackAnim();
     }
 
-    public void TriggerAttack()
+    public void TriggerAttackAnim()
     {
         anim.SetTrigger("Attack");
     }
 
     [PunRPC]
-    public void RPC_TriggerDie()
+    public void RPC_TriggerDieAnim()
     {
-        TriggerDie();
+        TriggerDieAnim();
     }
 
-    public void TriggerDie()
+    public void TriggerDieAnim()
     {
         anim.SetTrigger("Die");
     }
@@ -145,30 +147,6 @@ public class Monster : MonoBehaviourPunCallbacks
     // 공격판정
     public virtual void Attack()
     {
-        if (GameManager.Instance.isMultiPlaying && !PhotonNetwork.IsMasterClient)
-            return;
-
-        // Raycast할 위치, 방향
-        Vector3 origin = transform.position + new Vector3(0, 0.5f, 0);
-        Vector3 direction = transform.forward;
-
-        if (Physics.SphereCast(origin, 0.5f, direction, out RaycastHit hit, 1f, LayerMask.GetMask("Player")))
-        {
-            if (hit.collider.CompareTag("Player"))
-            {
-                // 멀티플레이
-                if (GameManager.Instance.isMultiPlaying)
-                {
-                    // 플레이어 데미지받음
-                    //hit.collider.GetComponent<PhotonView>()?.RPC("", RpcTarget.All, damage);
-                }
-                // 싱글플레이
-                else
-                {
-                    PlayerData playerData = DataManager.Instance.GetPlayerData();
-                    playerData.GetDamaged(damage);
-                }
-            }
-        }
+        
     }
 }

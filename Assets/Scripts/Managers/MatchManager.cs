@@ -69,7 +69,6 @@ public class MatchManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.NickName = "Player";
         }
-
         Debug.Log("방 입장완료. 상대방 대기중...");
     }
 
@@ -80,5 +79,10 @@ public class MatchManager : MonoBehaviourPunCallbacks
             effect.StopAnim();
             PhotonNetwork.LoadLevel("MultiDungeon");
         }
+    }
+
+    public override void OnLeftRoom()
+    {
+        GameManager.Instance.isMultiPlaying = false;
     }
 }

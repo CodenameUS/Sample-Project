@@ -125,8 +125,39 @@ public class TurtleShell : Monster
         }
     }
 
+    // 공격판정수행 애니메이션 이벤트
     public void OnAttackAnimEvent()
     {
         Attack();
+    }
+
+    // 공격판정
+    public override void Attack()
+    {
+        if (GameManager.Instance.isMultiPlaying && !PhotonNetwork.IsMasterClient)
+            return;
+
+        // Raycast할 위치, 방향
+        Vector3 origin = transform.position + new Vector3(0, 0.5f, 0);
+        Vector3 direction = transform.forward;
+
+        if (Physics.SphereCast(origin, 0.5f, direction, out RaycastHit hit, 1f, LayerMask.GetMask("Player")))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                // 멀티플레이
+                if (GameManager.Instance.isMultiPlaying)
+                {
+                    // 플레이어 데미지
+                    hit.collider.GetComponent<PhotonView>()?.RPC(nameof(GetDamaged), RpcTarget.All, damage);
+                }
+                // 싱글플레이
+                else
+                {
+                    PlayerData playerData = DataManager.Instance.GetPlayerData();
+                    playerData.GetDamaged(damage);
+                }
+            }
+        }
     }
 }

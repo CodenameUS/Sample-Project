@@ -16,13 +16,13 @@ using Photon.Pun;
 
 public class PlayerController : MonoBehaviourPun
 {
-    [SerializeField] private SkillSlotUI[] skillSlots;              // 스킬 슬롯
-
     private PlayerData playerData;
-
+    
     readonly private int hashSpeed = Animator.StringToHash("Speed");
     readonly private int hashAttackTrigger = Animator.StringToHash("Attack");
+    readonly private int hashSkillTrigger = Animator.StringToHash("Skill");
     readonly private int hashDeadTrigger = Animator.StringToHash("Dead");
+    readonly private int hashSkillId = Animator.StringToHash("SkillId");
     readonly private int hashComboCount = Animator.StringToHash("ComboCount");
 
     private float hAxis;
@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviourPun
     private Animator anim;
 
     public Animator Anim => anim;
+    public Transform WeaponPoint { get; private set; }  // 무기 생성 위치
 
     public int CurComboCount
     {
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviourPun
         set => anim.SetInteger(hashComboCount, value);
     }
 
+    #region ** Unity Events **
     private void Awake()
     {
         Init();
@@ -54,8 +56,6 @@ public class PlayerController : MonoBehaviourPun
 
     private void Start()
     {
-        GameManager.Instance.isMultiPlaying = PhotonNetwork.InRoom;            // 멀티 여부
-
         if (GameManager.Instance.isMultiPlaying)
             return;
 
@@ -89,12 +89,25 @@ public class PlayerController : MonoBehaviourPun
         if (isCutscenePlaying)
             anim.SetFloat(hashSpeed, 0);
     }
+    private void OnDestroy()
+    {
+        DataManager.Instance.SavePlayerData();
+    }
 
-    // 컴포넌트 초기화
+    #endregion
+
+    #region ** Private Methods **
+    
     private void Init()
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+
+        WeaponPoint = GetComponentInChildren<WeaponPointMarker>().gameObject.transform;
+        GameManager.Instance.isMultiPlaying = PhotonNetwork.InRoom;
+
+        if ((GameManager.Instance.isMultiPlaying && photonView.IsMine) || !GameManager.Instance.isMultiPlaying)
+            GameManager.Instance.player = this;
     }
 
     // 키입력
@@ -140,7 +153,14 @@ public class PlayerController : MonoBehaviourPun
     {
         if (isAttackKeyDown && !isAttacking && !isDead && !isCutscenePlaying && !GameManager.Instance.isChatting)
         {
-            anim.SetTrigger(hashAttackTrigger);
+            if (GameManager.Instance.isMultiPlaying)
+            {
+                photonView.RPC(nameof(RPC_TriggerAttackAnim), RpcTarget.All);
+            }
+            else
+            {
+                TriggerAttackAnim();
+            }
         }
     }
 
@@ -149,7 +169,14 @@ public class PlayerController : MonoBehaviourPun
     {
         if(isAttackKeyDown && isAttacking && isComboAllowed && !GameManager.Instance.isChatting)
         {
-            anim.SetTrigger(hashAttackTrigger);
+            if (GameManager.Instance.isMultiPlaying)
+            {
+                photonView.RPC(nameof(RPC_TriggerAttackAnim), RpcTarget.All);
+            }
+            else
+            {
+                TriggerAttackAnim();
+            }
         }
     }
 
@@ -161,15 +188,15 @@ public class PlayerController : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            skillSlots[0].UseSkill();
+            SkillManager.Instance.skillSlots[0].UseSkill();
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
-            skillSlots[1].UseSkill();
+            SkillManager.Instance.skillSlots[1].UseSkill();
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            skillSlots[2].UseSkill();
+            SkillManager.Instance.skillSlots[2].UseSkill();
         }
     }
 
@@ -179,14 +206,63 @@ public class PlayerController : MonoBehaviourPun
         if(playerData.CurHp <= 0 && !isDead)
         {
             isDead = true;
-            anim.SetTrigger(hashDeadTrigger);
+
+            if(GameManager.Instance.isMultiPlaying)
+            {
+                photonView.RPC(nameof(RPC_TriggerDieAnim),RpcTarget.All);
+            }
+            else
+            {
+                TriggerDieAnim();
+            }
         }
     }
+    #endregion
 
-    private void OnDestroy()
+    #region ** Public Methods **
+    public void TriggerAttackAnim()
     {
-        DataManager.Instance.SavePlayerData();
+        anim.SetTrigger(hashAttackTrigger);
     }
+
+    public void TriggerDieAnim()
+    {
+        anim.SetTrigger(hashDeadTrigger);
+    }
+
+    public void TriggerSkillAnim(int skillId)
+    {
+        anim.SetInteger(hashSkillId, skillId);
+        anim.SetTrigger(hashSkillTrigger);
+    }
+    #endregion
+
+    #region ** RPC Methods **
+    [PunRPC]
+    public void GetDamaged(float damage)
+    {
+        playerData.GetDamaged(damage);
+    }
+
+    [PunRPC]
+    public void RPC_TriggerAttackAnim()
+    {
+        TriggerAttackAnim();
+    }
+
+    [PunRPC]
+    public void RPC_TriggerDieAnim()
+    {
+        TriggerDieAnim();
+    }
+
+    [PunRPC]
+    public void RPC_TriggerSkillAnim(int skillId)
+    {
+        TriggerSkillAnim(skillId);
+    }
+    
+    #endregion
 
     #region ** Animation Events **
     // 공격상태 돌입

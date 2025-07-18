@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Photon.Pun;
+
 /*
                         Punch : 무기(주먹) 클래스
 
@@ -23,8 +25,6 @@ public class Punch : Weapon
         type = WeaponType.None;
         soundId = "Punch";
     }
-
-
 
     private  void OnTriggerEnter(Collider other)
     {
@@ -56,8 +56,16 @@ public class Punch : Weapon
                 Monster monster = hit.collider.GetComponent<Monster>();
                 if (monster != null)
                 {
-                    monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
-                    return;
+                    if(GameManager.Instance.isMultiPlaying)
+                    {
+                        monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All, 
+                            DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+                    }
+                    else
+                    {
+                        monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+
+                    }
                 }
             }
             // 2. BossMonster 경우

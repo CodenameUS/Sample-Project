@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 /*
                         Slash
@@ -32,11 +33,14 @@ public class Slash : Skill
             return false;
         }
         else
-        { 
-            anim.SetTrigger("Skill");
-            anim.SetInteger("SkillId", data.AnimId);
+        {
+            // 애니메이션 실행
+            if (GameManager.Instance.isMultiPlaying)
+                player.GetComponent<PhotonView>()?.RPC(nameof(player.RPC_TriggerSkillAnim), RpcTarget.All, data.AnimId);
+            else
+                player.TriggerSkillAnim(data.AnimId);
 
-            if(cachedEffect == null)
+            if (cachedEffect == null)
             {
                 // 생성된 이펙트가 없으면 생성
                 cachedEffect = UnityEngine.Object.Instantiate(effectPrefab,
@@ -78,8 +82,16 @@ public class Slash : Skill
                 Monster monster = hit.collider.GetComponent<Monster>();
                 if (monster != null)
                 {
-                    // 데미지
-                    monster.GetDamaged((DataManager.Instance.GetPlayerData().Damage + data.Damage) * Random.Range(0.8f, 1f));
+                    if (GameManager.Instance.isMultiPlaying)
+                    {
+                        monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All,
+                            DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+                    }
+                    else
+                    {
+                        monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+
+                    }
                 }
             }
             else if(hit.collider.CompareTag("BossMonster"))

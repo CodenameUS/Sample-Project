@@ -30,7 +30,16 @@ public class Sword : Weapon
         if(other.CompareTag("Monster"))
         {
             Monster monster = other.GetComponent<Monster>();
-            monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+            if (GameManager.Instance.isMultiPlaying)
+            {
+                monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All,
+                    DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+            }
+            else
+            {
+                monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+
+            }
         }
         else if(other.CompareTag("BossMonster"))
         {

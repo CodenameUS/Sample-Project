@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 /*
                         Buff
@@ -32,11 +33,14 @@ public class Buff : Skill, IBuffSkill
         }
         else
         {
-            // 애니메이션 설정
-            anim.SetTrigger("Skill");
-            anim.SetInteger("SkillId", data.AnimId);
+            // 애니메이션 실행
+            if (GameManager.Instance.isMultiPlaying)
+                player.GetComponent<PhotonView>()?.RPC(nameof(player.RPC_TriggerSkillAnim), RpcTarget.All, data.AnimId);
+            else
+                player.TriggerSkillAnim(data.AnimId);
 
-            if(cachedEffect == null)
+            // 이펙트 실행
+            if (cachedEffect == null)
             {
                 cachedEffect = UnityEngine.Object.Instantiate(effectPrefab, SkillManager.Instance.gameObject.transform);
 

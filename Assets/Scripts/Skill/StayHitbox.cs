@@ -23,7 +23,16 @@ public class StayHitbox : MonoBehaviour
             timer += Time.deltaTime;
             if (timer >= 0.5f)
             {
-                monster.GetDamaged(damage);
+                if (GameManager.Instance.isMultiPlaying)
+                {
+                    monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All,
+                        damage);
+                }
+                else
+                {
+                    monster.GetDamaged(damage);
+
+                }
                 timer = 0;
             }
         }

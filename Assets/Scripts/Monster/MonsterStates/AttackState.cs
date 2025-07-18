@@ -35,11 +35,11 @@ public class AttackState<T> : BaseState<T> where T : Monster
         {
             if(GameManager.Instance.isMultiPlaying)
             {
-                monster.photonView.RPC(nameof(monster.RPC_TriggerAttack), Photon.Pun.RpcTarget.All);
+                monster.photonView.RPC(nameof(monster.RPC_TriggerAttackAnim), Photon.Pun.RpcTarget.All);
             }
             else
             {
-                monster.TriggerAttack();
+                monster.TriggerAttackAnim();
             }
 
             // 공격속도에 따른 공격가능여부 설정

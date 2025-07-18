@@ -33,7 +33,7 @@ public class SkillSlotUI : MonoBehaviour
     {
         SkillData skillData = SkillManager.Instance.GetSkillDataById(skillId);
         skill = SkillManager.Instance.CreateSkillInstance(skillData);
-        skill.InitAnimator(GameManager.Instance.player.gameObject);
+        skill.CachingData(GameManager.Instance.player.gameObject);
 
         cooldownTime = skillData.Cooldown;
     }

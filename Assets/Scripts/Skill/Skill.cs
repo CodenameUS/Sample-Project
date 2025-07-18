@@ -18,7 +18,8 @@ public abstract class Skill
 {
     protected SkillData data;                       
     protected Animator anim;                        
-    protected GameObject effectPrefab;               
+    protected GameObject effectPrefab;
+    protected PlayerController player;
 
     public GameObject cachedEffect;                 // 캐싱된 이펙트 오브젝트
 
@@ -28,9 +29,10 @@ public abstract class Skill
     }
 
     // 애니메이션 캐싱
-    public void InitAnimator(GameObject user)
+    public void CachingData(GameObject user)
     {
         anim = user.GetComponent<Animator>();
+        player = user.GetComponent<PlayerController>();
     }
 
     // 이펙트 프리팹 저장
