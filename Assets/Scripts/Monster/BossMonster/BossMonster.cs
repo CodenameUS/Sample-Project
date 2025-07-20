@@ -32,7 +32,7 @@ public class BossMonster : MonoBehaviourPunCallbacks
     #endregion
 
     #region ** Private Fields **
-    public PlayerController targetPlayer;             // 타깃 플레이어
+    protected PlayerController targetPlayer;             // 타깃 플레이어
     protected BoxCollider hitBoxCol;                  // 몬스터 히트박스
     protected Animator anim;                          // 몬스터 애니메이터
     protected NavMeshAgent nav;                       // 몬스터 네비게이션
@@ -49,6 +49,12 @@ public class BossMonster : MonoBehaviourPunCallbacks
 
     #region ** Properties **
     public NavMeshAgent Nav => nav;
+
+    public PlayerController TargetPlayer
+    {
+        get => targetPlayer;
+        set => targetPlayer = value;
+    }
     #endregion
 
     protected virtual void Awake()
@@ -61,6 +67,26 @@ public class BossMonster : MonoBehaviourPunCallbacks
         anim = GetComponent<Animator>();
         nav = GetComponent<NavMeshAgent>();
         hitBoxCol = GetComponent<BoxCollider>();
+    }
+
+    // 타깃플레이어할당 - 가장 가까운 플레이어 
+    protected void FindClosestPlayer()
+    {
+        float minDistance = float.MaxValue;
+        PlayerController closest = null;
+
+        foreach (var player in FindObjectsOfType<PlayerController>())
+        {
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closest = player;
+            }
+        }
+
+        if (closest != null)
+            targetPlayer = closest;
     }
 
     // 공격받음
@@ -76,17 +102,27 @@ public class BossMonster : MonoBehaviourPunCallbacks
         curHp -= randomDamage;
     }
 
-    [PunRPC]
-    public void RPC_TriggerAttack()
-    {
-        TriggerAttack();
-    }
-
-    public void TriggerAttack()
+    public void TriggerAttackAnim()
     {
         anim.SetTrigger("Attack");
     }
 
+    public void TriggerDieAnim()
+    {
+        anim.SetTrigger("Die");
+    }
+
+    [PunRPC]
+    public void RPC_TriggerAttackAnim()
+    {
+        TriggerAttackAnim();
+    }
+
+    [PunRPC]
+    public void RPC_TriggerDieAnim()
+    {
+        TriggerDieAnim();
+    }
     public virtual void Die()
     {
         OnBossDied?.Invoke();

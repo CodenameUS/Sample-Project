@@ -33,8 +33,15 @@ public class DieState<T> : BaseState<T> where T : Monster
         // 몬스터 히트박스 제거
         monster.HitBox.enabled = false;
 
-        // 몬스터 비활성화
-        monster.Invoke(nameof(monster.DeactiveGameObject), 3);
+        // 몬스터 오브젝트 제거
+        if (GameManager.Instance.isMultiPlaying)
+        {
+            monster.photonView.RPC(nameof(monster.RPC_DeactiveGameObject), Photon.Pun.RpcTarget.All);
+        }
+        else
+        {
+            monster.Invoke(nameof(monster.DeactiveGameObject), 3);
+        }
     }
 
     public override void OnStateUpdate()

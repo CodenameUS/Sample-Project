@@ -10,7 +10,7 @@ public class TimeLineCameraBinder : MonoBehaviour
 {
     [SerializeField] PlayableDirector timelineDirector;
 
-    private GameObject mainCamera;
+    public GameObject mainCamera;
 
     private void Start()
     {

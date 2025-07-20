@@ -1,9 +1,10 @@
-    using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 
-public class GruntExplosion : MonoBehaviour
+public class GruntExplosion : MonoBehaviourPun
 {
     public float damage;
     public float knocebackForce = 7f;
@@ -13,9 +14,16 @@ public class GruntExplosion : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            Debug.Log("플레이어 피격");
+            PlayerController player = other.GetComponent<PlayerController>();
 
-            DataManager.Instance.GetPlayerData().GetDamaged(damage);
+            if (GameManager.Instance.isMultiPlaying)
+            {
+                player.GetComponent<PhotonView>()?.RPC(nameof(player.GetDamaged), RpcTarget.All, damage);
+            }
+            else
+            {
+                player.GetDamaged(damage);
+            }
         }
 
         Rigidbody rigid = other.GetComponent<Rigidbody>();

@@ -5,7 +5,12 @@ using UnityEngine;
 public class TurtleShellRange : MonoBehaviour
 {
     [SerializeField] private SphereCollider scanRange;              // 적 탐지 범위
-    [SerializeField] private  TurtleShell parent;
+    private  TurtleShell parent;
+
+    private void Awake()
+    {
+        parent = GetComponentInParent<TurtleShell>();
+    }
 
     // Scan Range에 플레이어가 들어왔을경우 Chase 상태 돌입
     private void OnTriggerStay(Collider other)

@@ -280,7 +280,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scanRange: {fileID: 623441103027141794}
-  parent: {fileID: 7033478149308723573}
 --- !u!135 &623441103027141794
 SphereCollider:
   m_ObjectHideFlags: 0

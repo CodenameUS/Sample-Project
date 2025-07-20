@@ -97,6 +97,13 @@ public class Monster : MonoBehaviourPun
             targetPlayer = closest;
     }
 
+    // 공격판정
+    public virtual void Attack()
+    {
+
+    }
+
+    #region ** Public Methods**
     // 공격 가능상태로 전환
     public void ReadyToAttack()
     {
@@ -109,6 +116,42 @@ public class Monster : MonoBehaviourPun
         Destroy(this.gameObject);
     }
 
+
+    public void TriggerAttackAnim()
+    {
+        anim.SetTrigger("Attack");
+    }
+
+
+    public void TriggerDieAnim()
+    {
+        anim.SetTrigger("Die");
+    }
+    #endregion
+
+    #region ** RPC Methods **
+
+    [PunRPC]
+    public void RPC_TriggerDieAnim()
+    {
+        TriggerDieAnim();
+    }
+
+    [PunRPC]
+    public void RPC_TriggerAttackAnim()
+    {
+        TriggerAttackAnim();
+    }
+
+    [PunRPC]
+    public void RPC_DeactiveGameObject()
+    {
+        Invoke(nameof(DeactiveGameObject), 3);
+
+        if (GameManager.Instance.isMultiPlaying)
+            MultiDungeonManager.Instance.currentMonsterCount -= 1;
+    }
+    
     // 공격받음
     [PunRPC]
     public void GetDamaged(float damage)
@@ -121,32 +164,5 @@ public class Monster : MonoBehaviourPun
 
         curHp -= randomDamage;
     }
-
-    [PunRPC]
-    public void RPC_TriggerAttackAnim()
-    {
-        TriggerAttackAnim();
-    }
-
-    public void TriggerAttackAnim()
-    {
-        anim.SetTrigger("Attack");
-    }
-
-    [PunRPC]
-    public void RPC_TriggerDieAnim()
-    {
-        TriggerDieAnim();
-    }
-
-    public void TriggerDieAnim()
-    {
-        anim.SetTrigger("Die");
-    }
-
-    // 공격판정
-    public virtual void Attack()
-    {
-        
-    }
+    #endregion
 }
