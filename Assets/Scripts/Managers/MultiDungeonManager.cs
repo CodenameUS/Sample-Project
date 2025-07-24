@@ -20,6 +20,7 @@ public class MultiDungeonManager : MonoBehaviourPunCallbacks
     private PlayableDirector pd;                            
 
     private bool bossSpawned = false;                       // 보스 등장여부
+    public bool isCutScenePlaying = false;                  // 컷씬 진행 여부
 
     private static MultiDungeonManager instance;
     public static MultiDungeonManager Instance => instance;
@@ -132,6 +133,7 @@ public class MultiDungeonManager : MonoBehaviourPunCallbacks
     public void OnCutSceneStarted(PlayableDirector director)
     {
         GameManager.Instance.player.isCutscenePlaying = true;
+        isCutScenePlaying = true;
 
         GameManager.Instance.player.transform.position = playerSpawnPositions[PhotonNetwork.LocalPlayer.ActorNumber - 1].position;
         GameManager.Instance.player.transform.LookAt(bossSpawnPosition);
@@ -141,5 +143,6 @@ public class MultiDungeonManager : MonoBehaviourPunCallbacks
     public void OnCutSceneEnded(PlayableDirector director)
     {
         GameManager.Instance.player.isCutscenePlaying = false;
+        isCutScenePlaying = false;
     }
 }

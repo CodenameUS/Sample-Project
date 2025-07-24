@@ -18,7 +18,8 @@ public class GruntExplosion : MonoBehaviourPun
 
             if (GameManager.Instance.isMultiPlaying)
             {
-                player.GetComponent<PhotonView>()?.RPC(nameof(player.GetDamaged), RpcTarget.All, damage);
+                PhotonView targetView = other.GetComponent<PhotonView>();
+                targetView.RPC("GetDamaged", targetView.Owner, damage);
             }
             else
             {

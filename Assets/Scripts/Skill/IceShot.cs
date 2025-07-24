@@ -64,15 +64,16 @@ public class IceShot : Skill
     private IEnumerator EnableHitbox(GameObject effect)
     {
         effect.TryGetComponent<StayHitbox>(out StayHitbox hitbox);
-        if(hitbox == null)
+        if (hitbox == null)
         {
+            float randomDamage = data.Damage + Random.Range(DataManager.Instance.GetPlayerData().Damage * 0.1f, DataManager.Instance.GetPlayerData().Damage * 0.2f);
             hitbox = effect.AddComponent<StayHitbox>();
-            hitbox.damage = data.Damage + Random.Range(DataManager.Instance.GetPlayerData().Damage * 0.1f, DataManager.Instance.GetPlayerData().Damage * 0.2f);
+            hitbox.damage = randomDamage;
+
+            // 지속시간 3초
+            yield return new WaitForSeconds(3f);
+
+            effect.SetActive(false);
         }
-
-        // 지속시간 3초
-        yield return new WaitForSeconds(3f);
-
-        effect.SetActive(false);
     }
 }

@@ -28,7 +28,8 @@ public class GruntThunderbolt : MonoBehaviourPun
             {
                 if(GameManager.Instance.isMultiPlaying)
                 {
-                    player.GetComponent<PhotonView>()?.RPC(nameof(player.GetDamaged), RpcTarget.All, damage * Random.Range(0.1f, 0.4f));
+                    PhotonView targetView = other.GetComponent<PhotonView>();
+                    targetView.RPC("GetDamaged", targetView.Owner, damage * Random.Range(0.1f, 0.4f));
                 }
                 else
                 {

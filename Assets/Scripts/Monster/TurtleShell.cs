@@ -148,8 +148,9 @@ public class TurtleShell : Monster
                 // 멀티플레이
                 if (GameManager.Instance.isMultiPlaying)
                 {
-                    // 플레이어 데미지
-                    hit.collider.GetComponent<PhotonView>()?.RPC(nameof(GetDamaged), RpcTarget.All, damage);
+                    PhotonView targetView = hit.collider.GetComponent<PhotonView>();
+                    targetView.RPC("GetDamaged", targetView.Owner, damage);
+                    
                 }
                 // 싱글플레이
                 else

@@ -86,45 +86,45 @@ public class BossMonster : MonoBehaviourPunCallbacks
         }
 
         if (closest != null)
-            targetPlayer = closest;
+        {
+            if (GameManager.Instance.isMultiPlaying && PhotonNetwork.IsMasterClient)
+            {
+                int viewID = closest.GetComponent<PhotonView>().ViewID;
+                photonView.RPC(nameof(SetTargetPlayer), RpcTarget.All, viewID);
+            }
+            else
+            {
+                targetPlayer = closest;
+            }
+        }
     }
 
+    #region ** RPC Methods **
     // 공격받음
     [PunRPC]
     public void GetDamaged(float damage)
     {
-        float minDamage = damage * 0.8f;
-        float maxDamage = damage * 1.2f;
-        int randomDamage = (int)Random.Range(minDamage, maxDamage);
+        DamageTextManager.Instance.ShowDamage(damageTextPos, (int)damage);
 
-        DamageTextManager.Instance.ShowDamage(damageTextPos, randomDamage);
-
-        curHp -= randomDamage;
+        curHp -= damage;
     }
 
-    public void TriggerAttackAnim()
-    {
-        anim.SetTrigger("Attack");
-    }
-
-    public void TriggerDieAnim()
-    {
-        anim.SetTrigger("Die");
-    }
-
+    // 타깃 플레이어 설정
     [PunRPC]
-    public void RPC_TriggerAttackAnim()
+    public void SetTargetPlayer(int viewID)
     {
-        TriggerAttackAnim();
+        PhotonView pv = PhotonView.Find(viewID);
+        if(pv != null)
+        {
+            TargetPlayer = pv.GetComponent<PlayerController>();
+        }
     }
+    #endregion
 
-    [PunRPC]
-    public void RPC_TriggerDieAnim()
-    {
-        TriggerDieAnim();
-    }
-    public virtual void Die()
+    protected virtual void Die()
     {
         OnBossDied?.Invoke();
     }
+
+ 
 }

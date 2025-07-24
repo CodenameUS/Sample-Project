@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 /*
                     Sword : 무기(검) 클래스
 
@@ -23,28 +23,40 @@ public class Sword : Weapon
         soundId = "Sword";
     }
 
-    
+
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Monster"))
-        {
-            Monster monster = other.GetComponent<Monster>();
-            if (GameManager.Instance.isMultiPlaying)
-            {
-                monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All,
-                    DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
-            }
-            else
-            {
-                monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+        if (!other.CompareTag("Monster") && !other.CompareTag("BossMonster"))
+            return;
 
+        float randomDamage = randomDamage = DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f);
+
+        // 1. 멀티모드일때
+        if (GameManager.Instance.isMultiPlaying)
+        {
+            // 일반몬스터 처리
+            if (other.TryGetComponent<Monster>(out var monster))
+            {
+                monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All, randomDamage);
+            }
+            // 보스몬스터 처리
+            else if (other.TryGetComponent<BossMonster>(out var boss))
+            {
+                boss.photonView.RPC(nameof(boss.GetDamaged), Photon.Pun.RpcTarget.All, randomDamage);
             }
         }
-        else if(other.CompareTag("BossMonster"))
+        // 2. 싱글모드일때
+        else if (!GameManager.Instance.isMultiPlaying)
         {
-            BossMonster boss = other.GetComponent<BossMonster>();
-            boss.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+            if (other.TryGetComponent<Monster>(out var monster))
+            {
+                monster.GetDamaged(randomDamage);
+            }
+            else if (other.TryGetComponent<BossMonster>(out var boss))
+            {
+                boss.GetDamaged(randomDamage);
+            }
         }
     }
 

@@ -51,6 +51,11 @@ MonoBehaviour:
   - OnCutSceneStarted
   - OnCutSceneEnded
   - PlayCutScene
+  - Attack
+  - RPC_ActivteExplosionAttacker
+  - RPC_ActivteExplosionEffect
+  - RPC_DeactiveExplosion
+  - SetTargetPlayer
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

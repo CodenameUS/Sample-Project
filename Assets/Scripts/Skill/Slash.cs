@@ -75,32 +75,47 @@ public class Slash : Skill
             LayerMask.GetMask("Monster", "BossMonster")
         );
 
-        foreach(RaycastHit hit in hits)
+        // 1. 멀티모드일때
+        if (GameManager.Instance.isMultiPlaying)
         {
-            if(hit.collider.CompareTag("Monster"))
+            foreach (RaycastHit hit in hits)
             {
-                Monster monster = hit.collider.GetComponent<Monster>();
-                if (monster != null)
-                {
-                    if (GameManager.Instance.isMultiPlaying)
-                    {
-                        monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All,
-                            DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
-                    }
-                    else
-                    {
-                        monster.GetDamaged(DataManager.Instance.GetPlayerData().Damage * Random.Range(0.8f, 1f));
+                float randomDamage = DataManager.Instance.GetPlayerData().Damage * Random.Range(1.2f, 1.4f);
 
-                    }
+                // 일반몬스터 처리
+                if (hit.collider.TryGetComponent<Monster>(out var monster))
+                {
+                    monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All, randomDamage);
+                    continue;
+                }
+
+                // 보스몬스터 처리
+                if (hit.collider.TryGetComponent<BossMonster>(out var boss))
+                {
+                    boss.photonView.RPC(nameof(boss.GetDamaged), Photon.Pun.RpcTarget.All, randomDamage);
+                    continue;
                 }
             }
-            else if(hit.collider.CompareTag("BossMonster"))
+        }
+        // 2. 싱글모드일때
+        else
+        {
+            foreach (RaycastHit hit in hits)
             {
-                BossMonster boss = hit.collider.GetComponent<BossMonster>();
-                if (boss != null)
+                float randomDamage = DataManager.Instance.GetPlayerData().Damage * Random.Range(1.2f, 1.4f);
+
+                // 일반몬스터 처리
+                if (hit.collider.TryGetComponent<Monster>(out var monster))
                 {
-                    // 데미지
-                    boss.GetDamaged((DataManager.Instance.GetPlayerData().Damage + data.Damage) * Random.Range(0.8f, 1f));
+                    monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All, randomDamage);
+                    continue;
+                }
+
+                // 보스몬스터 처리
+                if (hit.collider.TryGetComponent<BossMonster>(out var boss))
+                {
+                    boss.photonView.RPC(nameof(boss.GetDamaged), Photon.Pun.RpcTarget.All, randomDamage);
+                    continue;
                 }
             }
         }

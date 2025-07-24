@@ -42,7 +42,16 @@ public class StayHitbox : MonoBehaviour
             timer += Time.deltaTime;
             if (timer >= 0.5f)
             {
-                boss.GetDamaged(damage);
+                if (GameManager.Instance.isMultiPlaying)
+                {
+                    boss.photonView.RPC(nameof(boss.GetDamaged), Photon.Pun.RpcTarget.All,
+                        damage);
+                }
+                else
+                {
+                    boss.GetDamaged(damage);
+
+                }
                 timer = 0;
             }
         }

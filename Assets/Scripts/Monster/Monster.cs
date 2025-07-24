@@ -156,13 +156,9 @@ public class Monster : MonoBehaviourPun
     [PunRPC]
     public void GetDamaged(float damage)
     {
-        float minDamage = damage * 0.8f;
-        float maxDamage = damage * 1.2f;
-        int randomDamage = (int)Random.Range(minDamage, maxDamage);
+        DamageTextManager.Instance.ShowDamage(damageTextPos, (int)damage);
 
-        DamageTextManager.Instance.ShowDamage(damageTextPos, randomDamage);
-
-        curHp -= randomDamage;
+        curHp -= damage;
     }
     #endregion
 }
