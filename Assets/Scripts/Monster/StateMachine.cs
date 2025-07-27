@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 /*
-            StateMachine은 Monster의 AI 상태를 관리
- */
+                            << StateMachine >>
+
+        - 몬스터 현재 상태 설정 및 다음 상태로의 전환 수행
+
+        - 상태에서의 동작(OnStateEnter, OnStateUpdate, OnStateExit) 수행
+*/
 
 public class StateMachine<T> where T : Monster
 {

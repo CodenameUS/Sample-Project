@@ -107,14 +107,14 @@ public class Slash : Skill
                 // 일반몬스터 처리
                 if (hit.collider.TryGetComponent<Monster>(out var monster))
                 {
-                    monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All, randomDamage);
+                    monster.GetDamaged(randomDamage);
                     continue;
                 }
 
                 // 보스몬스터 처리
                 if (hit.collider.TryGetComponent<BossMonster>(out var boss))
                 {
-                    boss.photonView.RPC(nameof(boss.GetDamaged), Photon.Pun.RpcTarget.All, randomDamage);
+                    boss.GetDamaged(randomDamage);
                     continue;
                 }
             }

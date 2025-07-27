@@ -1,15 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 /*
-                Monster State - Die (죽음상태)
+                            << DieState >>
 
-        - Die 애니메이션 실행
+        - Die 상태 : 죽음 애니메이션 실행
 
-        - 히트박스 제거 => 플레이어가 몬스터 통과가능
-
-        - 일정시간뒤 몬스터 비활성화
+        - 히트박스 제거, 일정시간 후 몬스터 오브젝트 파괴
  */
 
 public class DieState<T> : BaseState<T> where T : Monster

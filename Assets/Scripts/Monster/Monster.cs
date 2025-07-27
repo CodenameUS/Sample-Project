@@ -1,22 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
-using Photon.Realtime;
 
 /*
-                    Monster - 몬스터의 공통 데이터를 관리
+                            << Monster >>
 
-        - Monster Status & Flags
+        - 몬스터 초기화 및 공통데이터 관리
+        
+        - GetDamaged() : 데미지만큼의 체력감소 및 데미지폰트 표시
 
-        - 컴포넌트 초기화
-
-        - 공통 함수
-            - ReadyToAttack : 공격가능여부를 나타내는 isAttackReady 플래그를 True로
-            - DeactiveGameObject : 몬스터 오브젝트를 비활성화
-            - GetDamaged : 받은 데미지만큼 Hp 감소
- */
+        - FindClosestPlayer() : 가장 가까운 플레이어를 타깃으로 설정
+*/
 
 public class Monster : MonoBehaviourPun
 {
@@ -24,9 +18,9 @@ public class Monster : MonoBehaviourPun
 
     #region ** Monster Status **
     [Header("#Monster Stats")]
-    public float maxHp;
-    public float curHp;
-    public float speed;
+    public float maxHp;                             // 최대체력
+    public float curHp;                             // 현재체력
+    public float speed;                             // 이동속도
     public float maxDistance;                       // 플레이어와의 거리(복귀하기위한 최대거리)
     public float idleThreshold;                     // 복귀후 처음 위치와의 차이
     public float attackDelay;                       // 공격속도
@@ -35,7 +29,7 @@ public class Monster : MonoBehaviourPun
     #endregion
 
     #region ** Flags **
-    //[HideInInspector]
+    [HideInInspector]
     public bool isReset;                            // 원점으로 복귀했는지 여부
     [HideInInspector]
     public bool isAttackReady;                      // 공격 가능 여부
@@ -66,18 +60,18 @@ public class Monster : MonoBehaviourPun
 
     private void Init()
     {
+        anim = GetComponent<Animator>();
+        nav = GetComponent<NavMeshAgent>();
+        hitBoxCol = GetComponent<BoxCollider>();
+
         FindClosestPlayer();
         startPosition = transform.position;
 
         isAttackReady = true;
         isReset = true;
-
-        anim = GetComponent<Animator>();
-        nav = GetComponent<NavMeshAgent>();
-        hitBoxCol = GetComponent<BoxCollider>();
     }
 
-    // 타깃플레이어할당 - 가장 가까운 플레이어 
+    // 타깃플레이어 - 가장 가까운 플레이어 
     protected void FindClosestPlayer()
     {
         float minDistance = float.MaxValue;
@@ -110,13 +104,17 @@ public class Monster : MonoBehaviourPun
         isAttackReady = true;
     }
 
-    // 죽음
+    // 죽음후 오브젝트 파괴
     public void DeactiveGameObject()
     {
         Destroy(this.gameObject);
+
+        if (GameManager.Instance.isMultiPlaying)
+            MultiDungeonManager.Instance.currentMonsterCount -= 1;
     }
+    #endregion
 
-
+    #region ** Animations **
     public void TriggerAttackAnim()
     {
         anim.SetTrigger("Attack");
@@ -130,7 +128,6 @@ public class Monster : MonoBehaviourPun
     #endregion
 
     #region ** RPC Methods **
-
     [PunRPC]
     public void RPC_TriggerDieAnim()
     {
@@ -147,9 +144,6 @@ public class Monster : MonoBehaviourPun
     public void RPC_DeactiveGameObject()
     {
         Invoke(nameof(DeactiveGameObject), 3);
-
-        if (GameManager.Instance.isMultiPlaying)
-            MultiDungeonManager.Instance.currentMonsterCount -= 1;
     }
     
     // 공격받음

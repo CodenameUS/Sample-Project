@@ -6,12 +6,18 @@ using Photon.Pun;
 using Photon.Realtime;
 
 /*
-                    BossMonster - 보스몬스터의 공통 데이터를 관리
+                            << BossMonster >>
 
-        - Boss Monster 컴포넌트 정보 가져오기
+        - 보스몬스터 초기화 및 공통데이터 관리
+        
+        - GetDamaged() : 데미지만큼의 체력감소 및 데미지폰트 표시
 
-        - 공통함수
-            - GetDamaged : 받은 데미지만큼 Hp 감소
+        - Die() : 보스 죽음 이벤트(OnBossdied) 실행
+            - 던전매니저(Single/Multi)의 DungeonClear 호출 => 보상UI 활성화 및 탈출포탈 생성
+
+        - SetTargetPlayer() : (Multi) 타깃 플레이어 설정
+            - 최초 : Range에 들어온 플레이어를 타깃으로 설정
+            - 공격패턴이 끝날때마다 가장가까운 플레이어 우선타깃(FindClosestPlayer())
  */
 
 public class BossMonster : MonoBehaviourPunCallbacks
@@ -42,7 +48,7 @@ public class BossMonster : MonoBehaviourPunCallbacks
     [HideInInspector]
     public bool isAttackReady;                      // 공격 가능 여부
     [HideInInspector]
-    protected bool isDead;                             // 죽었는지 여부
+    protected bool isDead;                          // 죽었는지 여부
     [HideInInspector]
     public bool isAttacking = false;                // 공격중인지 여부
     #endregion
@@ -123,8 +129,15 @@ public class BossMonster : MonoBehaviourPunCallbacks
 
     protected virtual void Die()
     {
-        OnBossDied?.Invoke();
+        if(GameManager.Instance.isMultiPlaying)
+        {
+            MultiDungeonManager.Instance.photonView.RPC(nameof(OnBossDied), RpcTarget.All);
+        }
+        else
+        {
+            OnBossDied?.Invoke();
+        }
     }
 
- 
+
 }

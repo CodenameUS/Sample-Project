@@ -1,26 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-
 /*
-                             Monster - TurtleShell
+                            << TurtleShell >>
 
-        - 가지는 상태 : Idle, Chase, Attack, Die
-
-        - TurtleShell의 능력치 설정 및 상태 초기화
+        - 몬스터 "TurtleShell" 스탯초기화, 상태전환 조건처리, 공격 로직처리
+            - FSM 패턴으로 상태 전환 처리
 
         - 조건에따른 상태전환
-            - ScanRange 안에 플레이어가 들어오는경우 -> ChaseState 돌입
-            - 플레이어를 쫓다가 복귀한 경우 -> IdleState 돌입
-            - 공격범위에 플레이어가 있는경우 -> AttackState 돌입
-            - 체력이 0이하 -> DieState 돌입
- */
+            1. Range 안에 플레이어가 들어오는경우 : To Chase
+            2. 플레이어를 쫓다가 멀어져 원래자리로 복귀한 경우 : To Idle
+            3. 플레이어가 공격범위에 있는 경우 : To Attack
+            4. 체력이 0이하로 감소 : To Die
+*/
 
 public class TurtleShell : Monster
 {
-    // TurtleShell이 가지는 상태
+    // 가질수있는 상태
     public enum States
     {
         Idle,
@@ -29,7 +25,9 @@ public class TurtleShell : Monster
         Die
     }
 
-    public States curState;                             // 현재 상태
+    // 현재 상태
+    public States curState;                             
+    // 상태머신 인스턴스
     private StateMachine<TurtleShell> stateMachine;
     
     protected override void Awake()
@@ -41,7 +39,7 @@ public class TurtleShell : Monster
 
     private void Init()
     {
-        // TurtleShell 능력치 초기화
+        // 스탯 설정
         maxHp = 50;
         curHp = maxHp;
         speed = 1f;
@@ -50,13 +48,13 @@ public class TurtleShell : Monster
         attackDelay = 2f;
         damage = 5f;
         attackRange = 1.3f;
+        Nav.speed = speed;
 
-        // 초기상태는 Idle
+        // StateMachine 인스턴스 생성(최초 Idle상태)
         curState = States.Idle;
-        // StateMachine 객체 생성(Idle상태)
         stateMachine = new StateMachine<TurtleShell>(new IdleState<TurtleShell>(this));
 
-        Nav.speed = speed;
+
     }
 
     private void Update()
@@ -65,8 +63,8 @@ public class TurtleShell : Monster
 
         stateMachine.curState.OnStateUpdate();
 
-        // 1초에 한번씩 상태결정
-        InvokeRepeating(nameof(DecideState), 0f, 1f);
+        // 2초에 한번씩 상태결정
+        InvokeRepeating(nameof(DecideState), 0f, 2f);
     }
 
     // 상태 변경
@@ -125,34 +123,27 @@ public class TurtleShell : Monster
         }
     }
 
-    // 공격판정수행 애니메이션 이벤트
-    public void OnAttackAnimEvent()
-    {
-        Attack();
-    }
-
     // 공격판정
     public override void Attack()
     {
         if (GameManager.Instance.isMultiPlaying && !PhotonNetwork.IsMasterClient)
             return;
 
-        // Raycast할 위치, 방향
+        // 공격방향 : 몬스터 기준 앞
         Vector3 origin = transform.position + new Vector3(0, 0.5f, 0);
         Vector3 direction = transform.forward;
 
+        // 히트데미지 처리
         if (Physics.SphereCast(origin, 0.5f, direction, out RaycastHit hit, 1f, LayerMask.GetMask("Player")))
         {
             if (hit.collider.CompareTag("Player"))
             {
-                // 멀티플레이
                 if (GameManager.Instance.isMultiPlaying)
                 {
                     PhotonView targetView = hit.collider.GetComponent<PhotonView>();
                     targetView.RPC("GetDamaged", targetView.Owner, damage);
                     
                 }
-                // 싱글플레이
                 else
                 {
                     PlayerData playerData = DataManager.Instance.GetPlayerData();

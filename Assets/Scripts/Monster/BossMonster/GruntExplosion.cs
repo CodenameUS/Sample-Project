@@ -1,8 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+/*
+                            << GruntExplosion >>
+
+        - 보스몬스터의 투사체 스킬공격 판정
+        
+        - 투사체 범위(Collider)에 히트시 데미지 및 넉백
+ */
 
 public class GruntExplosion : MonoBehaviourPun
 {
@@ -12,21 +17,22 @@ public class GruntExplosion : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
-        {
-            PlayerController player = other.GetComponent<PlayerController>();
+        if (!other.CompareTag("Player")) return;
 
-            if (GameManager.Instance.isMultiPlaying)
-            {
-                PhotonView targetView = other.GetComponent<PhotonView>();
-                targetView.RPC("GetDamaged", targetView.Owner, damage);
-            }
-            else
-            {
-                player.GetDamaged(damage);
-            }
+        PlayerController player = other.GetComponent<PlayerController>();
+
+        // 데미지 발생
+        if (GameManager.Instance.isMultiPlaying)
+        {
+            PhotonView targetView = other.GetComponent<PhotonView>();
+            targetView.RPC("GetDamaged", targetView.Owner, damage);
+        }
+        else
+        {
+            player.GetDamaged(damage);
         }
 
+        // 플레이어 넉백
         Rigidbody rigid = other.GetComponent<Rigidbody>();
         if(rigid != null)
         {

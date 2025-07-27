@@ -22,6 +22,7 @@ public class Loading : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.isLoading = true;
         StartCoroutine(LoadSceneProgress());
         ShowGameTips();
     }

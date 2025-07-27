@@ -239,9 +239,11 @@ public class DataManager : Singleton<DataManager>
     // 현재 플레이어 데이터 저장
     public void SavePlayerData()
     {
+        if (GameManager.Instance.isLoading)
+            return;
+
         PlayerDataDTO dto = playerData.ToDTO();
         SaveData(dto, "PlayerData");
-        Debug.Log("세이브 완료!!");
     }
 
     // 게임 종료시 데이터 저장

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                Monster State - Idle (기본상태)
-        
-           - 기본상태 애니메이션 실행
+                            << IdleState >>
+
+        - Idle 상태 : 초기상태. Idle 애니메이션 수행
  */
 public class IdleState<T> : BaseState<T> where T : Monster
 {

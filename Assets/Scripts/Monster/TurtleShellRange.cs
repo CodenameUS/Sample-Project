@@ -1,6 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+/*
+                            << TurtleShellRange >>
+
+        - Idle 상태에서 플레이어가 Range에 접근시 Chase상태로 돌입하기위한 Collider 이벤트
+ */
 
 public class TurtleShellRange : MonoBehaviour
 {
@@ -12,7 +16,7 @@ public class TurtleShellRange : MonoBehaviour
         parent = GetComponentInParent<TurtleShell>();
     }
 
-    // Scan Range에 플레이어가 들어왔을경우 Chase 상태 돌입
+    // Range에 플레이어가 들어왔을경우 Chase 상태 돌입
     private void OnTriggerStay(Collider other)
     {
         if (!other.CompareTag("Player"))

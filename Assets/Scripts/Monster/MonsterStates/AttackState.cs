@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                Monster State - Attack (공격상태)
+                            << AttackState >>
 
-        - Attack 상태에서 실행될 공통적인 로직 작성
-
-        - 공격전 위치고정후 플레이어를 바라보고 공격시작
+        - Attack 상태 : 플레이어를 바라보고 공격
  */
 
 public class AttackState<T> : BaseState<T> where T : Monster

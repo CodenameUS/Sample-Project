@@ -4,19 +4,38 @@ using UnityEngine;
 using Cinemachine;
 using Photon.Pun;
 
+/*
+                            << Grunt >>
+
+        - 보스몬스터 "Grunt" 스탯초기화, 이동/공격/죽음 로직처리
+            - 싱글/멀티 로직 분리
+        
+        - 공격수행과정
+            1. 플레이어가 공격 사거리에 들어왔는지 확인(CanAttackTarget())
+            2. 공격실행요청(ExecuteAttack()) : 무슨공격을 할것인지(attackType) 정하고, 공격실행(Attack())
+            3. 공격(CoroutineAttack)처리 : AttackType에 따른 공격 수행
+                - 일반근접공격(MeleeAttack()) 및 스킬공격(Thunderbolt(), Explosion()) 처리
+
+        - Die() : 보스체력이 0이하가 되면 죽음
+            - 애니메이션, 보스 UI, 히트박스등 처리 후 OnBossDied 이벤트 알림
+            - 구독자(던전매니저)의 이벤트 실행
+ */
+
+
 public class Grunt : BossMonster
 {
-    [SerializeField] private GameObject thunderboltEffect;
-    [SerializeField] private GameObject explosionEffect;
-    [SerializeField] private GameObject explosionAttacker;
+    [SerializeField] private GameObject thunderboltEffect;          // 스킬(썬더볼트) 이펙트 오브젝트
+    [SerializeField] private GameObject explosionEffect;            // 스킬(익스플로전) 이펙트 오브젝트
+    [SerializeField] private GameObject explosionAttacker;          // 스킬(익스플로전) 공격(충돌감지) 오브젝트
 
-    
+    // 애니메이터 파라미터 문자열 해싱
     readonly private int hashAttackTrigger = Animator.StringToHash("Attack");
     readonly private int hashAttackType = Animator.StringToHash("AttackType");
     readonly private int hashDeadTrigger = Animator.StringToHash("Dead");
     readonly private int hashSpeed = Animator.StringToHash("Speed");
-    
-    private CinemachineBasicMultiChannelPerlin noise;           // 카메라 노이즈(흔들림)
+
+    // 카메라 노이즈(흔들림)
+    private CinemachineBasicMultiChannelPerlin noise;           
 
     protected override void Awake()
     {
@@ -29,7 +48,8 @@ public class Grunt : BossMonster
     {
         if (targetPlayer == null || isDead || targetPlayer.isCutscenePlaying)
             return;
-        if (!photonView.IsMine) return;
+
+        if (GameManager.Instance.isMultiPlaying && !photonView.IsMine) return;
         
         if(CanAttackTarget())
         {
@@ -39,7 +59,11 @@ public class Grunt : BossMonster
         {
             Move();
         }
-        Die();
+
+        if(curHp <= 0)
+        {
+            Die();
+        }
     }
 
     // 보스 데이터 초기화
@@ -53,6 +77,7 @@ public class Grunt : BossMonster
 
         nav.speed = speed;
 
+        // 카메라 노이즈(화면 흔들림)
         noise = GameManager.Instance.virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
@@ -97,29 +122,45 @@ public class Grunt : BossMonster
     [PunRPC]
     private void Attack(int attackType)
     {
-        StartCoroutine(DecideNextAttack(attackType));
+        StartCoroutine(CoroutineAttack(attackType));
     }
 
     // 죽음
     protected override void Die()
     {
-        if(!isDead && curHp <= 0)
+        if (isDead) return;
+        
+        if(GameManager.Instance.isMultiPlaying)
         {
             base.Die();
-            isDead = true;
-            TriggerDieAnim();
-            PlaySFX("Grunt_Die");
-            var bossCanvas = GetComponentInChildren<Canvas>();
-            bossCanvas.gameObject.gameObject.SetActive(false);
-            hitBoxCol.enabled = false;
-            nav.isStopped = true;
+            photonView.RPC(nameof(RPC_OnDied), RpcTarget.All);
         }
+        else
+        {
+            base.Die();
+            OnDied();
+        }
+        
+    }
+
+    // 죽음 
+    private void OnDied()
+    {
+        isDead = true;
+
+        TriggerDieAnim();
+        PlaySFX("Grunt_Die");
+        var bossCanvas = GetComponentInChildren<Canvas>();
+        bossCanvas.gameObject.gameObject.SetActive(false);
+        hitBoxCol.enabled = false;
+        nav.enabled = false;
     }
 
     #region ** Coroutines **
-    // 다음 공격 정하기
-    private IEnumerator DecideNextAttack(int attackType)
+    // 공격실행
+    private IEnumerator CoroutineAttack(int attackType)
     {
+        // 보스몬스터 정지
         nav.isStopped = true;
         isAttacking = true;
         anim.SetFloat("Speed", 0);
@@ -127,7 +168,7 @@ public class Grunt : BossMonster
         // 공격사이 간격
         yield return new WaitForSeconds(1f);
 
-        // 다음 공격을 랜덤하게 결정
+        // 공격타입에 따른 공격
         switch(attackType)
         {
             case 0:
@@ -188,7 +229,7 @@ public class Grunt : BossMonster
         yield return null;
     }
 
-    // 스킬 공격1
+    // 스킬 공격(썬더볼트)
     private IEnumerator Thunderbolt()
     {
         if (GameManager.Instance.isMultiPlaying && !PhotonNetwork.IsMasterClient)
@@ -206,14 +247,17 @@ public class Grunt : BossMonster
         yield return new WaitForSeconds(3f);
         noise.m_AmplitudeGain = 0f;             // 카메라 흔들림 Off
         thunderboltEffect.SetActive(false);
+
+        yield return new WaitForSeconds(1f);
     }
     
-    // 스킬 공격2
+    // 스킬 공격(익스플로전)
     private IEnumerator Explosion()
     {
         if (GameManager.Instance.isMultiPlaying && !PhotonNetwork.IsMasterClient)
             yield return null;
 
+        // 공격(충돌감지) 오브젝트 데미지 설정
         explosionAttacker.TryGetComponent<GruntExplosion>(out GruntExplosion hitbox);
         if(hitbox == null)
         {
@@ -221,32 +265,49 @@ public class Grunt : BossMonster
             hitbox.damage = damage * Random.Range(0.3f, 0.7f);
         }
 
-        photonView.RPC(nameof(RPC_ActivteExplosionEffect), RpcTarget.All, targetPlayer.transform.position);
+        // 공격 이펙트 및 충돌판정 활성화
+        if(GameManager.Instance.isMultiPlaying)
+        {
+            photonView.RPC(nameof(RPC_ActivteExplosionEffect), RpcTarget.All, targetPlayer.transform.position);
 
+            yield return new WaitForSeconds(1f);
+
+            photonView.RPC(nameof(RPC_ActivteExplosionAttacker), RpcTarget.All, targetPlayer.transform.position);
+
+            yield return new WaitForSeconds(1f);
+
+            photonView.RPC(nameof(RPC_DeactiveExplosion), RpcTarget.All);
+        }
+        else
+        {
+            explosionEffect.transform.position = GameManager.Instance.player.transform.position;
+            explosionEffect.SetActive(true);
+
+            yield return new WaitForSeconds(1f);
+            explosionAttacker.transform.position = GameManager.Instance.player.transform.position + GameManager.Instance.player.transform.up * 2f;
+            explosionAttacker.SetActive(true);
+
+            yield return new WaitForSeconds(1f);
+            explosionAttacker.SetActive(false);
+            explosionEffect.SetActive(false);
+        }
+
+        // 공격 후딜레이
         yield return new WaitForSeconds(1f);
-
-        photonView.RPC(nameof(RPC_ActivteExplosionAttacker), RpcTarget.All, targetPlayer.transform.position);
-
-        yield return new WaitForSeconds(1f);
-
-        photonView.RPC(nameof(RPC_DeactiveExplosion), RpcTarget.All);
-
-        EndAttack();
     }
 
-    // 근접 공격 판정(애니메이션 이벤트)
+    // 일반근접 공격 판정
     private void MeleeAttack()
     {
         if (GameManager.Instance.isMultiPlaying && !PhotonNetwork.IsMasterClient)
             return;
 
-        // Raycast할 위치, 방향
+        // 공격방향 : 보스몬스터 기준 앞
         Vector3 origin = transform.position + new Vector3(0, 1f, 0);
         Vector3 direction = transform.forward;
 
-        RaycastHit hit;
-
-        if(Physics.SphereCast(origin, 1f, direction, out hit, 2f, LayerMask.GetMask("Player")))
+        // 히트데미지 처리
+        if(Physics.SphereCast(origin, 1f, direction, out RaycastHit hit, 2f, LayerMask.GetMask("Player")))
         {
             if(hit.collider.CompareTag("Player"))
             {
@@ -266,6 +327,7 @@ public class Grunt : BossMonster
     }
     #endregion
 
+    #region ** Animations **
     private void TriggerAttackAnim()
     {
         anim.SetTrigger(hashAttackTrigger);
@@ -275,6 +337,7 @@ public class Grunt : BossMonster
     {
         anim.SetTrigger(hashDeadTrigger);
     }
+    #endregion
 
     #region ** Animation Events **
     // 공격 끝(애니메이션 이벤트)
@@ -326,5 +389,16 @@ public class Grunt : BossMonster
         explosionAttacker.SetActive(false);
     }
 
+    [PunRPC]
+    private void RPC_OnDied()
+    {
+        isDead = true;
+        RPC_TriggerDieAnim();
+        PlaySFX("Grunt_Die");
+        var bossCanvas = GetComponentInChildren<Canvas>();
+        bossCanvas.gameObject.gameObject.SetActive(false);
+        hitBoxCol.enabled = false;
+        nav.enabled = false;
+    }
     #endregion
 }

@@ -89,11 +89,6 @@ public class PlayerController : MonoBehaviourPun
         if (isCutscenePlaying)
             anim.SetFloat(hashSpeed, 0);
     }
-    private void OnDestroy()
-    {
-        DataManager.Instance.SavePlayerData();
-    }
-
     #endregion
 
     #region ** Private Methods **

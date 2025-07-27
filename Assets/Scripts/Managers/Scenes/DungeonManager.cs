@@ -27,11 +27,29 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private GameObject clearUI;
 
     private bool bossSpawned = false;                               // 보스 등장여부
+    public bool isCutScenePlaying = false;                          // 컷씬 진행 여부
+
     private PlayableDirector pd;
     private BossMonster boss;
 
+    private static DungeonManager instance;
+    public static DungeonManager Instance => instance;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+    }
+
     private void Start()
     {
+        GameManager.Instance.isLoading = false;
+
         pd = GetComponent<PlayableDirector>();
 
         // 이벤트 연결 
@@ -100,6 +118,7 @@ public class DungeonManager : MonoBehaviour
     private void OnCutsceneStarted(PlayableDirector director)
     {
         GameManager.Instance.player.isCutscenePlaying = true;
+        isCutScenePlaying = true;
 
         // 플레이어 위치 설정
         GameManager.Instance.player.transform.position = cutScenePlayerPos.position;
@@ -112,7 +131,7 @@ public class DungeonManager : MonoBehaviour
     private void OnCutsceneEnded(PlayableDirector director)
     {
         GameManager.Instance.player.isCutscenePlaying = false;
-        Debug.Log("컷씬 끝");
+        isCutScenePlaying = false;
     }
 
     // 던전 클리어 UI 닫기 및 보상획득
