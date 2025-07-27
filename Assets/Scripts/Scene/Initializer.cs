@@ -1,16 +1,17 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 /*
-            - 게임시작시 MainScene 로드 및 포커싱
- 
+                            << Initializer >>
+
+        - 게임시작시 ViliageScene 로드 및 포커싱
+
  */
-public class PersistentInitializer : MonoBehaviour
+
+public class Initializer : MonoBehaviour
 {
-    [SerializeField] private GameObject sceneCover;
+    [SerializeField] private GameObject sceneCover;         // 씬커버(게임시작시 검은색 화면)
 
     private void Start()
     {
@@ -21,7 +22,7 @@ public class PersistentInitializer : MonoBehaviour
     {
         // Additive로 MainScene 불러오기
         yield return SceneManager.LoadSceneAsync("Viliage", LoadSceneMode.Additive);
-        
+
         // MainScene 포커싱
         SceneManager.SetActiveScene(SceneManager.GetSceneByName("Viliage"));
 

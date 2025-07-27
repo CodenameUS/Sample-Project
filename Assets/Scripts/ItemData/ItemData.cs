@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                ItemData
-                    - EquipmentItemData
-                        - WeaponItemData
-                        - ArmorItemData
-                            - 방어구 종류 : "Top", "Gloves", "Shoes" 
+                            << ItemData >>
+
+        - 아이템 데이터 Root 클래스
+       
+        - 아이템의 공통 데이터 관리
  */
 
 public abstract class ItemData 

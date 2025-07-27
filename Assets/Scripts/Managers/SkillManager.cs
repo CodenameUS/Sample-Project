@@ -5,16 +5,25 @@ using System.IO;
 using Newtonsoft.Json;
 using System;
 
-/// <summary>
-///                             SkillManager 
-///                     1. 스킬 데이터 로드
-///                     2. 스킬 실행 
-///                     3. 스킬 오브젝트 풀링
-/// </summary>
+/*
+                            << SkillManager >>
+
+        - 스킬 데이터 로드, 스킬 실행 관리(싱글톤)
+
+        - 스킬 데이터 로드후 딕셔너리에 캐싱
+            - 스킬 사용 요청이 들어오면 딕셔너리에서 스킬 데이터 가져옴
+        
+        - 스킬실행 과정
+            1. 사용자가 스킬사용 요청(ExecuteSkill())
+            2. 캐싱된 스킬데이터가 있는지 확인(없으면 실패)
+            3. 스킬 객체가 이미 Pool에 있는지 확인(없으면 새로 생성)
+            4. 스킬 이펙트 로드후 스킬사용시도(Skill 클래스(판정 등)에 스킬 사용요청)
+                - 스킬 사용에 성공하면 사용한 스킬객체를 Pool에 넣어놓음
+ */
 
 public class SkillManager : Singleton<SkillManager>
 {
-    [SerializeField] public SkillSlotUI[] skillSlots;              // 스킬 슬롯
+    [SerializeField] public SkillSlotUI[] skillSlots;                   // 스킬 슬롯
 
     public List<Skill> playerSkills = new();
 

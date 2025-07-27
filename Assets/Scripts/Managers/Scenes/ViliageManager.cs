@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -13,7 +11,7 @@ public class ViliageManager : MonoBehaviour
 {
     [SerializeField] private GameObject playerObj;
     [SerializeField] private GameObject cameraObj;
-    [SerializeField] private Transform spawnPosition;
+    [SerializeField] private Transform startingPoint;
 
 
     private void Start()
@@ -23,6 +21,9 @@ public class ViliageManager : MonoBehaviour
 
         SpawnPlayer();
         Init();
+
+        if (startingPoint != null)
+            GameManager.Instance.player.transform.position = startingPoint.position;
     }
 
     // 플레이어 오브젝트 활성화

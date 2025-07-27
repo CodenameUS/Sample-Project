@@ -1,30 +1,39 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 /*
-                     DungeonManager - 던전 관리
+                            << DungeonManager >>
 
-                * 던전 진행도 관리
-                    - 모든 일반몬스터 처치시 컷씬 후 보스몬스터 등장
-                    - 보스몬스터 처치시 보상
-                    - 플레이어 죽을시 귀환
+        - 던전(Multi)의 이벤트 관리자(싱글톤)
+        
+        - 씬 입장시 플레이어 위치설정, 몬스터생성(SpawnMonster())
+
+        - 모든몬스터 처치시 보스몬스터 생성처리(SpawnBossMonster())
+            - 보스몬스터 죽음 이벤트 구독 => DungeonClear() 실행
+            - 보스몬스터 등장시 컷신 플레이(PlayCutScene())
+
+        - 보스몬스터 처치시 죽음 이벤트 호출
+            - 클리어UI 활성화 및 보상획득 가능 => 보상획득 후 탈출 포탈활성화
+            - 포탈을 통해 Viliage 씬으로 이동
+
  */
+
 public class DungeonManager : MonoBehaviour
 {
     [SerializeField] private Transform startingPoint;               // 플레이어 시작 위치
     [SerializeField] private Transform bossSpawnPoint;              // 보스 등장 위치
     [SerializeField] private Transform monsters;                    // 일반 몬스터 그룹
     [SerializeField] private Transform cutScenePlayerPos;           // 컷씬 출력시 플레이어 위치
+
     [SerializeField] private TimelineAsset[] timelineAsset;         // 타임라인 에셋
     [SerializeField] private GameObject cutSceneObj;                // 컷씬 카메라 오브젝트
     [SerializeField] private GameObject bossMonsterPrefab;          // 보스몬스터 프리팹
-    [SerializeField] private GameObject portal;                     // 출구
+    [SerializeField] private GameObject portal;                     // 출구포탈 오브젝트
+
     [Header("#UI")]
-    [SerializeField] private GameObject clearUI;
+    [SerializeField] private GameObject clearUI;                    // 클리어 UI 오브젝트
 
     private bool bossSpawned = false;                               // 보스 등장여부
     public bool isCutScenePlaying = false;                          // 컷씬 진행 여부
@@ -56,7 +65,10 @@ public class DungeonManager : MonoBehaviour
         pd.played += OnCutsceneStarted;
         pd.stopped += OnCutsceneEnded;
 
-        Spawn();
+        if (startingPoint != null)
+            GameManager.Instance.player.transform.position = startingPoint.position;
+
+        SpawnMonster();
     }
 
     private void Update()
@@ -66,23 +78,21 @@ public class DungeonManager : MonoBehaviour
 
         if(monsters.childCount == 0)
         {
-            SpawnBoss();
+            SpawnBossMonster();
         }
     }
 
-    // 몬스터 스폰
-    private void Spawn()
+    // 몬스터 소환
+    private void SpawnMonster()
     {
         for(int i = 0;i<monsters.childCount;i++)
         {
             monsters.GetChild(i).gameObject.SetActive(true);
         }
-
-        Debug.Log("몬스터 소환 완료");
     }
 
-    // 보스몬스터 스폰
-    private void SpawnBoss()
+    // 보스몬스터 소환
+    private void SpawnBossMonster()
     {
         bossSpawned = true;
 
@@ -95,8 +105,6 @@ public class DungeonManager : MonoBehaviour
         // 컷씬 출력
         cutSceneObj.gameObject.SetActive(false);
         pd.Play(timelineAsset[0]);
-
-        Debug.Log("모든 몬스터 처리 완료");
     }
     
     // 보스 죽음

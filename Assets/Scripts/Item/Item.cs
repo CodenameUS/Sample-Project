@@ -1,6 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
+/*
+                            << Item >>
+
+        - 아이템 Root 클래스
+            - ItemData 데이터로 초기화
+ */
 
 public abstract class Item
 {

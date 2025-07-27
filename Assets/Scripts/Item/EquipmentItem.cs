@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 /*
-                EquipmentItem : 장착 아이템
-                
-            - Equip() : 장비 장착
-            - UnEquip() : 장비 해제
+                            << EquipmentItem >>
+
+        - 카테고리 : 장착가능한(장비) 아이템 클래스
+
+        - Equip() : 아이템 장착
+            
+        - UnEquip() : 아이템 장착 해제
  */
+
 public abstract class EquipmentItem : Item, IEquipableItem
 {
     public EquipmentItemData EquipmentData { get; private set; }

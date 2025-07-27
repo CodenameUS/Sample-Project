@@ -1,12 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
+/*
+                            << IEquipableItem >>
+
+        - "장착이 가능한" 아이템용 인터페이스
+       
+        - Equip() : 아이템 장착
+
+        - Unequip() : 아이템 장착 해제
+ */
 
 public interface IEquipableItem 
 {
-    // 장비 장착
     void Equip();
 
-    // 장비 장착 해제
     void Unequip();
 }

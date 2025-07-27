@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 /*
-                WeaponItemData 직렬화 전용 클래스
+                            << WeaponItemDTO >>
+
+        - WeaponItemData 직렬화 전용 클래스
  */
 
 [System.Serializable]

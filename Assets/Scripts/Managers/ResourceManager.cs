@@ -4,10 +4,28 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 /*
-                     ResourceManager
+                            << ResourceManager >>
 
-                - 에셋관리 - 반복적으로 사용된 에셋을 캐싱해서 사용      
-                - LoadIcon() : 아이콘 이름으로 어드레서블에서 아이콘 로드 및 캐싱
+        - 어드레서블에 등록된 에셋, 프리팹, 사운드 등을 "런타임중에 비동기로딩"
+
+        - 사용법(아이콘 로드 예시)
+            ResourceManager.Instance.LoadIcon(itemSprite, sprite =>
+            {
+                if (sprite != null)
+                {
+                    iconName = itemSprite;
+                    iconImage.sprite = sprite;
+                    ShowIcon();
+                }
+                else
+                {
+                    Debug.Log($"Failed to load icon for item : {itemSprite}");
+                }
+            });
+            
+            - 불러올 아이콘 이름(string)을 매개변수로 받음
+            - 람다식으로 결과값을 바로 사용
+            - 비동기적으로 실행되므로 반드시 결과값 사용 타이밍을 고려해야함
  */
 
 public class ResourceManager : Singleton<ResourceManager>

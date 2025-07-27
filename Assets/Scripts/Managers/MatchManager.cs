@@ -1,17 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
 
 /*
-                    MatchManager : 던전 빠른매칭 시스템
-            
-            - NPC와 상호작용하여 매칭시작
+                            << MatchManager >>
+
+        - 던전 빠른 매칭 시스템
+
+        - NPC와 상호작용('G'키)하여 매칭시작
             - 빈방이 없을경우 : 방 생성후 다른플레이어 참가 대기
             - 빈방이 있을경우 : 방 참가후 함께 씬 이동
  */
+
 
 public class MatchManager : MonoBehaviourPunCallbacks
 {

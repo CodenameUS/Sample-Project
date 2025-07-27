@@ -1,13 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Photon.Pun;
 
 /*
-                    WeaponManager : 플레이어 무기에 따른 무기 프리팹생성 및 무기애니메이션 설정
+                            << WeaponManager >>
 
-            - SetWeapon() : 현재 무기 설정
+        - 플레이어 장착무기에 따른 무기 생성 및 무기전략 설정(멀티용 싱글톤)
+
+        - SetWeapon() : 플레이어가 장착중인 무기에 따른 무기 세팅
+            - 싱글모드, 멀티모드 분리
+            - 장착한 무기가 없으면 기본 무기로 "Punch" 장착
+
+        - RequestSetWeapon() : 다른클래스에서 SetWeapon 호출하기위한 접근메서드
  */
 
 public class WeaponManager : SingletonPun<WeaponManager>
@@ -36,7 +40,7 @@ public class WeaponManager : SingletonPun<WeaponManager>
     }
 
     // 현재 무기 세팅(기본값 Punch)
-    public void SetWeapon(string type, string weapon)
+    private void SetWeapon(string type, string weapon)
     {
         if(Enum.TryParse(type, out WeaponType result))
         {
@@ -105,6 +109,7 @@ public class WeaponManager : SingletonPun<WeaponManager>
         SetWeapon(type, weapon);
     }
 
+    // SetWeapon 호출 요청
     public void RequestSetWeapon(string type = "None", string weapon = "Punch")
     {
         if(GameManager.Instance.isMultiPlaying)

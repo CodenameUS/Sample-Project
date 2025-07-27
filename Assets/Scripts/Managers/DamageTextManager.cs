@@ -2,16 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+
 /*
-                        DamageTextManager - 데미지 표시
- 
-                    - 풀링으로 데미지 텍스트 재사용
-                    - 지정 위치에 데미지 
+                            << DamageTextManager >>
+
+        - 공격시 데미지 표시
+
+        - Pooling 을 활용해 데미지 폰트 사용 최적화
+        - 생성자 : 데이터를 받아 초기화
+        - CreateItem() : 초기화된 데이터로 아이템 객체 생성
  */
+
 public class DamageTextManager : Singleton<DamageTextManager>
 {
-    [SerializeField] private GameObject damageTextPrefab;               // 데미지 텍스트 프리팹
+    // 데미지 텍스트 프리팹
+    [SerializeField] private GameObject damageTextPrefab;               
 
+    // 최대 풀 사이즈
     private int poolSize = 10;
 
     private Queue<TextMeshPro> pool = new Queue<TextMeshPro>();
@@ -22,6 +29,7 @@ public class DamageTextManager : Singleton<DamageTextManager>
         Init();
     }
 
+    // 데미지 텍스트 생성(풀링 초기화)
     private void Init()
     {
         for(int i = 0;i<poolSize; i++)
@@ -33,6 +41,7 @@ public class DamageTextManager : Singleton<DamageTextManager>
         }
     }
 
+    // 데미지 표시
     public void ShowDamage(Transform pos, int damage)
     {
         TextMeshPro damageText = GetDamageText();
@@ -46,6 +55,7 @@ public class DamageTextManager : Singleton<DamageTextManager>
         StartCoroutine(FadeOut(damageText));
     }
 
+    // Pool 에서 데미지 텍스트 꺼내오기
     private TextMeshPro GetDamageText()
     {
         if(pool.Count > 0)
@@ -61,6 +71,7 @@ public class DamageTextManager : Singleton<DamageTextManager>
         }
     }
 
+    // 데미지 Fadeout 효과
     private IEnumerator FadeOut(TextMeshPro text)
     {
         float duration = 1f;                // fade-out 까지 걸리는 시간

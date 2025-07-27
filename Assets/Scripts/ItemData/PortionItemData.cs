@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                PortionItemData : 포션 아이템 데이터
-                
-                아이템 id : 10001 ~ 19999
-                생성자 : 데이터를 받아 초기화
-                CreateItem() : 초기화된 데이터로 아이템 객체 생성
+                            << PortionItemData >>
+
+        - 포션 아이템 데이터
+
+        - 아이템 id : 10001 ~ 19999
+        - 생성자 : 데이터를 받아 초기화
+        - CreateItem() : 초기화된 데이터로 아이템 객체 생성
  */
 
 public class PortionItemData : CountableItemData

@@ -1,15 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
 
-/// <summary>
-///                             DataManager 
-///                     1. 각 데이터 로드 및 세이브
-///                     2. 각 데이터에 대한 접근제공
-///                     
-/// </summary>
+/*
+                            << DataManager >>
+
+        - 각 데이터 로드 및 세이브
+            - 데이터는 로드후 캐싱
+
+        - 각 데이터에 대한 접근 제공
+ */
+
 public class DataManager : Singleton<DataManager>
 {
     private string playerDataPath;          // 플레이어 데이터 저장경로

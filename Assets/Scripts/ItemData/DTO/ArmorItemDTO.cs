@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 /*
-                ArmorItemData 직렬화 전용 클래스
+                            << ArmorItemDTO >>
+
+        - ArmorItemData 직렬화 전용 클래스
  */
+
 [System.Serializable]
 public class ArmorItemDTO
 {

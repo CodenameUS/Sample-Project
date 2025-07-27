@@ -2,11 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+/*
+                            << ChatManager >>
+
+        - 멀티씬용 채팅 매니저
+
+        - 엔터키입력으로 입력창 활성화 또는 채팅입력 
+
+        - 채팅은 채팅창에 최대 10개까지 표시
+            - 새로운 채팅이 올라오면 포커싱됨
+ */
 
 public class ChatManager : MonoBehaviourPunCallbacks
 {
@@ -24,7 +33,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         // 플레이어 입장 메세지
-        string temp = $"<color=green>{PhotonNetwork.NickName} Joined the chat room.</color>";
+        string temp = $"<color=green>{PhotonNetwork.NickName}님이 입장하였습니다.</color>";
         photonView.RPC("ReceiveMessage",RpcTarget.All, temp);
 
         // 엔터키 입력

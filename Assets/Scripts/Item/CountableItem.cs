@@ -1,14 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                CountableItem : 셀 수 있는 아이템
-                
-                SetAmount(int amount) : 
-                    - amount가 0~MaxAmount 이면 amount를 반환
-                    - amount가 범위를 벗어나면 0 또는 MaxAmount를 반환
+                            << CountableItem >>
+
+        - 카테고리 : 셀 수 있는 아이템 클래스
+
+        - SetAmount(int amount)
+            - 한 슬롯에 들어갈 수 있는 최대 아이템 갯수 : 99
+
+        - AddAmountAndGetExcess : 아이템 갯수를 합치고, 최대량 초과분을 반환
  */
+
 public abstract class CountableItem : Item
 {
     public CountableItemData CountableData { get; private set; }

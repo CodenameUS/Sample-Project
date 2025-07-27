@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                WeaponItemData : 무기 아이템 데이터
-                
-                아이템 id : 30001 ~ 39999
-                생성자 : 데이터를 받아 초기화
-                CreateItem() : 초기화된 데이터로 아이템 객체 생성
+                            << WeaponItemData >>
+
+        - 무기 아이템 데이터
+
+        - 아이템 id : 30001 ~ 39999
+        - 생성자 : 데이터를 받아 초기화
+        - CreateItem() : 초기화된 데이터로 아이템 객체 생성
  */
 
 public class WeaponItemData : EquipmentItemData

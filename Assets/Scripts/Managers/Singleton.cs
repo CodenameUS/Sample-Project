@@ -1,10 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                        Singleton 제너릭 클래스
+                            << Singleton >>
+
+        - 싱글톤 제네릭 클래스
  */
+
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance;

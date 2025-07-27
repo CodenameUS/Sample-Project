@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -10,10 +8,20 @@ using UnityEngine;
                 CreateItem() : 초기화된 데이터로 아이템 객체 생성
  */
 
+/*
+                            << ArmorItemData >>
+
+        - 방어구 아이템 데이터
+
+        - 아이템 id : 20001 ~ 29999
+        - 생성자 : 데이터를 받아 초기화
+        - CreateItem() : 초기화된 데이터로 아이템 객체 생성
+ */
+
 public class ArmorItemData : EquipmentItemData
 {
     [SerializeField] private int defense;       // 방어력
-    [SerializeField] private string type;       // 장비타입
+    [SerializeField] private string type;       // 장비 타입
     [SerializeField] private string subType;    // 장비 세부타입
 
     public int Defense => defense;

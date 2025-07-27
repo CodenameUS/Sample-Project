@@ -1,16 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 /*
-                    UIManager 
-        
-        - UI 활성화
-        - Escape 키 : 가장 최근에 열린 UI 비활성화(Stack 활용)
+                            << UIManager >>
+
+        - UI의 활성/비활성화 처리(싱글톤)
+
+        - Esc 키입력을통해 가장 최근에 열린 UI을 차례로 비활성화 가능
+            - 열려있는 UI가 없을경우 설정 UI가 활성화
  */
 public class UIManager : Singleton<UIManager>
 {
-    [SerializeField] private GameObject menuUI;
+    [SerializeField] private GameObject menuUI;             // 환경설정 UI
 
     private Stack<GameObject> uiStack = new();
     
@@ -34,6 +36,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    // UI 열기
     public void OpenUI(GameObject ui)
     {
         if (ui.activeSelf) return;
@@ -42,6 +45,7 @@ public class UIManager : Singleton<UIManager>
         uiStack.Push(ui);
     }
 
+    // UI 닫기
     public void CloseUI(GameObject ui)
     {
         if (!ui.activeSelf) return;
@@ -86,11 +90,13 @@ public class UIManager : Singleton<UIManager>
         topUI.SetActive(false);
     }
 
+    // UI가 하나라도 열려있는지 여부
     public bool IsAnyUIOpen()
     {
         return uiStack.Count > 0;
     }
 
+    // 열려있는 UI가 없는경우 설정UI 활성화
     private void ToggleMenuUI()
     {
         menuUI.SetActive(!menuUI.activeSelf);

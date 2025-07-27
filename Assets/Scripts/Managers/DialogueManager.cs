@@ -1,24 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 /*
-                    DialogueManager
-        
-        - 넘겨받은 대화 데이터를 가지고 대화를 시작
+                            << DialogueManager >>
 
-        - NPC의 대화를 "--"를 기준으로 나누어 여러페이지에 걸쳐 출력되도록함
+        - 대화 데이터를 통해 NPC와 대화 기능
         
-        - 대화시 타이핑 효과   
+        - NPC의 대화를 "--" 기준으로 나누어 여러 페이지에 걸쳐 출력
+            - Scriptable Object로 대화데이터 작성
+        
+        - 대화시 타이핑 효과 출력(TypePage)  
  */
 
 public class DialogueManager : Singleton<DialogueManager>
-{
-    [SerializeField] public GameObject dialogueUI;             // 대화창 오브젝트
-    [SerializeField] public TMP_Text npcNameText;              // NPC 이름 텍스트
-    [SerializeField] public TMP_Text dialogueText;             // 대화 텍스트
+{ 
+    [SerializeField] public GameObject dialogueUI;              // 대화창 오브젝트
+    [SerializeField] public TMP_Text npcNameText;               // NPC 이름 텍스트
+    [SerializeField] public TMP_Text dialogueText;              // 대화 텍스트
 
     private Queue<string> pages = new Queue<string>();
     private bool isTypipng = false;                             // 대화 타이핑 효과
@@ -33,6 +33,7 @@ public class DialogueManager : Singleton<DialogueManager>
 
     private void Update()
     {
+        // 'G'키 입력으로 다음 대화내용 출력
         if(dialogueUI.activeSelf && npc != null && Input.GetKeyDown(KeyCode.G))
         {
             DisplayNextPage(npc);
@@ -49,10 +50,13 @@ public class DialogueManager : Singleton<DialogueManager>
 
         npc = npcData;
 
-        dialogueUI.SetActive(true);                     // 대화창 UI 활성화
-
+        // 대화창 UI 활성화
+        dialogueUI.SetActive(true);                     
+        // 대화창 NPC 이름 설정
         npcNameText.text = dialogue.npcName;
-        pages.Clear();                                  // 이전 대화 내용 초기화
+
+        // 이전 대화 내용 초기화 후 새로운 대화 내용으로 채우기
+        pages.Clear();                                  
 
         foreach(string sentence in dialogue.sentences)
         {
@@ -62,7 +66,7 @@ public class DialogueManager : Singleton<DialogueManager>
         DisplayNextPage(npc);
     }
 
-    // 다음페이지 대화내용 출력
+    // 다음 대화내용 출력
     public void DisplayNextPage(NPC npc)
     {
         if (isTypipng) return;

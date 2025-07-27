@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 
 /*
-                PortionItemData 직렬화 전용 클래스
+                            << PortionItemDTO >>
+
+        - PortionItemData 직렬화 전용 클래스
  */
 
 [System.Serializable]

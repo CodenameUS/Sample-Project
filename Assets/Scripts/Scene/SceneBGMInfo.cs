@@ -1,13 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/*
+                            << SceneBGMInfo >>
+
+        - 씬입장시 현재 씬의 BGM 플레이
+ */
 
 public class SceneBGMInfo : MonoBehaviour
 {
-    [Tooltip("이 씬에서 재생한 BGM Key")]
-    [SerializeField] private string bgmKey;
-    [SerializeField] private Transform startingPoint;    
+    [Tooltip("BGM Key")]
+    [SerializeField] private string bgmKey;         // 실행할 BGM 키
 
     private void Start()
     {
@@ -15,8 +17,5 @@ public class SceneBGMInfo : MonoBehaviour
         {
             AudioManager.Instance.PlayBGM(bgmKey);
         }
-
-        if(startingPoint != null)
-            GameManager.Instance.player.transform.position = startingPoint.position;
     }
 }

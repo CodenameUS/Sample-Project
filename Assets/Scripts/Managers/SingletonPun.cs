@@ -1,7 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
+
+/*
+                            << SingletonPun >>
+
+        - 멀티용 싱글톤 제네릭 클래스
+ */
 
 public class SingletonPun<T> : MonoBehaviourPun where T : MonoBehaviourPun
 {
