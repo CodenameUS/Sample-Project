@@ -1,15 +1,17 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
 /*
-                        Buff
-          
-            - 버프스킬
-            - Buff 스킬 인터페이스 상속
-                - FollowingEffect : 버프 이펙트가 플레이어를 따라다님
-*/
+                            << Slash >>
+
+        - Buff 스킬데이터 기반으로 스킬 실행
+            - 애니메이션, 스킬이펙트, 공격사운드 플레이
+            - FollowTarget 클래스로 스킬 이펙트가 사용자를 따라다니게
+
+        - 지속시간동안 공격력 및 방어력 증가
+ */
+
 
 public class Buff : Skill, IBuffSkill
 {

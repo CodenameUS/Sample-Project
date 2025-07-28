@@ -1,7 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+
+/*
+                            << MonsterHealthBar >>
+
+        - 몬스터 체력바 UI
+ */
 
 public class MonsterHealthBar : MonoBehaviour
 {
@@ -19,7 +23,7 @@ public class MonsterHealthBar : MonoBehaviour
     }
     private void Update()
     {
-        // UI가 카메라를 정면으로 바라보도록
+        // 체력바가 카메라를 정면으로 바라보도록
         transform.LookAt(transform.position + cam.rotation * Vector3.forward, cam.rotation * Vector3.up);
         SetHpAmount();
     }

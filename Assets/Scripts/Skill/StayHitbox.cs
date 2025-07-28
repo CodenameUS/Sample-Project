@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                지속공격형 스킬
+                            << StayHitbox >>
 
-            - 공격 간격마다 데미지 발생
+        - 지속공격형 스킬의 히트 구현
+            - 공격 간격(attackInterval)마다 데미지 발생
  */
+
 public class StayHitbox : MonoBehaviour
 {
     public float damage;
@@ -16,6 +16,46 @@ public class StayHitbox : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        if (!other.CompareTag("Monster") && !other.CompareTag("BossMonster"))
+            return;
+
+        timer += Time.deltaTime;
+
+        // 1. 멀티모드일때
+        if(GameManager.Instance.isMultiPlaying)
+        {
+            if (timer >= 0.5f)
+            {
+                if(other.TryGetComponent<Monster>(out var monster))
+                {
+                    monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All, damage);
+                }
+                else if(other.TryGetComponent<BossMonster>(out var boss))
+                {
+                    boss.photonView.RPC(nameof(boss.GetDamaged), Photon.Pun.RpcTarget.All,
+                        damage);
+                }
+
+                timer = 0;
+            }
+        }
+        else if(!GameManager.Instance.isMultiPlaying)
+        {
+            if (timer >= 0.5f)
+            {
+                if (other.TryGetComponent<Monster>(out var monster))
+                {
+                    monster.GetDamaged(damage);
+                }
+                else if (other.TryGetComponent<BossMonster>(out var boss))
+                {
+                    boss.GetDamaged(damage);
+                }
+
+                timer = 0;
+            }
+        }
+        /*
         if (other.CompareTag("Monster"))
         {
             Monster monster = other.GetComponent<Monster>();
@@ -55,5 +95,6 @@ public class StayHitbox : MonoBehaviour
                 timer = 0;
             }
         }
+        */
     }
 }

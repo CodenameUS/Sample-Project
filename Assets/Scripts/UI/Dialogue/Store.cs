@@ -1,6 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+/*
+                            << Store >>
+
+        - 상점 NPC 관리 클래스
+        
+        - DialogueManager에 대화 데이터를 기반으로 상호작용(대화) 요청
+ */
 
 public class Store : NPC
 {

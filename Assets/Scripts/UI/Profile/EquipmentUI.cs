@@ -1,16 +1,25 @@
-using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.IO;
+
+/*
+                            << EquipmentUI >>
+
+        - 플레이어 장착 장비 데이터 로드 및 세이브
+
+        - 장비창 UI의 마우스 이벤트 구현
+            - 마우스 우클릭 : 장비 장착 해제
+            - 슬롯 강조효과
+            - 툴팁 UI 표시
+ */
 
 [System.Serializable]
 public class EquipmentSlotData
 {
-    public int slotIndex;              
-    public int itemId;
+    public int slotIndex;               // 장비창 슬롯 인덱스
+    public int itemId;                  // 아이템 ID
 }
 
 [System.Serializable]
@@ -21,10 +30,10 @@ public class EquipmentSlotDataList
 
 public class EquipmentUI : Singleton<EquipmentUI>
 {
-    [SerializeField] private ItemTooltipUI itemTooltipUI;
-    [SerializeField] private Inventory inventory;
-    [SerializeField] private GameObject targetUI;
-    [SerializeField] private UIRaycaster rc;
+    [SerializeField] private ItemTooltipUI itemTooltipUI;               // 아이템 툴팁 UI
+    [SerializeField] private Inventory inventory;                       // 인벤토리 참조
+    [SerializeField] private GameObject targetUI;                       // 타겟 UI(장비창 UI)
+    [SerializeField] private UIRaycaster rc;                            // 마우스 이벤트처리용
 
     // 장비 타입별 idx(0: Weapon, 1: Shoes, 2: Gloves, 3: Top)
     private enum Type { Weapon, Shoes, Gloves, Top}

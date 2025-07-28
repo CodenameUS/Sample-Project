@@ -1,15 +1,32 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
 /*
-                        Inventory
-          
-            - 인벤토리의 실질적인 내부 로직
-                - 아이템 추가, 아이템 사용, 아이템 삭제, 아이템 이동
-            - 인벤토리 데이터 Save & Load
-*/
+                            << Inventory >>
+
+        - 인벤토리 데이터 로드 및 세이브
+
+        - 인벤토리 실질적인 내부 로직
+            - 아이템 추가(Add), 아이템 사용(Use), 아이템 제거(Remove), 아이템 이동(Swap)
+
+        - 아이템 추가
+            - AddItem() : 아이템 데이터를 받아 인벤토리 앞쪽 빈자리에 아이템 추가(일반적 사용)
+            - AddItemAt() : 인벤토리의 특정 슬롯에 아이템 추가(데이터 로딩시 사용)
+            - AddItemAtPlayerItemSlot() : 퀵슬롯에 아이템 추가(퀵슬롯에 아이템 등록시 사용)
+        - 아이템 사용
+            - Use() : 마우스포인터 위치 슬롯의 아이템 사용, 퀵슬롯의 아이템 사용
+                - 장비아이템 : 장비 장착 처리
+                - 포션아이템 : 갯수차감 및 사용 처리
+        - 아이템 제거
+            - Remove() : 제거하고자하는 슬롯의 아이템 제거
+        - 아이템 이동
+            - Swap() : 마우스 드래그를통해 아이템 이동 또는 두 아이템의 위치 변경
+                - 두 아이템 위치변경시 같은 아이템일경우 갯수가 합쳐짐
+                    - 드래그를 시작한쪽의 아이템이 우선 제거
+                        - 한 슬롯의 최대갯수를 초과할 경우 드래그 시작한쪽에 남는 아이템
+ */
+
 [System.Serializable]
 public class ItemSlotData
 {
@@ -409,7 +426,7 @@ public class Inventory : Singleton<Inventory>
             playerItemGruopUI.SetItemIconAndAmountText(slot.index, ci);
     }
 
-    // 해당 인덱스 슬롯의 아이템 제거
+    // 해당 슬롯의 아이템 제거
     public void Remove(int index)
     {
         if (!IsValidIndex(index)) return;
@@ -560,7 +577,7 @@ public class Inventory : Singleton<Inventory>
             UpdateSlot(index); 
     }
 
-    // 아이템 슬롯의 아이템 사용
+    // 퀵슬롯의 아이템 사용
     public void Use(CountableItem ci)
     {
         for(int i = 0;i<=items.Length;i++)

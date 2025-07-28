@@ -1,15 +1,19 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+
+/*
+                            << MatchingTextEffect >>
+
+        - 매칭시작시 "매칭중.." UI 효과 표시
+ */
 
 public class MatchingTextEffect : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI matchingText;
-    [SerializeField] private GameObject matchingProgressUI;
+    [SerializeField] private TextMeshProUGUI matchingText;          // 텍스트 UI
+    [SerializeField] private GameObject matchingProgressUI;         // 매칭 UI 게임오브젝트
 
-    private string baseText = "매칭중";
+    private string baseText = "매칭중";         // 표시될 텍스트
     private int dotCount = 0;                   // . 갯수(0~3 까지 증가)
     private float interval = 0.5f;              // 텍스트 변화 속도 
     private bool isRunning = true;              // 제어 플래그

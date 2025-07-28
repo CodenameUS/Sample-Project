@@ -1,15 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+                            << VolumeSetter >>
+
+        - 메뉴 UI의 볼륨 조절 이벤트 구현
+ */
+
 public class VolumeSetter : MonoBehaviour
 {
-    [SerializeField] private Slider masterVolumeSlider;
-    [SerializeField] private Slider bgmVolumeSlider;
-    [SerializeField] private Slider sfxVolumeSlider;
-    [SerializeField] private Button quitButton;
-    [SerializeField] private GameObject menuUIGo;
+    [SerializeField] private Slider masterVolumeSlider;             // 마스터볼륨 슬라이더 UI
+    [SerializeField] private Slider bgmVolumeSlider;                // BGM볼륨 슬라이더 UI
+    [SerializeField] private Slider sfxVolumeSlider;                // SFX볼륨 슬라이더 UI
+    [SerializeField] private Button quitButton;                     // 나가기 버튼 UI
+    [SerializeField] private GameObject menuUIGo;                   // 메뉴 UI 게임 오브젝트
 
     private void Start()
     {

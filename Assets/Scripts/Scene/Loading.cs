@@ -1,17 +1,24 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/*
+                            << Loading >>
+
+        - 씬 변경 클래스
+        
+        - 로딩바 시각화(LoadSceneProgress())
+            - 다음씬 준비가 완료되면(90%) 로딩바 100%까지는 Fake 로딩
+ */
+
 public class Loading : MonoBehaviour
 {
-    [SerializeField] private Image progressBar;
-    [SerializeField] private Text tipText;
+    [SerializeField] private Image progressBar;             // 로딩바 UI
+    [SerializeField] private Text tipText;                  // 게임팁 Text UI
 
-    
-    private static string nextScene;
-    private static string prevSceneName;
+    private static string nextScene;                        // 로딩될 다음씬 이름
+    private static string prevSceneName;                    // 기존씬 이름
 
     string[] gameTips =
     {
@@ -35,6 +42,7 @@ public class Loading : MonoBehaviour
         SceneManager.LoadSceneAsync("Loading", LoadSceneMode.Additive);
     }
 
+    // 로딩바 구현
     private IEnumerator LoadSceneProgress()
     {
         // 로딩씬을 ActiveScene으로 설정
@@ -72,16 +80,17 @@ public class Loading : MonoBehaviour
         // 로드될 다음 씬을 ActiveScene으로 설정
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextScene));
 
-        // 이전 씬 언로드(PersistentScene 제외)
+        // 이전 씬 언로드
         if(prevSceneName != "PersistentScene" && prevSceneName != "Loading")
         {
             SceneManager.UnloadSceneAsync(prevSceneName);
         }
 
-        // 로딩씬은 언로드
+        // 로딩 씬 언로드
         SceneManager.UnloadSceneAsync("Loading");
     }
 
+    // 로딩중 게임팁 출력
     private void ShowGameTips()
     {
         int ran = Random.Range(0, gameTips.Length);

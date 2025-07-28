@@ -9,6 +9,16 @@ using UnityEngine.UI;
             - 아이템 아이콘과 아이템 갯수 텍스트 등록 및 제거
             - 슬롯 강조효과
 */
+
+/*
+                            << ItemSlotUI >>
+
+        - 인벤토리 각 개별 슬롯을 관리
+
+        - 아이템 아이콘 및 아이템 갯수 텍스트 설정
+        - 슬롯 강조효과
+ */
+
 public class ItemSlotUI : MonoBehaviour
 {
     #region ** Serialized Fields **

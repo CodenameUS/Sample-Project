@@ -1,6 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
+/*
+                            << InventoryDataDTO >>
+
+        - 인벤토리 데이터 직렬화 전용 클래스
+ */
 
 public class InventoryDataDTO
 {

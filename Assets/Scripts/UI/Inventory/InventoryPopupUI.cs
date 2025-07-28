@@ -1,8 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+
+/*
+                            << InventoryPopupUI >>
+
+        - 인벤토리에서 아이템 버리기 확인 팝업 UI
+ */
 
 public class InventoryPopupUI : MonoBehaviour
 {

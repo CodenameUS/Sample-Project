@@ -1,15 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+/*
+                            << StatTextUI >>
+
+        - 장비창의 캐릭터 능력치 정보 UI 관리
+ */
 
 public class StatTextUI : MonoBehaviour
 {
     [Header("Connected Texts")]
-    [SerializeField] private Text damageText;
-    [SerializeField] private Text hpText;
-    [SerializeField] private Text speedText;
-    [SerializeField] private Text defenseText;
+    [SerializeField] private Text damageText;           // 공격력 텍스트 UI
+    [SerializeField] private Text hpText;               // 체력 텍스트 UI
+    [SerializeField] private Text speedText;            // 이동속도 텍스트 UI
+    [SerializeField] private Text defenseText;          // 방어력 텍스트 UI
 
     private void Update()
     {

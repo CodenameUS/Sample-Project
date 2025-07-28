@@ -1,13 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-/*                  
-                EquipmentSlotUI : 캐릭터 정보창의 장비 슬롯
-            
-                - Highlight 효과
+/*
+                            << EquipmentSlotUI >>
+
+        - 장비창의 각 장비 슬롯 관리
+
+        - 장비슬롯의 아이콘 및 텍스트 설정
+
+        - 슬롯 강조효과
  */
+
+
 public class EquipmentSlotUI : MonoBehaviour
 {
     [SerializeField] private Image iconImage;           // 아이템 아이콘 이미지

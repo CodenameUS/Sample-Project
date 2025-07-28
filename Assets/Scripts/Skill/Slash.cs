@@ -1,14 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
 /*
-                        Slash
-          
-            - 검스킬
-            - 공격판정 : SphereCast
-*/
+                            << Slash >>
+
+        - Slash 스킬데이터 기반으로 스킬 실행
+            - 애니메이션, 공격이펙트, 공격사운드 플레이
+
+        - 공격판정 : Raycast 방식
+ */
 
 public class Slash : Skill
 {

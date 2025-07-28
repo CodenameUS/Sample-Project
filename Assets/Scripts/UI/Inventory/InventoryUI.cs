@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,15 +11,26 @@ using UnityEngine.UI;
             - 마우스 이벤트 처리
             - Inventory <-> ItemSlotUI 중간다리역할
 */
+
+/*
+                            << InventoryUI >>
+
+        - 인벤토리 각 슬롯들을 모두 관리
+
+        - 인벤토리 Content 영역에 슬롯 생성
+        - 인벤토리내 사용자 마우스 이벤트 처리
+        - Inventory <-> ItemSlotUI 중계역할
+ */
+
 public class InventoryUI : MonoBehaviour
 {
     #region ** Serialized Fields **
     [SerializeField] private RectTransform contentAreaRT;   // 아이템 영역
     [SerializeField] private GameObject itemSlotPrefab;     // 복제할 원본 슬롯 프리팹
     [SerializeField] private InventoryPopupUI popup;        // 팝업 UI
-    [SerializeField] private ItemTooltipUI itemTooltipUI;
+    [SerializeField] private ItemTooltipUI itemTooltipUI;   // 아이템 툴팁 UI
     [SerializeField] private Text goldText;                 // 보유 골드 텍스트
-    [SerializeField] private UIRaycaster rc;                // 레이캐스터
+    [SerializeField] private UIRaycaster rc;                // 마우스 이벤트처리용
     #endregion
 
     #region ** 인벤토리 옵션 **

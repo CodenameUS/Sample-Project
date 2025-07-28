@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using Photon.Pun;
 
 /*
-                        Punch : 무기(주먹) 클래스
+                            << Punch >>
 
-                - RayCast를 사용해서 공격판정 구현
-*/
+        - 공격판정 : Raycast 방식
+        - 싱글/멀티 데미지 처리 분리
+ */
+
 public class Punch : Weapon
 {
     private float attackRange = 2f;                         // 공격 사거리
@@ -31,6 +29,7 @@ public class Punch : Weapon
         
     }
 
+    // 공격판정(Raycast 방식)
     public override void Attack()
     {
         SetComboCount();

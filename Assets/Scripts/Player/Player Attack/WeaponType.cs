@@ -1,5 +1,7 @@
 /*
-                WeaponType : 무기 타입별 인덱스
+                            << WeaponType >>
+
+        - 무기타입 열거형
  */
 
 public enum WeaponType

@@ -1,7 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/*
+                            << MenuUI >>
+
+        - 메뉴창 UI
+
+        - UI의 각 버튼 클릭 이벤트 구현
+ */
 
 public class MenuUI : MonoBehaviour
 {

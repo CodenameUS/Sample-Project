@@ -1,16 +1,19 @@
 using UnityEngine;
 
 /*
-                    Weapon : 무기 공통 부모클래스
-                        - Punch
-                        - Sword
-                        - Staff
-                        - Bow
+                            << Weapon >>
+
+        - 무기 공통 Root 클래스
+            - Punch
+            - Sword
+            - Staff
+            - Bow
  */
+
 public abstract class Weapon : MonoBehaviour
 {
-    public WeaponType type;             // 무기타입
-    protected string soundId;           // 공격사운드ID
+    public WeaponType type;                     // 무기타입
+    protected string soundId;                   // 공격사운드ID
 
     // 공격 판정 (레이캐스트 방식)
     public abstract void Attack();

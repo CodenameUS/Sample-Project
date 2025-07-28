@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 using Photon.Pun;
 
+/*
+                            << PlayerController >>
 
-/// <summary>
-/// 플레이어 제어와 관련된 동작수행 및 애니메이션
-/// 1. Move(움직임)
-/// 2. Turn(회전)
-/// 3. Attack(공격)
-/// 4. Dead(죽음)
-/// </summary>
-/// 
+        - Move() : 플레이어 조작 입력 처리
+        - Turn() : 플레이어 회전 입력 처리
+        - Attack() : 플레이어 공격 애니메이션 처리
+        - ComboAttack() : 플레이어 콤보 공격 애니메이션 처리
+        - DoSkill() : 플레이어 스킬 입력 처리
+        - Dead() : 플레이어 죽음 상태 및 애니메이션 처리
+
+        * 애니메이션 이벤트 관리
+ */
 
 public class PlayerController : MonoBehaviourPun
 {

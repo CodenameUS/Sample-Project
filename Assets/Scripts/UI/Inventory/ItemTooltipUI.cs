@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +7,18 @@ using UnityEngine.UI;
             - SetUIPosition: 아이템 툴팁 UI 위치 선정
             - SetItemInfo : ItemData를 받아와 Text 설정
  */
+
+/*
+                            << ItemTooltipUI >>
+
+        - 아이템 툴팁 UI 표시 클래스
+
+        - SetUIPosition() : 아이템 툴팁 UI 위치 선정
+            - 게임화면과 UI위치를 고려하여 툴팁 위치 선정
+
+        - SetItemInfo() : 아이템 데이터 기반 텍스트 설정
+ */
+
 public class ItemTooltipUI : MonoBehaviour
 {
     [SerializeField] private Text itemNameText;         // 아이템 이름 텍스트

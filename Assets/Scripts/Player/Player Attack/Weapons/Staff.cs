@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using Photon.Pun;
 
 /*
-                    Staff : 무기(스태프) 클래스
+                            << Staff >>
 
-            - RayCast를 사용해서 공격판정 구현
+        - 공격판정 : Raycast 방식
+        - 싱글/멀티 데미지 처리 분리
  */
 
 public class Staff : Weapon
@@ -27,6 +24,7 @@ public class Staff : Weapon
         soundId = "Staff";
     }
 
+    // 공격판정(Raycast 방식)
     public override void Attack()
     {
         // 공격시작 위치 : 플레이어약간앞, 공격방향 : 플레이어 정면

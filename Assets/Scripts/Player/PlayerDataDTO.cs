@@ -5,6 +5,16 @@
                 - Status (능력치) 데이터
                 - Position (위치) 데이터
 */
+
+/*
+                            << PlayerDataDTO >>
+
+         - 플레이어 데이터 DTO 클래스
+                - Status (능력치) 데이터
+                - Position (위치) 데이터
+ */
+
+
 [System.Serializable]
 public class PlayerDataDTO
 {

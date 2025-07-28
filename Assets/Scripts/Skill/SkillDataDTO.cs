@@ -1,6 +1,10 @@
+
 /*
-                SkillData 직렬화 전용 클래스
+                            << SkillDataDTO >>
+
+        - SkillData 직렬화 전용 클래스
  */
+
 [System.Serializable]
 public class SkillDataDTO
 {

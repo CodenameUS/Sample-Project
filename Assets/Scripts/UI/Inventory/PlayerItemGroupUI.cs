@@ -1,6 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+/*
+                            << PlayerItemGroupUI >>
+
+        - 플레이어 퀵슬롯 그룹 관리
+        
+        - 퀵슬롯 입력 처리
+            - 해당슬롯의 아이템 사용 요청
+ */
 
 public class PlayerItemGroupUI : MonoBehaviour
 {

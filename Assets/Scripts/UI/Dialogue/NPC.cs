@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -11,6 +9,19 @@ using UnityEngine;
         - DialogueManager 에서 이 NPC의 대화를 시작할 수 있도록 데이터를 넘김
 
  */
+
+/*
+                            << NPC >>
+
+        - NPC의 Root 클래스
+
+        - 플레이어와 상호작용('G'키 입력)
+            - Collider 방식의 상호작용 범위
+
+        - SetActiveNpcUI() : NPC의 UI 활성/비활성화
+ */
+
+
 public class NPC : MonoBehaviour
 {
     protected GameObject dialogueUI;
@@ -47,6 +58,4 @@ public class NPC : MonoBehaviour
         npcUI.SetActive(true);
         DialogueManager.Instance.npc = null;
     }
-
-    
 }

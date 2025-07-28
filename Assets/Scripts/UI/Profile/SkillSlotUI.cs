@@ -1,14 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 /*
-                        SkillSlotUI
-          
-            - 플레이어 스킬슬롯의 스킬설정 및 스킬사용
-             
-*/
+                            << SkillSlotUI >>
+
+        - 플레이어 스킬 슬롯의 스킬설정 및 스킬사용 요청
+
+        - UseSkill() : SkillManager에 스킬 사용 요청
+        - Cooldown() : 스킬 쿨타임 시각효과
+        - Highlight() : 스킬 쿨타임 완료시 강조효과
+ */
 
 public class SkillSlotUI : MonoBehaviour
 {
@@ -17,8 +19,8 @@ public class SkillSlotUI : MonoBehaviour
     [SerializeField] private Image highlightImage;           // 강조 이미지
 
     private Skill skill;
-    private float cooldownTime;
-    private bool isCooldown;
+    private float cooldownTime;                         // 쿨타임
+    private bool isCooldown;                            // 쿨타임 여부
 
     private float maxHighlightAlpha = 0.5f;             // 하이라이트 이미지 최대 알파값
     private float currentHighlightAlpha = 0f;           // 현재 하이라이트 이미지 알파값
@@ -38,13 +40,13 @@ public class SkillSlotUI : MonoBehaviour
         cooldownTime = skillData.Cooldown;
     }
 
-    // 스킬 사용
+    // 스킬 사용 요청
     public void UseSkill()
     {
         // 쿨타임 아닐때
         if(!isCooldown)
         {
-            // 스킬사용 성공여부에따라 쿨타임적용
+            // 스킬사용 성공시 쿨타임 적용
             SkillManager.Instance.ExecuteSkill(skillId, GameManager.Instance.player.gameObject, successed =>
             {
                 if (successed)
@@ -71,7 +73,7 @@ public class SkillSlotUI : MonoBehaviour
         StartCoroutine(Highlight());
     }
 
-    // 슬롯 강조효과
+    // 쿨타임 끝났음을 알리는 강조효과
     private IEnumerator Highlight()
     {
         // 하이라이트 이미지 활성화

@@ -1,14 +1,20 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+                            << UIRaycaster >>
+
+        - 사용자의 마우스 위치에있는 UI 요소를 Raycast하여 특정 컴포넌트를 가진 UI 오브젝트를 반환
+            - 다양한 컴포넌트를 반환할 수 있도록 제너릭으로 구현
+ */
+
 public class UIRaycaster : MonoBehaviour
 {
-    private GraphicRaycaster gr;
-    private PointerEventData ped;
-    private List<RaycastResult> rrList;
+    private GraphicRaycaster gr;                
+    private PointerEventData ped;               
+    private List<RaycastResult> rrList;                 // Raycast 결과 저장 리스트
 
     private void Awake()
     {
@@ -22,7 +28,7 @@ public class UIRaycaster : MonoBehaviour
         ped.position = Input.mousePosition;
     }
 
-    // T 컴포넌트를 가지고있는 첫번째 오브젝트의 T 반환
+    // 마우스위치의 UI중 특정 컴포넌트(T)를 가지고있는 첫번째 오브젝트 컴포넌트(T) 반환
     public T RaycastAndgetFirstComponent<T>() where T : Component
     {
         // 리스트 초기화
@@ -38,6 +44,7 @@ public class UIRaycaster : MonoBehaviour
         for(int i = 0; i< rrList.Count; i++)
         {
             T component = rrList[i].gameObject.GetComponent<T>();
+            // 찾는 컴포넌트가 있으면 반환
             if(component != null)
             {
                 return component;

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +10,15 @@ using UnityEngine.UI;
             - 인벤토리와 연결하여 아이템을 구매하면 인벤토리에 아이템 생성
 
 */
+
+/*
+                            << StoreItemSlotUI >>
+
+        - 상점에서 판매하는 아이템들의 정보 관리
+
+        - 아이템구매시 인벤토리에 아이템 생성
+
+ */
 public class StoreItemSlotUI : MonoBehaviour
 {
     public int itemId;                                          // 아이템 ID
@@ -21,10 +28,10 @@ public class StoreItemSlotUI : MonoBehaviour
     [SerializeField] private Text   itemPrice;                  // 아이템 가격
     [SerializeField] private Button perchaseBtn;                // 구매 버튼
 
-    private Inventory inventory;               // 연결된 인벤토리
-    private ArmorItemData armorItemData;
-    private WeaponItemData weaponItemData;
-    private PortionItemData portionItemData;
+    private Inventory inventory;                                // 연결된 인벤토리
+    private ArmorItemData armorItemData;                        // 방어구 아이템 데이터
+    private WeaponItemData weaponItemData;                      // 무기 아이템 데이터
+    private PortionItemData portionItemData;                    // 포션 아이템 데이터
     private ItemData curItemData;                               // 현재 슬롯의 아이템 데이터
 
     private int price;                                          // 아이템 가격

@@ -1,8 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+
+/*
+                            << SceneChange >>
+
+        - 다음 씬으로 이동하기위한 클래스
+            - 현재씬 -> 로딩씬 -> 다음씬
+
+        - Portal 오브젝트에 붙여서 사용
+ */
 
 public class SceneChange : MonoBehaviourPunCallbacks
 {
@@ -36,13 +43,12 @@ public class SceneChange : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        Debug.Log("LeftRoom 실행");
         PhotonNetwork.Disconnect();
     }
 
+    // 연결종료 -> 다음씬 로딩
     public override void OnDisconnected(DisconnectCause cause)
     {
-        Debug.Log("Disconnect 실행");
         Loading.LoadNextScene(nextScene);
     }
 

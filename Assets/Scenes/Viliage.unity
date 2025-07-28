@@ -26508,9 +26508,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e36d10f835d25c544bd593faac7c9e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 691459190}
-  cameraPrefab: {fileID: 656332023}
-  spawnPosition: {fileID: 1355148431}
+  playerObj: {fileID: 691459190}
+  cameraObj: {fileID: 656332023}
+  startingPoint: {fileID: 1355148431}
 --- !u!1 &1545688204
 GameObject:
   m_ObjectHideFlags: 0
@@ -36609,7 +36609,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmKey: ViliageScene
-  startingPoint: {fileID: 1355148431}
 --- !u!4 &2147432998
 Transform:
   m_ObjectHideFlags: 0

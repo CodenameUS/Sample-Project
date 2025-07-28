@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
-using Photon.Realtime;
 
 /*
-                        PlayerData
+                            << PlayerData >>
 
-            - 플레이어 데이터 정보
+        - 플레이어 데이터 정보
             
             - 플레이어 데이터와 관련된 기능 함수 제공
                 - UsePortion() : 포션사용시 포션종류에 따른 능력치 변화
@@ -15,7 +11,7 @@ using Photon.Realtime;
                 - UnequipItem(): 장비해제시 장비종류에 따른 능력치 변화
                 - GetDamaged() : 피격당한 데미지에따른 능력치 변화
                 - UseGold()    : 골드사용에 따른 보유 골드 변화
-*/
+ */
 
 public class PlayerData
 {
@@ -150,6 +146,4 @@ public class PlayerData
     {
         gold = (gold - amount) < 0 ? 0 : gold - amount;
     }
-
-    
 }

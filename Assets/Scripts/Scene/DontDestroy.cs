@@ -1,6 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+/*
+                            << DontDestroy >>
+
+        - 씬 변경간에 파괴되지 않을 오브젝트에 부착
+ */
 
 public class DontDestroy : MonoBehaviour
 {

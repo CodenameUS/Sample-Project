@@ -1,3 +1,10 @@
+
+/*
+                            << SkillData >>
+
+        - 불러온 데이터로 스킬데이터 초기화
+ */
+
 public class SkillData
 {
     public string Id { get; private set; }

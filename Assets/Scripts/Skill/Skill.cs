@@ -1,25 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                        Skill
-          
-            - 스킬이 공통적으로 가지는 데이터 관리
-            
-            - InitAnimator() : 스킬사용주체의 애니메이터 캐싱
-            
-            - SetEffect : 이펙트 프리팹 캐싱
+                            << Skill >>
 
-            - Activate() : 스킬 사용
-                - 개별 스킬클래스에서 구현
-*/
+        - 스킬 공통 데이터 관리
+        
+        - InitAnimator() : 스킬사용주체의 애니메이터 캐싱
+        
+        - SetEffect : 이펙트 프리팹 캐싱
+
+        - Activate() : 스킬 사용
+            - 스킬 사용 성공 여부 반환
+            - 개별 스킬클래스에서 세부 구현
+ */
+
 public abstract class Skill
 {
-    protected SkillData data;                       
-    protected Animator anim;                        
-    protected GameObject effectPrefab;
-    protected PlayerController player;
+    protected SkillData data;                       // 스킬데이터
+    protected Animator anim;                        // 스킬사용 주체의 애니메이터
+    protected GameObject effectPrefab;              // 스킬이펙트 프리팹
+    protected PlayerController player;              // 플레이어
 
     public GameObject cachedEffect;                 // 캐싱된 이펙트 오브젝트
 

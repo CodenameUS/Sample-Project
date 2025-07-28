@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                    Bow : 무기(활) 클래스
-
-            - Projectile를 사용해서 공격판정 구현
-            
+                            << Punch >>
+        - 미구현
+        - 공격판정 : Projectile 방식
+        - 싱글/멀티 데미지 처리 분리
  */
+
 public class Bow : Weapon
 {
     private void Awake()

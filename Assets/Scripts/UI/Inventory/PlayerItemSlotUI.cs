@@ -1,21 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 /*
-                     PlayerItemSlotUI
+                            << PlayerItemSlotUI >>
 
-                - 플레이어 아이템 슬롯 관리      
-                - 슬롯에 아이템을 가져다놓으면 아이템을 등록
-                    - 인벤토리에서 아이템을 사용하거나 제거하면 반영
+        - 플레이어 퀵슬롯 관리
+
+        - 퀵슬롯에 아이템 등록
+            - 인벤토리 연동 : 아이템 정보 동기화
  */
 
 public class PlayerItemSlotUI : MonoBehaviour
 {
-    [SerializeField] private Image icon;
-    [SerializeField] private Text amount;
-    public int index;
+    [SerializeField] private Image icon;        // 아이템 아이콘
+    [SerializeField] private Text amount;       // 아이템 갯수
+    public int index;                           // 퀵슬롯 인덱스
 
     private CountableItem slotItem;             // 이 슬롯의 아이템
 

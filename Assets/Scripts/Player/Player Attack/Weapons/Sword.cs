@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
-/*
-                    Sword : 무기(검) 클래스
 
-            - Collider를 사용해서 공격판정 구현
-            - SetHitBox() : Collider On/Off - 애니메이션 이벤트에 사용
+/*
+                            << Sword >>
+
+        - 공격판정 : Collider 트리거 방식
+        - 싱글/멀티 데미지 처리 분리
  */
+
 public class Sword : Weapon
 {
     private BoxCollider hitBox;                 // 공격 판정
@@ -22,9 +21,8 @@ public class Sword : Weapon
         effect = GetComponentInChildren<TrailRenderer>();
         soundId = "Sword";
     }
-
-
-
+    
+    // 공격판정(Collider 트리거)
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Monster") && !other.CompareTag("BossMonster"))

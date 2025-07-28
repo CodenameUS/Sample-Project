@@ -1,14 +1,17 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
 /*
-                        IceShot
-          
-            - 마법스킬
-             
-*/
+                            << IceShot >>
+
+        - IceShot 스킬데이터 기반으로 스킬 실행
+            - 애니메이션, 공격이펙트, 공격사운드 플레이
+
+        - 공격판정 : Collider 트리거 방식
+            - StayHitbox 클래스에서 피격처리
+ */
+
 
 public class IceShot : Skill
 {
