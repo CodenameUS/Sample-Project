@@ -44,60 +44,60 @@ public class WeaponManager : SingletonPun<WeaponManager>
     {
         if(Enum.TryParse(type, out WeaponType result))
         {
-            // 싱글플레이
-            if(!GameManager.Instance.isMultiPlaying)
+            // 무기프리팹 생성
+            ResourceManager.Instance.LoadWeaponPrefab(weapon + ".prefab", prefab =>
             {
-                // 무기프리팹 생성
-                ResourceManager.Instance.LoadWeaponPrefab(weapon + ".prefab", prefab =>
+                if (prefab != null)
                 {
-                    if (prefab != null)
-                    {
-                        currentWeapon = null;
-                        // 기존 무기 오브젝트 제거
-                        Destroy(myWeaponGo);
-                        weaponPoint = GameManager.Instance.player.WeaponPoint;
+                    currentWeapon = null;
+                    // 기존 무기 오브젝트 제거
+                    Destroy(myWeaponGo);
+                    weaponPoint = GameManager.Instance.player.WeaponPoint;
 
-                        // 프리팹 생성
-                        GameObject newWeapon = Instantiate(prefab, prefab.transform.position, prefab.transform.rotation, weaponPoint);
-                        newWeapon.transform.localPosition = prefab.transform.localPosition;
-                        newWeapon.transform.localRotation = prefab.transform.localRotation;
+                    // 프리팹 생성
+                    GameObject newWeapon = Instantiate(prefab, prefab.transform.position, prefab.transform.rotation, weaponPoint);
+                    newWeapon.transform.localPosition = prefab.transform.localPosition;
+                    newWeapon.transform.localRotation = prefab.transform.localRotation;
 
-                        // 현재 무기 설정
-                        myWeaponGo = newWeapon;
-                        currentWeapon = myWeaponGo.GetComponent<Weapon>();
-                        myWeaponType = result;
-                        CurWeaponType = (int)myWeaponType;
-                    }
-                    else
-                    {
-                        Debug.Log($"다음 프리팹을 불러오는데 실패하였습니다. : {prefab}");
-                    }
-                });
-            }
-            // 멀티플레이 
-            else if(GameManager.Instance.isMultiPlaying)
-            {
-                currentWeapon = null;
-                Destroy(myWeaponGo);
+                    // 현재 무기 설정
+                    myWeaponGo = newWeapon;
+                    currentWeapon = myWeaponGo.GetComponent<Weapon>();
+                    myWeaponType = result;
+                    CurWeaponType = (int)myWeaponType;
+                }
+                else
+                {
+                    Debug.Log($"다음 프리팹을 불러오는데 실패하였습니다. : {prefab}");
+                }
+            });
 
-                weaponPoint = GameManager.Instance.player.WeaponPoint;
-                GameObject weaponRef = Resources.Load<GameObject>("Weapons/" + weapon);
-                Vector3 refLocalPos = weaponRef.transform.localPosition;
-                Quaternion refLocalRot = weaponRef.transform.localRotation;
-                weaponRef.SetActive(false);
+            /*
+          // 멀티플레이 
+          else if(GameManager.Instance.isMultiPlaying)
+          {
 
-                // 무기 생성
-                GameObject newWeapon = PhotonNetwork.Instantiate("Weapons/" + weapon, weaponPoint.position, weaponPoint.rotation);
-                newWeapon.transform.SetParent(weaponPoint);
-                newWeapon.transform.localPosition = refLocalPos;
-                newWeapon.transform.localRotation = refLocalRot;
+              currentWeapon = null;
+              Destroy(myWeaponGo);
 
-                myWeaponGo = newWeapon;
-                currentWeapon = myWeaponGo.GetComponent<Weapon>();
-                myWeaponType = result;
-                CurWeaponType = (int)myWeaponType;
-            }
+              weaponPoint = GameManager.Instance.player.WeaponPoint;
+              GameObject weaponRef = Resources.Load<GameObject>("Weapons/" + weapon);
+              Vector3 refLocalPos = weaponRef.transform.localPosition;
+              Quaternion refLocalRot = weaponRef.transform.localRotation;
+              weaponRef.SetActive(false);
+
+              // 무기 생성
+              GameObject newWeapon = PhotonNetwork.Instantiate("Weapons/" + weapon, weaponPoint.position, weaponPoint.rotation);
+              newWeapon.transform.SetParent(weaponPoint);
+              newWeapon.transform.localPosition = refLocalPos;
+              newWeapon.transform.localRotation = refLocalRot;
+
+              myWeaponGo = newWeapon;
+              currentWeapon = myWeaponGo.GetComponent<Weapon>();
+              myWeaponType = result;
+              CurWeaponType = (int)myWeaponType;
+              */
         }
+    
         else
         {
             Debug.Log($"{type} 은(는) 유효한 타입이 아닙니다.");
@@ -113,13 +113,6 @@ public class WeaponManager : SingletonPun<WeaponManager>
     // SetWeapon 호출 요청
     public void RequestSetWeapon(string type = "None", string weapon = "Punch")
     {
-        if(GameManager.Instance.isMultiPlaying)
-        {
-            photonView.RPC("RPC_SetWeapon", RpcTarget.AllBuffered, type, weapon);
-        }
-        else
-        {
-            SetWeapon(type, weapon);
-        }
+        SetWeapon(type, weapon);
     }
 }

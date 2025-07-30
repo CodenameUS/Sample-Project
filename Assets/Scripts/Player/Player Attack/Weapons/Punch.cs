@@ -57,14 +57,12 @@ public class Punch : Weapon
                 if (hit.collider.TryGetComponent<Monster>(out var monster))
                 {
                     monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All, randomDamage);
-                    continue;
                 }
 
                 // 보스몬스터 처리
                 if (hit.collider.TryGetComponent<BossMonster>(out var boss))
                 {
                     boss.photonView.RPC(nameof(boss.GetDamaged), Photon.Pun.RpcTarget.All, randomDamage);
-                    continue;
                 }
             }
         }
@@ -78,15 +76,12 @@ public class Punch : Weapon
                 // 일반몬스터 처리
                 if (hit.collider.TryGetComponent<Monster>(out var monster))
                 {
-                    monster.photonView.RPC(nameof(monster.GetDamaged), Photon.Pun.RpcTarget.All, randomDamage);
-                    continue;
+                    monster.GetDamaged(randomDamage);
                 }
-
                 // 보스몬스터 처리
                 if (hit.collider.TryGetComponent<BossMonster>(out var boss))
                 {
-                    boss.photonView.RPC(nameof(boss.GetDamaged), Photon.Pun.RpcTarget.All, randomDamage);
-                    continue;
+                    boss.GetDamaged(randomDamage);
                 }
             }
         }

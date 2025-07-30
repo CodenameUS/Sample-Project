@@ -10,21 +10,37 @@ using UnityEngine;
 public class StayHitbox : MonoBehaviour
 {
     public float damage;
-    public float attackInterval = 0.5f;             // 공격 간격(0.5초)
+    public float attackInterval;             // 공격 간격(0.5초)
+    public float duration;
 
-    private float timer = 0f;
+    private float lifeTimer = 0f;
+    private float attackTimer = 0f;
 
+    private void OnEnable()
+    {
+        lifeTimer = 0f;
+        attackTimer = 0f;
+    }
+
+    private void Update()
+    {
+        lifeTimer += Time.deltaTime;
+        if(lifeTimer >= duration)
+        {
+            gameObject.SetActive(false);
+        }
+    }
     private void OnTriggerStay(Collider other)
     {
         if (!other.CompareTag("Monster") && !other.CompareTag("BossMonster"))
             return;
 
-        timer += Time.deltaTime;
+        attackTimer += Time.deltaTime;
 
         // 1. 멀티모드일때
         if(GameManager.Instance.isMultiPlaying)
         {
-            if (timer >= 0.5f)
+            if (attackTimer >= attackInterval)
             {
                 if(other.TryGetComponent<Monster>(out var monster))
                 {
@@ -36,12 +52,12 @@ public class StayHitbox : MonoBehaviour
                         damage);
                 }
 
-                timer = 0;
+                attackTimer = 0;
             }
         }
         else if(!GameManager.Instance.isMultiPlaying)
         {
-            if (timer >= 0.5f)
+            if (attackTimer >= attackInterval)
             {
                 if (other.TryGetComponent<Monster>(out var monster))
                 {
@@ -52,7 +68,7 @@ public class StayHitbox : MonoBehaviour
                     boss.GetDamaged(damage);
                 }
 
-                timer = 0;
+                attackTimer = 0;
             }
         }
         /*

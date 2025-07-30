@@ -35,32 +35,57 @@ public class IceShot : Skill
         }
         else
         {
-            // 애니메이션 실행
-            if (GameManager.Instance.isMultiPlaying)
-                player.GetComponent<PhotonView>()?.RPC(nameof(player.RPC_TriggerSkillAnim), RpcTarget.All, data.AnimId);
-            else
-                player.TriggerSkillAnim(data.AnimId);
+            PlaySkillAnimation();
+            PlaySkillEffect(user);
+            PlaySkillSound();
 
-            // 이펙트 실행
-            if (cachedEffect == null)
-            {
-                // 생성된 이펙트가 없으면 생성
-                cachedEffect = UnityEngine.Object.Instantiate(effectPrefab,
-                user.transform.position + user.transform.forward * 3f,
-                user.transform.rotation, SkillManager.Instance.gameObject.transform);
-            }
-            else
-            {
-                // 생성된 이펙트가 있으면 새로운 위치 지정
-                cachedEffect.transform.position = user.transform.position + user.transform.forward * 2f;
-                cachedEffect.transform.rotation = user.transform.rotation;
-            }
-
-            cachedEffect.SetActive(true);
-            SkillManager.Instance.StartCoroutine(EnableHitbox(cachedEffect));
-            AudioManager.Instance.PlaySFX(data.Name);
             return true;
         }
+    }
+
+    private void PlaySkillAnimation()
+    {
+        // 애니메이션 실행
+        if (GameManager.Instance.isMultiPlaying)
+            player.GetComponent<PhotonView>()?.RPC(nameof(player.RPC_TriggerSkillAnim), RpcTarget.All, data.AnimId);
+        else
+            player.TriggerSkillAnim(data.AnimId);
+    }
+
+    private void PlaySkillEffect(GameObject user)
+    {
+        // 이펙트 실행
+        if (cachedEffect == null)
+        {
+            // 생성된 이펙트가 없으면 생성
+            cachedEffect = UnityEngine.Object.Instantiate(effectPrefab,
+            user.transform.position + user.transform.forward * 3f,
+            user.transform.rotation, SkillManager.Instance.gameObject.transform);
+        }
+        else
+        {
+            // 생성된 이펙트가 있으면 새로운 위치 지정
+            cachedEffect.transform.position = user.transform.position + user.transform.forward * 2f;
+            cachedEffect.transform.rotation = user.transform.rotation;
+        }
+
+        cachedEffect.SetActive(true);
+
+        var hitbox = cachedEffect.GetComponent<StayHitbox>();
+        if (hitbox == null)
+            hitbox = cachedEffect.AddComponent<StayHitbox>();
+
+        float randomDamage = data.Damage + Random.Range(DataManager.Instance.GetPlayerData().Damage * 0.1f,
+                                                            DataManager.Instance.GetPlayerData().Damage * 0.4f);
+
+        hitbox.damage = randomDamage;
+        hitbox.duration = 3f;
+        hitbox.attackInterval = 0.5f;
+    }
+
+    private void PlaySkillSound()
+    {
+        AudioManager.Instance.PlaySFX(data.Name);
     }
 
     // 공격판정
@@ -69,7 +94,7 @@ public class IceShot : Skill
         effect.TryGetComponent<StayHitbox>(out StayHitbox hitbox);
         if (hitbox == null)
         {
-            float randomDamage = data.Damage + Random.Range(DataManager.Instance.GetPlayerData().Damage * 0.1f, DataManager.Instance.GetPlayerData().Damage * 0.2f);
+            float randomDamage = data.Damage + Random.Range(DataManager.Instance.GetPlayerData().Damage * 0.1f, DataManager.Instance.GetPlayerData().Damage * 0.4f);
             hitbox = effect.AddComponent<StayHitbox>();
             hitbox.damage = randomDamage;
 

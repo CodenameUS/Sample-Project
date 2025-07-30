@@ -23,7 +23,10 @@ public class ViliageManager : MonoBehaviour
         Init();
 
         if (startingPoint != null)
+        {
             GameManager.Instance.player.transform.position = startingPoint.position;
+            GameManager.Instance.player.transform.rotation = startingPoint.rotation;
+            }
     }
 
     // 플레이어 오브젝트 활성화

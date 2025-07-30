@@ -14129,7 +14129,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_Follow: {fileID: 691459191}
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 5
@@ -14479,6 +14479,11 @@ PrefabInstance:
 --- !u!1 &691459190 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8940531991326444701, guid: 70c740549a7a448409acde49c22bcdd8, type: 3}
+  m_PrefabInstance: {fileID: 691459189}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &691459191 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8940531991326444703, guid: 70c740549a7a448409acde49c22bcdd8, type: 3}
   m_PrefabInstance: {fileID: 691459189}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &713506270
