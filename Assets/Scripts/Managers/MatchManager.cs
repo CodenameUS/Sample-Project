@@ -23,10 +23,12 @@ public class MatchManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        if (PhotonNetwork.IsConnected)
+            return;
+
         PhotonNetwork.GameVersion = gameVersion;
         PhotonNetwork.ConnectUsingSettings();
-        PhotonNetwork.NickName = "TempPlayer";
-
+        PhotonNetwork.NickName = "TempPlayer"; 
         matchButton.interactable = false;
     }
 

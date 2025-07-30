@@ -129,7 +129,7 @@ public class BossMonster : MonoBehaviourPunCallbacks
 
     protected virtual void Die()
     {
-        if(GameManager.Instance.isMultiPlaying)
+        if (GameManager.Instance.isMultiPlaying && PhotonNetwork.IsMasterClient)
         {
             MultiDungeonManager.Instance.photonView.RPC(nameof(OnBossDied), RpcTarget.All);
         }

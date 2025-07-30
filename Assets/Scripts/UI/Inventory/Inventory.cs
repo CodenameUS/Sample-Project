@@ -122,6 +122,36 @@ public class Inventory : Singleton<Inventory>
                 AddItemAt(data.slotIndex, item);
             }
         }
+        else
+        {
+            string defaultPath = Path.Combine(Application.streamingAssetsPath, "Json/InventoryData.json");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            File.Copy(defaultPath, path);
+
+            string jsonData = File.ReadAllText(path);
+            InventoryDataList dataList = JsonUtility.FromJson<InventoryDataList>(jsonData);
+
+            foreach (var data in dataList.itemList)
+            {
+                itemDataArray[data.slotIndex] = ItemTypeById(data.itemId);
+
+                // 해당 슬롯인덱스에 저장된 아이템이 없을 때
+                if (itemDataArray[data.slotIndex] == null)
+                {
+                    continue;
+                }
+
+                // 아이템 생성 후 해당 슬롯에 직접 배치
+                Item item = itemDataArray[data.slotIndex].CreateItem();
+
+                if (item is CountableItem ci)
+                    ci.SetAmount(data.amount);
+
+                AddItemAt(data.slotIndex, item);
+            }
+        }
 
         // 아이템 타입별 반환
         ItemData ItemTypeById(int id)

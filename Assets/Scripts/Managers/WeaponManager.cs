@@ -84,6 +84,7 @@ public class WeaponManager : SingletonPun<WeaponManager>
                 GameObject weaponRef = Resources.Load<GameObject>("Weapons/" + weapon);
                 Vector3 refLocalPos = weaponRef.transform.localPosition;
                 Quaternion refLocalRot = weaponRef.transform.localRotation;
+                weaponRef.SetActive(false);
 
                 // 무기 생성
                 GameObject newWeapon = PhotonNetwork.Instantiate("Weapons/" + weapon, weaponPoint.position, weaponPoint.rotation);

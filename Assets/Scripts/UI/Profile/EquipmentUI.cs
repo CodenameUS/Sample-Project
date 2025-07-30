@@ -127,6 +127,47 @@ public class EquipmentUI : Singleton<EquipmentUI>
                 }
             }
         }
+        else
+        {
+            string defaultPath = Path.Combine(Application.streamingAssetsPath, "Json/EquipmentSlotData.json");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            File.Copy(defaultPath, path);
+
+            string jsonData = File.ReadAllText(path);
+            EquipmentSlotDataList dataList = JsonUtility.FromJson<EquipmentSlotDataList>(jsonData);
+
+            foreach (var data in dataList.itemList)
+            {
+                itemDataArray[data.slotIndex] = ItemTypeById(data.itemId);
+
+                // 해당 슬롯인덱스에 저장된 아이템이 없을 때
+                if (itemDataArray[data.slotIndex] == null)
+                {
+                    // 기본무기로 세팅
+                    if (data.slotIndex == 0)
+                    {
+                        WeaponManager.Instance.RequestSetWeapon();
+                    }
+                    continue;
+                }
+
+                // 슬롯에 아이템 추가
+                Item item = itemDataArray[data.slotIndex].CreateItem();
+
+                if (item is WeaponItem wi)
+                {
+                    SetItemIcon(wi, wi.WeaponData.Type, wi.Data.ItemIcon);
+                    WeaponManager.Instance.RequestSetWeapon(wi.WeaponData.SubType, wi.WeaponData.ItemPrefab);
+                }
+                else if (item is ArmorItem ai)
+                {
+                    SetItemIcon(ai, ai.ArmorData.SubType, ai.Data.ItemIcon);
+                }
+            }
+        }
+
         // 아이템 타입별 반환
         ItemData ItemTypeById(int id)
         { 

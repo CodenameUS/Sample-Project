@@ -65,7 +65,30 @@ public class SkillManager : Singleton<SkillManager>
         }
         else
         {
-            Debug.LogWarning("SkillData.json 파일이 없음.");
+            string defaultPath = Path.Combine(Application.streamingAssetsPath, "Json/SkillData.json");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            File.Copy(defaultPath, path);
+
+            string jsonData = File.ReadAllText(path);
+            var skillDict = JsonConvert.DeserializeObject<Dictionary<string, List<SkillDataDTO>>>(jsonData);
+
+            if (skillDict != null)
+            {
+                foreach (var category in skillDict)
+                {
+                    foreach (var skillDTO in category.Value)
+                    {
+                        SkillData skillData = new SkillData(skillDTO);
+                        skillDataDictionary[skillData.Id] = skillData;
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Json 데이터를 파싱할 수 없음.");
+            }
         }
     }
 

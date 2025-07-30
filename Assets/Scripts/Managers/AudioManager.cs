@@ -108,7 +108,20 @@ public class AudioManager : Singleton<AudioManager>
         }
         else
         {
-            Debug.LogWarning("bgmData.json 파일이 없음.");
+            string defaultPath = Path.Combine(Application.streamingAssetsPath, "Json/bgmData.json");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            File.Copy(defaultPath, path);
+
+            string jsonData = File.ReadAllText(path);
+            BGMList bgmList = JsonUtility.FromJson<BGMList>(jsonData);
+
+            bgmDictionary = new Dictionary<string, BGMData>();
+            foreach (var bgm in bgmList.bgmList)
+            {
+                bgmDictionary[bgm.id] = bgm;
+            }
         }
     }
 
@@ -130,11 +143,23 @@ public class AudioManager : Singleton<AudioManager>
         }
         else
         {
-            Debug.LogWarning("sfxData.json 파일이 없음.");
+            string defaultPath = Path.Combine(Application.streamingAssetsPath, "Json/sfxData.json");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            File.Copy(defaultPath, path);
+
+            string jsonData = File.ReadAllText(path);
+            SFXList list = JsonUtility.FromJson<SFXList>(jsonData);
+
+            sfxDictionary = new Dictionary<string, SFXData>();
+            foreach (var sfx in list.sfxList)
+            {
+                sfxDictionary[sfx.id] = sfx;
+            }
         }
     }
 
-    
     // BGM 실행(ID)
     public void PlayBGM(string bgmId)
     {

@@ -30,7 +30,6 @@ public class SceneChange : MonoBehaviourPunCallbacks
             // ¸ÖÆ¼¾À -> ½Ì±Û¾À
             if (PhotonNetwork.InRoom && PhotonNetwork.NetworkClientState == ClientState.Joined)
             {
-                Debug.Log("LeaveRoom ½ÇÇà");
                 PhotonNetwork.LeaveRoom();
             }
         }
