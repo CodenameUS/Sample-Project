@@ -291,7 +291,12 @@ public class PlayerController : MonoBehaviourPun
     private void ResetComboCount() => CurComboCount = 0;
 
     // 무기 공격효과음 실행
-    private void PlayWeaponSfx() => WeaponManager.Instance.currentWeapon.PlayerSfx();
+    private void PlayWeaponSfx()
+    {
+        if (GameManager.Instance.isMultiPlaying && !photonView.IsMine) return;
+        
+        WeaponManager.Instance.currentWeapon.PlayerSfx();
+    }
 
     #endregion
 }
