@@ -24,4 +24,15 @@ Youtube - https://www.youtube.com/@%EC%B5%9C%EC%9A%B0%EC%84%B1-z7v
   - 플레이어는 던전을 클리어하고 얻은 보상으로 성장할 수 있도록 하였습니다.
     
 ## 게임 플레이해보기
+- 키
+  - 이동 : 방향키
+  - 공격 : C
+  - 스킬 : A,S,D
+  - 인벤토리 : I
+  - 정보창(장비창) : P
+  - 옵션 : Escape
     
+다운로드링크 - https://drive.google.com/file/d/1IwMuBcp4Udbx0zPfrhjU-j1Qkg6uu_-i/view?usp=sharing
+
+압축해제후 바로 플레이해볼 수 있습니다.
+
